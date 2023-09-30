@@ -25,7 +25,7 @@ main (){
 
 
 	string n2;
-	cout << "Enter first student's name: ";
+	cout << "Enter second student's name: ";
 	cin >> n2;
 	int matric2;
 	cout << "Enter Marks in Matric: ";

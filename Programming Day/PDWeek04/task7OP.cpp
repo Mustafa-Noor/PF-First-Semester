@@ -5,29 +5,35 @@ void gotoxy(int x,int y);
 void printmaze();
 void movePlayer(int x,int y);
 main()
-{
+{	int contact = 0;
 	int x = 3, y = 1;
 	system("cls");
 	printmaze();
 	while (true)
 	{
-	movePlayer(x, y);
-	y=y+1;
+	if (contact = 0){
+	y =y+1;
 	
-	if(y == 7)
+
+	if(y>7)
 	{
-	 y=1;
+	 contact=1;
 	}
+	if (contact=1){
+	y = y-1;
+	}
+	movePlayer(x, y);
  }
 }
+
 void movePlayer(int x,int y)
 {
 	gotoxy(x,y);
 	cout<<"P";
-	Sleep(100);
-	gotoxy(x,y);
+	Sleep(200);
 	cout<<" ";
 }
+
 void gotoxy(int x,int y)
 {
 	COORD coordinates;
@@ -35,6 +41,7 @@ void gotoxy(int x,int y)
 	coordinates.Y = y;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),coordinates);
 }
+
 void printmaze()
 {
 	cout << "########################" << endl;

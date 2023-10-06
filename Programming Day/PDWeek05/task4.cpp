@@ -15,38 +15,32 @@ main()
 
         string result;
         result =projectTimeCalculation(neededhours, days, workers);
+        cout << result;
 
 }
 
 string projectTimeCalculation(int neededhours, int days, int workers)
 {
-        float time1, time2, time3, finaltime, percentage, overtime;
-        time1 = (days*24);
-        percentage = (time1*10)/100;
-        time2 = time1-percentage;
-        time3 = fabs(time2);
-
-        overtime = (workers*2);
-
-
-        finaltime = (time3)-(overtime);
-
-
+        float timetaken, percentage, finaltime;
+        timetaken = days*workers*10;
+        percentage= (timetaken*10)/100;
+        fabs(percentage);
+        finaltime = timetaken - percentage;
         int answer;
 
 
         if(finaltime<neededhours)
         {
             answer = neededhours-finaltime;
-            cout << "Not enough time! "<< answer << " hours needed.";
+            return "Not enough time! " +to_string(answer)+ " hours needed.";
 
             
             
         }
 
         if(finaltime>=neededhours){
-            answer = finaltime;
-            cout << "Yes!" << answer <<" hours left.";
+            answer = finaltime-neededhours;
+            return "Yes!" +to_string(answer)+ " hours left.";
         }
 
 

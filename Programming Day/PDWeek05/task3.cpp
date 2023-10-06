@@ -1,23 +1,23 @@
 #include<iostream>
 using namespace std;
-float taxCalculator(char type, float price);
+string taxCalculator(char type, int price);
 main()
 {
         char type;
-        float price;
+        int price;
         cout << "Enter the vehicle type code (M, E, S, V, T): ";
         cin >> type;
         cout << "Enter the price of the vehicle: $";
         cin >> price;
-        float result;
+        string result;
         result =taxCalculator(type,price);
-        cout << "The final price of a vehicle of type " << type << " after adding the tax is $" << to_string(result) <<".";
+        cout << result;
 
 
 }
 
 
-float taxCalculator(char type, float price)
+string  taxCalculator(char type, int price)
 {
         float finalprice, tax;
 
@@ -42,5 +42,5 @@ float taxCalculator(char type, float price)
         }
 
         finalprice = price+tax;
-        return finalprice;
+        return "The final price of a vehicle of type " +string(1,type)+ " after adding the tax is $" +to_string(finalprice)+".";
 }

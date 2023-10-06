@@ -7,16 +7,26 @@ void movePlayer(int x,int y);
 main()
 {
 	int x = 3, y = 1;
+	int contact=0;
+
 	system("cls");
 	printMaze();
 	while (true)
 	{
-		movePlayer(x, y);
-		y=y+1;
-		if(y == 7)
+		if(contact==0)
 		{
-			y=1;
+			y=y+1;
 		}
+		if(y>7){
+			contact=1;	
+		}
+		if(contact==1){
+			y=y-1;
+		}
+		if(y==1){
+			contact=0;
+		}
+        movePlayer(x, y);
 	}
 }
 void movePlayer(int x,int y)

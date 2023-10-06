@@ -1,15 +1,16 @@
 #include <iostream>
+using namespace std;
 void printMenu();
 void calculateAggregate(int matricMarks, int interMarks, int ecatMarks);
-void compareMarks(int ecatMarksStd1, int ecatMarksStd2);
-using namespace std;
+void compareMarks(string nameStd1,int ecatMarksStd1, string nameStd2, int ecatMarksStd2);
+
 main (){
 	system("cls");
 	printMenu();
 	
-	string n1;
+	string nameStd1;
 	cout << "Enter first student's name: ";
-	cin >> n1;
+	cin >> nameStd1;
 	int matric1;
 	cout << "Enter Marks in Matric: ";
 	cin >> matric1;
@@ -24,9 +25,9 @@ main (){
 
 
 
-	string n2;
+	string nameStd2;
 	cout << "Enter second student's name: ";
-	cin >> n2;
+	cin >> nameStd2;
 	int matric2;
 	cout << "Enter Marks in Matric: ";
 	cin >> matric2;
@@ -39,13 +40,18 @@ main (){
 	calculateAggregate(matric2, inter2, ecat2);
 
 
+    compareMarks(nameStd1, ecat1, nameStd2, ecat2);
+}
 
-	if(ecat1>ecat2){
-	cout << "Roll no of " << n1 << " will be: 1";
+void compareMarks(string nameStd1,int ecatMarksStd1, string nameStd2, int ecatMarksStd2)
+{
+
+	if(ecatMarksStd1>ecatMarksStd2){
+	cout << "Roll no of " << nameStd1 << " will be: 1";
 	}
 	
-	if(ecat1<ecat2){
-	cout << "Roll no of " << n2 << " will be: 1";
+	if(ecatMarksStd1<ecatMarksStd2){
+	cout << "Roll no of " << nameStd2 << " will be: 1";
 	}
 
 	
@@ -60,5 +66,6 @@ void calculateAggregate(int matricMarks, int interMarks, int ecatMarks)
 {
 	float aggregate;
 	aggregate = (matricMarks*30/1100)+(interMarks*30/1100)+(ecatMarks*40/400);
-	cout << "Aggregate will be: " << aggregate << endl;
+	cout << "Aggregate will be: " << aggregate << endl << endl;
+    
 }

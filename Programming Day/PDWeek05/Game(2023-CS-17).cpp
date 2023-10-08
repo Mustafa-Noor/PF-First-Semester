@@ -112,7 +112,7 @@ void printmaze()
     cout << "#                                                                                              #" << endl;
     cout << "#                                                                                              #" << endl;
     cout << "#                                                                                              #" << endl;
-    cout << "#                                 #                          #                                 #" << endl;
+    cout << "#                             #####                          #####                             #" << endl;
     cout << "#                                 #                          #                                 #" << endl;
     cout << "#                                 #                          #                                 #" << endl;
     cout << "#                                 #                          #                                 #" << endl;
@@ -202,7 +202,7 @@ void printenemy5()
 
 void removeHero(){
     gotoxy(px, py);
-    cout <<"    " ;
+    cout <<"   " ;
     gotoxy(px,py+1);
     cout <<"    " ;
     gotoxy(px,py+2);
@@ -357,7 +357,7 @@ void moveEnemy5(){
     }
 
 void moveHeroleft(){
-    if (getCharAtxy(px-1,py) == ' ' ){
+    if (getCharAtxy(px-2,py) == ' ' && getCharAtxy(px-2,py+1) == ' ' && getCharAtxy(px-2,py+2) == ' '){
     removeHero();
     px = px-1;
     printhero();
@@ -365,7 +365,7 @@ void moveHeroleft(){
 }
 
 void moveHeroright(){
-    if (getCharAtxy(px+4,py) == ' ' ){
+    if (getCharAtxy(px+4,py) == ' ' && getCharAtxy(px+4,py+1) == ' ' && getCharAtxy(px+4,py+2) == ' '){
 
     removeHero();
     px = px+1;
@@ -374,7 +374,7 @@ void moveHeroright(){
 }
 
 void moveHeroup(){
-    if (getCharAtxy(px,py-1) == ' ' ){
+    if (getCharAtxy(px,py-1) == ' ' && getCharAtxy(px-1,py-1) == ' ' && getCharAtxy(px+3,py-1) == ' '){
     removeHero();
     py=py-1;
     printhero();
@@ -382,7 +382,7 @@ void moveHeroup(){
 }
 
 void moveHerodown(){
-    if (getCharAtxy(px,py+3) == ' ' ){
+    if (getCharAtxy(px,py+3) == ' ' && getCharAtxy(px-1,py+3) == ' ' && getCharAtxy(px+3,py+3)== ' ' && getCharAtxy(px+1,py+3) == ' '){
     removeHero();
     py=py+1;
     printhero();

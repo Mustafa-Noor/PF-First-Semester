@@ -54,6 +54,7 @@ int main()
     printenemy4();
     printenemy5();
     while(true){
+        Sleep(100);
 
         if (GetAsyncKeyState(VK_LEFT))
         {
@@ -74,19 +75,14 @@ int main()
         }
         
         moveEnemy1();
-        Sleep(30);
         
         moveEnemy2();
-        Sleep(30);
         
         moveEnemy3();
-        Sleep(30);
         
         moveEnemy4();
-        Sleep(30);
        
         moveEnemy5(); 
-        Sleep(30);
     }
   
 }
@@ -148,6 +144,7 @@ void printhero()
 
 void printenemy1()
 {
+    
     gotoxy(ex1, ey1);
     cout <<" ' " ;
     gotoxy(ex1,ey1+1);

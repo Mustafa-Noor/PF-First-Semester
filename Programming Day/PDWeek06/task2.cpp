@@ -1,4 +1,4 @@
-#include <iostream>
+1#include <iostream>
 using namespace std;
 float calculateAverage(float marksEnglish, float marksMaths, float marksChemistry, float marksSocialScience, float marksBiology);
 string calculateGrade(float average);

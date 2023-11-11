@@ -42,11 +42,15 @@ main()
         loginpage();
         adminmenu();
     }
+    else
+    {
     system("cls");
     printHeader();
     loginpage();
     Sleep(200);
 
+    while(true)
+    {
     system("cls");
     printHeader();
     menupage();
@@ -117,6 +121,8 @@ main()
 
     }
 
+    }
+    }
     
   }
 

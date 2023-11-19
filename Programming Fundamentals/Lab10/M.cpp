@@ -2,18 +2,35 @@
 #include <windows.h>
 #include <conio.h>
 using namespace std;
+
 void printHeader();
-void adminoruser();
 void adminmenu();
 void customermenu();
 void genderpage();
 void printMitems();
 void printWitems();
-void cart();
+void bill();
 void PayBill();
+void cart();
+void status();
+void updatequantity();
+void signupMenu();
+void signinMenu();
+void printHeader();
+void customermenu();
+void adminmenu();
+bool checkUser(string name);
+int usernameInd(string name);
+void deliveryoptions();
+void deliveryArea();
 
-string username, password;
-string role;
+string username[100];
+string password[100];
+string role[100];
+int idx=0;
+string delivery;
+string cardno;
+
 int gender;
 int price1=500, price2=900, price3=600, price4=800, price5=900, price6=1100, price7=1600, price8=800;
 int men=0; int women=0;
@@ -23,34 +40,46 @@ int availablem1=24, availablem2=20, availablem3=23, availablem4=24;
 int availablew1=24, availablew2=20, availablew3=23, availablew4=24;
 
 int cartm1,cartm2,cartm3,cartm4,cartw1,cartw2,cartw3,cartw4;
+string area;
 
 int total1;
 int total2, total3, total4;
 int total5, total6, total7, total8;
+int totalCost=0;
+
 
 
 main()
 {
-    
-    while(true)
+    int op;
+
+    while(op!=3)
     {
     system("cls");
     printHeader();
-    adminoruser();
+    cout << "1. Sign in" << endl;
+    cout << "2. Sign up" << endl;
+    cout << "3. Exit" << endl;
+    cout << "Enter your choice.. : ";
+    cin >> op;
 
-    if(role=="Admin")
+    if(op==1)
     {
-        adminmenu();
-          
+        signinMenu();
     }
 
-    else if(role=="Customer")
+    if(op==2)
     {
-        customermenu(); 
+        signupMenu();
     }
 
+
     }
+
 }
+
+
+
 
 
 void printHeader()
@@ -70,31 +99,113 @@ void printHeader()
 }
 
 
-void adminoruser(){
-
-    cout << endl << endl;
-
-    cout << "\t\tHow are you trying to proceed as an Admin or Customer ?" << endl;
-    cout << "\t\t\t Enter (admin or customer): ";
-    cin >> role;
-}
-
 void signinMenu()
 {
+    string name;
+    string password1;
+    int index;
     system("cls");
     printHeader();
     cout << endl << endl;
     cout << "\t \t \t  Enter Username: ";
-    cin >> username;
-
+    cin >> name;
     cout << "\t \t \t  Enter Password: ";
-    cin >> password;
+    cin >> password1;
 
-    cout << "\t \t \t  Press any Key to Continue...";
-    getch();
 
+    if(checkUser(name))
+    {
+    
+    index=usernameInd(name);
+    if(password1==password[index])
+    {
+       string role1= role[index];
+    
+
+        if(role1=="Admin" )
+        {
+            adminmenu();
+        }
+
+        else if(role1=="Customer")
+        {
+            customermenu();
+        }
+
+    }
+
+    
+
+    }
 
 }
+
+
+void signupMenu(){
+    string name;
+    string role1;
+    cout << endl<<endl ;
+    cout << "Enter Username: ";
+    cin >> name;
+    if(checkUser(name))
+    {
+        cout << "Username Already Taken..";
+        signupMenu();
+    }
+    else
+    {
+    username[idx]=name;
+    cout << "Enter Password: ";
+    cin >> password[idx];
+
+    cout << "Enter Role (Admin or Customer): ";
+    cin >> role1;
+    if(role1=="Admin" || role1=="Customer")
+    {
+        role[idx]=role1;
+    }
+    else
+    {
+        cout << "Incorrect role..";
+        signupMenu();
+    }
+
+    }
+
+
+
+    idx++;
+
+}
+
+
+
+int usernameInd(string name)
+{
+    for(int x=0; x<idx; x++)
+    {
+        if(name==username[x])
+        {
+            return x;
+            break;
+        }
+    }
+}
+
+
+bool checkUser(string name)
+{
+    for(int x=0; x<100; x++)
+    {
+        if(name==username[x])
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+
 
 void adminmenu(){
 
@@ -116,12 +227,9 @@ void adminmenu(){
     cout <<"Enter your choice: ";
     cin >> adminchoice;
 
-    if(adminchoice==1)
-    {
-        genderpage();
-    }
-
+    
 }
+
 
 void customermenu(){
 
@@ -132,13 +240,13 @@ void customermenu(){
     cout << endl << endl;
     cout << "Enter one of the following options number..." << endl;
     cout << "1. \t View List Of Clothes" << endl;
-    cout << "2. \t Add an item of Clothing" << endl;
-    cout << "3. \t View Cart" << endl;
-    cout << "4. \t View Bill" << endl;
-    cout << "5. \t Pay Bill" << endl;
-    cout << "6. \t View Discounts" << endl;
-    cout << "7. \t View Payment Options" << endl;
-    cout << "8. \t Select Delivery Area" << endl;
+    cout << "2. \t View Cart" << endl;
+    cout << "3. \t Select Payment Options" << endl;
+    cout << "4. \t Select Delivery Area" << endl;
+    cout << "5. \t View the Bill" << endl;
+    cout << "6. \t Update Quantity of an item" << endl;
+    cout << "7. \t Pay the Bill" << endl;
+    cout << "8. \t Check Status of Placed Order" << endl;
     cout << "9. \t Log out" << endl;
     cout <<"Enter your choice: ";
     cin >> customerchoice;
@@ -147,12 +255,36 @@ void customermenu(){
     {
         genderpage();
     }
-    else if(customerchoice==3)
+    else if(customerchoice==5)
     {
-        cart();
-    }else if(customerchoice == 5){
+        bill();
+    }
+    else if(customerchoice==7)
+    {
         PayBill();
     }
+    else if(customerchoice==3)
+    {
+        deliveryoptions();
+    }
+    else if(customerchoice==2)
+    {
+        cart();
+    }
+    else if(customerchoice==4)
+    {
+        deliveryArea();
+    }
+    else if(customerchoice==6)
+    {
+        updatequantity();
+    }
+    else if(customerchoice==8)
+    {
+        status();
+    }
+
+    
 }
 
 void genderpage()
@@ -164,7 +296,7 @@ void genderpage()
     cout << "1. \t Men" << endl;
     cout << "2. \t Women" << endl;
     cout << endl;
-    cout << "Enter your choice: " << endl;
+    cout << "Enter your choice: ";
     cin >> gender;
     if(gender==1)
     {
@@ -176,6 +308,7 @@ void genderpage()
     }
 
 }
+
 
 void printMitems()
 {
@@ -270,6 +403,8 @@ void printMitems()
     }
 
 }
+
+
 
 void printWitems()
 {
@@ -366,9 +501,50 @@ void printWitems()
 }
 
 
-void cart(){
+void cart()
+{
+    system("cls");
+    printHeader();
+    cout << endl << endl;
+    cout << "\t Item \t \t\t Quantity" << endl;
+    if(qm1!=0){
+        cout <<"\t Black Shirt \t  \t " << qm1 << endl;
+    }
+    if(qm2!=0){
+        cout <<"\t Blue Shirt \t  \t " << qm2 << endl;
+    }
+    if(qm3!=0){
+        cout <<"\t Grey Shirt \t  \t " << qm3 << endl;
+    }
+    if(qm4!=0){
+        cout <<"\t Red Hoodie \t  \t " << qm4 << endl;
+    }
+    if(qw1!=0){
+        cout <<"\t Black Shirt \t  \t " << qw1 <<endl;
+    }
+    if(qw2!=0){
+        cout <<"\t Blue Dress \t  \t " << qw2 << endl;
+    }
+    if(qw3!=0){
+        cout <<"\t Grey Frock \t  \t " << qw3 << endl;
+    }
+    if(qw4!=0){
+        cout <<"\t Red Dress \t   \t " << qw4 <<endl;
+    }
 
-    total1 = qm1*price1;
+    int cart;
+    cout << "Press 0 to return..";
+    cin >> cart;
+    if(cart==0)
+    {
+        customermenu();
+    }
+}
+
+void bill()
+{
+
+    total1=qm1*price1;
     total2=qm2*price2;
     total3=qm3*price3;
     total4=qm4*price4;
@@ -377,7 +553,7 @@ void cart(){
     total7=qw3*price7;
     total8=qw4*price8;
 
-    int totalCost = total1+total2+total3+total4+total5+total6+total7+total8;
+     totalCost = total1+total2+total3+total4+total5+total6+total7+total8;
 
     system("cls");
     printHeader();
@@ -407,26 +583,33 @@ void cart(){
     if(qw4!=0){
         cout <<"\t Red Dress \t "<< price8 <<" \t " << qw4 << " \t \t \t Rs" << total8 << endl;
     }
-    cout << "\t\t Total Bill: " << totalCost;
-    int cart;
-    cout << "Press 0 to return...";
-    cin >> cart;
+    cout << "********************************************************************************" << endl;
+    cout << "\t\t \t\t\t\t\t Total Bill: Rs" << totalCost << endl;
 
-    if(cart==0)
+    cout << "Your Payment Method: " << delivery << endl;
+    cout << "Your delivery Address: " << area << endl;
+
+    int bill;
+    cout << "Press 0 to return...";
+    cin >> bill;
+
+    if(bill==0)
     {
         customermenu();
     }
 
 }
 
-
 void PayBill(){
     int choice;
-    cout << "Enter 1 to pay bill: ";
+    cout << "Your total Purchase Amount is Rs " << totalCost << endl;
+    cout << "Enter 1 to pay bill." << endl;
+    cout << "Enter 0 to return to menu."<< endl;
+    cout << "Enter Your Choice: ";
     cin  >> choice;
     if(choice==1){
         availablem1 -=qm1;
-        availablem2 -= qm2;
+        availablem2 -=qm2;
         availablem3 -=qm3;
         availablem4 -=qm4;
         availablew1 -=qw1;
@@ -435,5 +618,128 @@ void PayBill(){
         availablew4 -=qw4;   
 
         customermenu();    
+    }
+    else if(choice==0)
+    {
+        customermenu();
+    }
+}
+
+void deliveryoptions()
+{
+    cout << "Enter the way you want to seek out Payment." << endl;
+    cout << "Enter (Cash or Card): ";
+    cin >> delivery;
+    if(delivery=="Cash")
+    {
+      cout << "It will be a cash on delivery.";
+    }
+    if(delivery=="Card")
+    {
+        cout << "Enter your card number: ";
+        cin >> cardno;
+    }
+    int go;
+    cout << "Press 0 to return..";
+    cin >> go;
+    if(go==0)
+    {
+        customermenu();
+    }
+}
+
+
+void deliveryArea()
+{
+    int choice;
+    cout << "Select One of the Delivery Areas: "<< endl;
+    cout << "1. Gulberg" << endl;
+    cout << "2. Askari" << endl;
+    cout << "3. DHA" << endl;
+    cout << "4. Model Town" << endl;
+    cout << "Enter Choice" << endl;
+    cin >> choice;
+
+    if(choice==1)
+    {
+        area="Gulberg";
+    }
+    else if(choice==2)
+    {
+        area="Askari";
+    }
+    else if(choice==3)
+    {
+        area="DHA";
+    }
+    else if(choice==4)
+    {
+        area="Model Town";
+    }
+
+    int go;
+    cout << "Press 0 to return..";
+    cin >> go;
+    if(go==0)
+    {
+        customermenu();
+    }
+    
+}
+
+void updatequantity()
+{
+    int go;
+    cout << "Enter the number to change the quantity by.." << endl;
+    if(qm1!=0)
+    {
+        cout << "Black Shirt" << qm1 << endl;
+        cout << "Enter Change";
+        cin >> qm1;
+        
+    }
+
+    if(qm2!=0)
+    {
+        cout << "Blue Shirt" << qm2 << endl;
+        cout << "Enter Change";
+        cin >> qm2;
+    }
+
+    cout << "Press 0 to return..";
+    cin >> go;
+
+    if(go==0)
+    {
+        customermenu();
+    }
+    
+
+}
+
+
+void status()
+{
+    int days;
+    cout << "Enter the number of days since order has been placed : ";
+    cin >> days;
+
+    if(days>3)
+    {
+        cout << "Order will be arriving soon.";
+    }
+
+    if(days<=3)
+    {
+        cout << "Order is being prepared."; 
+    }
+
+    int go;
+    cout << "Enter 0 to return..";
+    cin >> go;
+
+    if(go==0)
+    {
+        customermenu();
     }
 }

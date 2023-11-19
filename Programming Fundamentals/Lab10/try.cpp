@@ -164,7 +164,7 @@ void genderpage()
     cout << "1. \t Men" << endl;
     cout << "2. \t Women" << endl;
     cout << endl;
-    cout << "Enter your choice: " << endl;
+    cout << "Enter your choice: ";
     cin >> gender;
     if(gender==1)
     {
@@ -426,7 +426,7 @@ void PayBill(){
     cin  >> choice;
     if(choice==1){
         availablem1 -=qm1;
-        availablem2 -= qm2;
+        availablem2 -=qm2;
         availablem3 -=qm3;
         availablem4 -=qm4;
         availablew1 -=qw1;

@@ -37,6 +37,9 @@ void addWitem();
 void changeStock();
 void checkReviews();
 void changeName();
+void removeItem();
+void seeCustomer();
+void addDeliveryArea();
 
 
 string username[100];
@@ -45,7 +48,7 @@ string role[100];
 int idx=0;
 
 
-int menq=4, womenq=4; int cardindex; int areas=4;
+int menq=4, womenq=4; int cardindex; int areas=4; int cusCount=0;
 bool deliveryop=false, delArea=false, billpaid=false;
 string arrM[30]={"Black T-Shirt", "Blue Dress Shirt", "Grey Sweatshirt", "Red Hoodie Printed"};
 int priceM[30]={500, 900, 600, 800};
@@ -64,6 +67,7 @@ int totalW[30];
 int finalTotal[30];
 string reviews[30];
 int reviewindex=0;
+string customer[30];
 
 
 
@@ -183,6 +187,11 @@ void signupMenu(){
     cin >> role1;
     if(role1=="Admin" || role1=="Customer")
     {
+        if(role1=="Customer")
+        {
+            cusCount++;
+            customer[idx]=name;
+        }
         role[idx]=role1;
         username[idx]=name;
         password[idx]=password1;
@@ -281,6 +290,21 @@ void adminmenu(){
         main();
     }
 
+    else if(adminchoice==5)
+    {
+        removeItem();
+    }
+
+    else if(adminchoice==7)
+    {
+        seeCustomer();
+    }
+
+    else if(adminchoice==8)
+    {
+        addDeliveryArea();
+    }
+
     else
     {
         cout << "Incorrect Input...";
@@ -348,6 +372,7 @@ void customermenu(){
     }
     else if(customerchoice==10)
     {
+        resetCart();
         main();
     }
     else if(customerchoice==9)
@@ -768,7 +793,7 @@ void deliveryArea()
     cout << "Enter Choice" << endl;
     cin >> choice;
 
-    if(choice>0 && choice<5)
+    if(choice>0 && choice<=areas)
     {
         for(int idx=0; idx<areas; idx++)
         {
@@ -1095,7 +1120,7 @@ void addMitem()
         cin >> available;
         if(!(available>=0 && available <=100))
         {
-            while(!(available>0 && available<=5000))
+            while(!(available>0 && available<=100))
             {
                 cout << "Not according to given criteria." << endl;
                 cout << "Enter again: ";
@@ -1139,8 +1164,26 @@ void addWitem()
         getline(cin, name);
         cout << "Enter its price: ";
         cin >> price;
-        cout << "Enter its quantity: ";
+        if(!(price>0 && price <=5000))
+        {
+            while(!(price>0 && price<=5000))
+            {
+                cout << "Not according to given criteria." << endl;
+                cout << "Enter again: ";
+                cin >> price;
+            }
+        }
+        cout << "Enter its quantity(Must not be greater than 100): ";
         cin >> available;
+        if(!(available>=0 && available <=100))
+        {
+            while(!(available>0 && available<=100))
+            {
+                cout << "Not according to given criteria." << endl;
+                cout << "Enter again: ";
+                cin >> available;
+            }
+        }
 
         cout << endl << endl;
 
@@ -1372,4 +1415,165 @@ void changeName()
 
 
 
+}
+
+
+void removeItem()
+{
+    system("cls");
+    printHeader();
+    int remove;
+    cout << endl << endl;
+    cout << "Select the item to change the name of.." << endl << endl;
+    for(int idx=0; idx<menq; idx++)
+    {
+        cout << "Item no: " << idx+1 <<".  " <<  arrM[idx] << endl;
+
+    }
+    for(int idx=0; idx<womenq; idx++)
+    {
+        cout << "Item no: " << idx+1+menq <<".  " << arrW[idx] <<endl;  
+    }
+
+    cout << "Enter item no. : ";
+    cin >> remove;
+
+
+    if(remove>0 && remove<=menq)
+    {
+        int var=remove-1;
+        menq=menq-1;
+
+        for(int idx=0; idx<menq; idx++)
+        {
+            if(var==idx)
+            {
+                arrM[idx]=arrM[idx+1];
+                priceM[idx]=priceM[idx+1];
+                availableM[idx]=availableM[idx+1];
+
+                cout << "Item Succesfully deleted." << endl;
+            }
+        }
+    }
+
+    else if(remove>menq && remove<=(menq+womenq))
+    {
+        int var=remove-1-menq;
+        womenq=womenq-1;
+        for(int idx=0; idx<womenq; idx++)
+        {
+            if(var==idx)
+            {
+                arrW[idx]=arrW[idx+1];
+                priceW[idx]=priceW[idx+1];
+                availableW[idx]=availableW[idx+1];
+
+                cout << "Item Succesfully deleted." << endl;
+            }
+
+        }
+    }
+
+    else
+    {
+        cout << "Not a correct option." << endl;
+        Sleep(300);
+        removeItem();
+            
+    }
+
+
+    returnforAdm();
+}
+
+void seeCustomer()
+{
+    system("cls");
+    printHeader();
+    if(cusCount!=0)
+    {
+        int counter=1;
+        cout << endl << endl;
+        cout << "These are the Customers: " << endl << endl;
+
+        cout << "  Username \t   \t \tDelivery Address \t     \t Payment Method" << endl << endl;
+
+        for(int idx=0; idx<cardindex; idx++)
+        {
+            if(userArea[idx]!="" && delivery[idx]!="")
+            {
+            cout << counter <<".  " <<  customer[idx] <<" \t \t" << userArea[idx] << " \t   " << delivery[idx]<< endl;
+            }
+            else if(userArea[idx]!=""  && delivery[idx]=="")
+            {
+            cout << counter <<".  " <<  customer[idx] <<" \t \t" << userArea[idx] << " \t   " << "Not Selected"<< endl;
+            }
+            else if(userArea[idx]=="" && delivery[idx]!="")
+            {
+            cout << counter <<".  " <<  customer[idx] <<" \t \t" << "Not Selected" << " \t   " << delivery[idx]<< endl;   
+            }
+            else 
+            {
+            cout << counter <<".  " <<  customer[idx] <<" \t \t" << "Not Selected" << " \t   " << "Not Selected" << endl;
+            }
+
+            counter++;
+
+        }
+
+
+    }
+
+    else
+    {
+        cout << endl << endl;
+        cout << "There are no Customers yet.";
+    }
+
+    returnforAdm();
+}
+
+void addDeliveryArea()
+{
+    system("cls");
+    printHeader();
+
+    cout << "Current Delivery Addresses: " <<endl << endl;
+
+    for(int idx=0; idx<areas; idx++)
+    {
+        cout << idx+1 << ". " << deliveryAreas[idx] << endl;
+    }
+
+    cout << endl << endl;
+    int number;
+    cout << "Enter the number of adresses you want to add: ";
+    cin >> number;
+
+    if(number<=0)
+    {
+        while(number<=0)
+        {
+            cout << "Not possible..." << endl;
+            cout << "Enter again: ";
+            cin >> number;
+        }
+    }
+
+    int a=areas;
+    areas=areas+number;
+    for(int idx=a; idx<areas; idx++)
+    {
+        string address;
+        cout << "Enter Address " << idx+1 << ": ";
+        cin.ignore();
+        getline(cin, address);
+        cout << endl << endl;
+        deliveryAreas[idx]=address;
+        
+
+    }
+
+    returnforAdm();
 }

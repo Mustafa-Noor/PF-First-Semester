@@ -4,7 +4,7 @@
 using namespace std;
 
 void printHeader();
-void adminmenu();
+int adminmenu();
 void customermenu();
 void genderpage();
 void printMitems();
@@ -15,32 +15,30 @@ void cart();
 void status();
 void returnforCus();
 void updatequantity();
-void signupMenu();
-void signinMenu();
+int signupMenu();
+string signinMenu();
 void printHeader();
-void customermenu();
-void adminmenu();
 bool checkUser(string name);
 int usernameInd(string name);
 void deliveryoptions();
 void deliveryArea();
 void resetCart();
 void leaveReview();
-
-void adminGenderPage();
-void AdminMitems();
-void AdminWitems();
-void returnforAdm();
-void addItems();
-void addMitem();
-void addWitem();
-void changeStock();
-void checkReviews();
-void changeName();
-void removeItem();
-void seeCustomer();
-void addDeliveryArea();
-void removeAddress();
+void restrictGoforAdmin(int go);
+int adminGenderPage();
+int AdminMitems();
+int AdminWitems();
+int returnforAdm();
+int addItems();
+int addMitem();
+int addWitem();
+int changeStock();
+int checkReviews();
+int changeName();
+int removeItem();
+int seeCustomer();
+int addDeliveryArea();
+int removeAddress();
 
 
 string username[100];
@@ -89,18 +87,189 @@ main()
 
     if(op==1)
     {
-        signinMenu();
+        string role1=signinMenu();
+        if(role1=="Admin" )
+        {
+            int adminchoice;
+            int choose;
+            while(true)
+            {
+                adminchoice=adminmenu();
+                choose=adminchoice;
+            
+            if(adminchoice==1)
+            {
+                int gender=adminGenderPage();
+                if(gender==1)
+                {
+                    int go=AdminMitems();
+                    if(go!=0)
+                    {
+                        restrictGoforAdmin(go);
+                    }
+            
+                }
+                else if(gender==2)
+                {
+                    int go=AdminWitems();
+                    if(go!=0)
+                    {
+                        restrictGoforAdmin(go);
+                    }
+                        
+                }
+
+                else if(gender==0)
+                {
+                    
+                }
+
+                else
+                {
+                    cout << "Incorrect Input...";
+                    Sleep(300);
+                }
+            }
+
+            else if(adminchoice==2)
+            {
+                int gender=addItems();
+                if(gender==1)
+                {
+                    int go=addMitem();
+                    if(go!=0)
+                    {
+                        restrictGoforAdmin(go);
+                        
+                    }
+                        
+                }
+                else if(gender==2)
+                {
+                    int go=addWitem();
+                    if(go!=0)
+                    {
+                        restrictGoforAdmin(go);
+                    }
+                }
+
+                else if(gender==0)
+                {
+                }
+
+                else
+                {
+                    cout << "Incorrect Input...";
+                    Sleep(300);
+                }
+            }
+
+            else if(adminchoice==3)
+            {
+                int go=changeStock();
+                if(go!=0)
+                    {
+                        restrictGoforAdmin(go);
+                    }
+            }
+
+            else if(adminchoice==4)
+            {
+                int go=checkReviews();
+                if(go!=0)
+                    {
+                        restrictGoforAdmin(go);
+                    }
+            }
+
+            else if(adminchoice==6)
+            {
+                int go=changeName();
+                if(go!=0)
+                    {
+                        restrictGoforAdmin(go);
+                    }
+            }
+
+            
+
+            else if(adminchoice==5)
+            {
+                int go=removeItem();
+                if(go!=0)
+                    {
+                        restrictGoforAdmin(go);
+                    }
+            }
+
+            else if(adminchoice==7)
+            {
+                int go=seeCustomer();
+                if(go!=0)
+                    {
+                        restrictGoforAdmin(go);
+                        adminmenu();
+                    }
+            }
+
+            else if(adminchoice==8)
+            {
+                int go=addDeliveryArea();
+                if(go!=0)
+                    {
+                        restrictGoforAdmin(go);
+                    }
+            }
+
+            else if(adminchoice==9)
+            {
+                int go=removeAddress();
+                if(go!=0)
+                    {
+                        restrictGoforAdmin(go);
+                    }
+            }
+
+            else if(adminchoice==10)
+            {
+                break;
+
+            }
+
+            else
+            {
+            cout << "Incorrect Input...";
+            Sleep(300);
+            adminmenu();
+            }
+
+            
+            }
+
+        }
+
+        else if(role1=="Customer")
+        {
+            customermenu();
+        }
     }
 
     if(op==2)
     {
-        signupMenu();
+            int go=signupMenu();
+            if(go==0)
+            {
+                main();
+            }
+
     }
 
 
     }
 
 }
+
+
 
 
 
@@ -123,10 +292,11 @@ void printHeader()
 }
 
 
-void signinMenu()
+string signinMenu()
 {
     string name;
     string password1;
+    string role1;
     int index;
     system("cls");
     printHeader();
@@ -136,7 +306,7 @@ void signinMenu()
     cout << "\t \t \t  Enter Password: ";
     cin >> password1;
 
-
+    cout << endl << endl;
     if(checkUser(name))
     {
     
@@ -144,32 +314,32 @@ void signinMenu()
     cardindex=index;
     if(password1==password[index])
     {
-       string role1= role[index];
+       role1= role[index];
     
 
-        if(role1=="Admin" )
-        {
-            adminmenu();
-        }
-
-        else if(role1=="Customer")
-        {
-            customermenu();
-        }
+        
 
     }
 
-    
+    else
+    {
+        cout << "User Not Found.";
+        Sleep(300);
+        main();
+    }
 
     }
+
+    return role1;
 
 }
 
 
-void signupMenu(){
+int signupMenu(){
     string name;
     string role1;
     string password1;
+    int go;
     cout << endl<<endl ;
     cout << "Enter Username: ";
     cin >> name;
@@ -186,6 +356,7 @@ void signupMenu(){
 
     cout << "Enter Role (Admin or Customer): ";
     cin >> role1;
+    cout << endl << endl;
     if(role1=="Admin" || role1=="Customer")
     {
         if(role1=="Customer")
@@ -197,6 +368,20 @@ void signupMenu(){
         username[idx]=name;
         password[idx]=password1;
         idx++;
+
+        
+        cout << "You have successfully signed up." << endl;
+        cout << "Press 0 to return : ";
+        cin >> go;
+        
+        if(go!=0)
+        {
+            while(go!=0)
+            {
+                cout << "Incorrect Input Enter again: ";
+                cin >> go;
+            }
+        }
     }
     else
     {
@@ -206,7 +391,7 @@ void signupMenu(){
 
     }
 
-
+    return go;
 
 
 }
@@ -240,7 +425,7 @@ bool checkUser(string name)
 
 
 
-void adminmenu(){
+int adminmenu(){
 
     system("cls");
     printHeader();
@@ -261,62 +446,9 @@ void adminmenu(){
     cout <<"Enter your choice: ";
     cin >> adminchoice;
 
-    if(adminchoice==1)
-    {
-        adminGenderPage();
-    }
+    cout << endl << endl;
 
-    else if(adminchoice==2)
-    {
-        addItems();
-    }
-
-    else if(adminchoice==3)
-    {
-        changeStock();
-    }
-
-    else if(adminchoice==4)
-    {
-        checkReviews();
-    }
-
-    else if(adminchoice==6)
-    {
-        changeName();
-    }
-
-    else if(adminchoice==10)
-    {
-        main();
-    }
-
-    else if(adminchoice==5)
-    {
-        removeItem();
-    }
-
-    else if(adminchoice==7)
-    {
-        seeCustomer();
-    }
-
-    else if(adminchoice==8)
-    {
-        addDeliveryArea();
-    }
-
-    else if(adminchoice==9)
-    {
-        removeAddress();
-    }
-
-    else
-    {
-        cout << "Incorrect Input...";
-        Sleep(200);
-        adminmenu();
-    }
+    return adminchoice;
 
     
 }
@@ -1010,7 +1142,7 @@ void leaveReview()
     returnforCus();
 }
 
-void adminGenderPage()
+int adminGenderPage()
 {
     int gender;
     system("cls");
@@ -1019,28 +1151,18 @@ void adminGenderPage()
     cout << "Enter the gender." << endl;
     cout << "1. \t Men" << endl;
     cout << "2. \t Women" << endl;
+    cout << "Press 0 to return." << endl;
     cout << endl;
     cout << "Enter your choice: ";
     cin >> gender;
-    if(gender==1)
-    {
-        AdminMitems();
-    }
-    else if(gender==2)
-    {
-        AdminWitems();
-    }
 
-    else
-    {
-        cout << "Incorrect Input...";
-        Sleep(300);
-        genderpage();
-    }
+    cout << endl << endl;
+    return gender;
+    
 }
 
 
-void AdminMitems()
+int AdminMitems()
 {
     system("cls");
     printHeader();
@@ -1051,11 +1173,13 @@ void AdminMitems()
         cout << idx+1 <<". "<< arrM[idx] << " \t " <<" Rs " << priceM[idx] << " \t   " << availableM[idx] << endl;
     }
 
-    returnforAdm();
+    int go=returnforAdm();
+    return go;
+
 }
 
 
-void AdminWitems()
+int AdminWitems()
 {
     system("cls");
     printHeader();
@@ -1066,32 +1190,21 @@ void AdminWitems()
         cout << idx+1 <<". "<< arrW[idx] << " \t " <<" Rs " << priceW[idx] << " \t   " << availableW[idx] << endl;
     }
 
-    returnforAdm();
+    int go=returnforAdm();
+    return go;
 }
 
 
-void returnforAdm()
+int returnforAdm()
 {
     int go;
     cout << "Press 0 to return..";
     cin >> go;
 
-    if(go!=0)
-    {
-        while(go!=0)
-        {
-        cout << "Try again...: ";
-        cin >> go;
-        }
-        adminmenu();
-    }
-    else
-    {
-        adminmenu();
-    }
+    return go;
 }
 
-void addMitem()
+int addMitem()
 {
     system("cls");
     printHeader();
@@ -1144,10 +1257,11 @@ void addMitem()
 
     }
 
-    returnforAdm();
+    int go = returnforAdm();
+    return go;
 }
 
-void addWitem()
+int addWitem()
 {
     system("cls");
     printHeader();
@@ -1201,11 +1315,12 @@ void addWitem()
 
     }
 
-    returnforAdm();
+    int go=returnforAdm();
+    return go;
 }
 
 
-void addItems()
+int addItems()
 {
     int gender;
     system("cls");
@@ -1214,28 +1329,18 @@ void addItems()
     cout << "Enter the gender." << endl;
     cout << "1. \t Men" << endl;
     cout << "2. \t Women" << endl;
+    cout << "Press 0 to return: " ;
     cout << endl;
     cout << "Enter your choice: ";
     cin >> gender;
-    if(gender==1)
-    {
-        addMitem();
-    }
-    else if(gender==2)
-    {
-        addWitem();
-    }
+    
+    cout << endl << endl;
 
-    else
-    {
-        cout << "Incorrect Input...";
-        Sleep(300);
-        genderpage();
-    }
+    return gender;
 }
 
 
-void changeStock()
+int changeStock()
 {
     system("cls");
     printHeader();
@@ -1317,12 +1422,13 @@ void changeStock()
             
     }
 
-    returnforAdm();
+    int go=returnforAdm();
+    return go;
 
 }
 
 
-void checkReviews()
+int checkReviews()
 {
     system("cls");
     printHeader();
@@ -1347,11 +1453,12 @@ void checkReviews()
 
     }
 
-    returnforAdm();
+    int go=returnforAdm();
+    return go;
 
 }
 
-void changeName()
+int changeName()
 {
     system("cls");
     printHeader();
@@ -1418,14 +1525,15 @@ void changeName()
             
     }
 
-    returnforAdm();
+    int go=returnforAdm();
+    return go;
 
 
 
 }
 
 
-void removeItem()
+int removeItem()
 {
     system("cls");
     printHeader();
@@ -1491,10 +1599,11 @@ void removeItem()
     }
 
 
-    returnforAdm();
+    int go=returnforAdm();
+    return go;
 }
 
-void seeCustomer()
+int seeCustomer()
 {
     system("cls");
     printHeader();
@@ -1538,10 +1647,11 @@ void seeCustomer()
         cout << "There are no Customers yet.";
     }
 
-    returnforAdm();
+    int go=returnforAdm();
+    return go;
 }
 
-void addDeliveryArea()
+int addDeliveryArea()
 {
     system("cls");
     printHeader();
@@ -1582,10 +1692,11 @@ void addDeliveryArea()
 
     }
 
-    returnforAdm();
+    int go=returnforAdm();
+    return go;
 }
 
-void removeAddress()
+int removeAddress()
 {
     int choice;
     system("cls");
@@ -1623,5 +1734,17 @@ void removeAddress()
         removeAddress();
     }
 
-    returnforAdm();
+    int go=returnforAdm();
+    return go;
 }
+
+
+void restrictGoforAdmin(int go)
+{
+    while(go!=0)
+    {
+    cout << "Try again...: ";
+    cin >> go;
+    }
+}
+

@@ -1,83 +1,78 @@
-#include <iostream>
+ #include <iostream>
 #include <windows.h>
 #include <conio.h>
 using namespace std;
 
 void printHeader();
-void adminmenu();
-void customermenu();
-void genderpage();
-void printMitems();
-void printWitems();
-void bill();
-void PayBill();
-void cart();
-void status();
-void returnforCus();
-void updatequantity();
-void signupMenu();
-void signinMenu();
-void printHeader();
-void customermenu();
-void adminmenu();
-bool checkUser(string name);
-int usernameInd(string name);
-void deliveryoptions();
-void deliveryArea();
-void resetCart();
-void leaveReview();
-
-void adminGenderPage();
-void AdminMitems();
-void AdminWitems();
-void returnforAdm();
-void addItems();
-void addMitem();
-void addWitem();
-void changeStock();
-void checkReviews();
-void changeName();
-void removeItem();
-void seeCustomer();
-void addDeliveryArea();
-void removeAddress();
-
-
-string username[100];
-string password[100];
-string role[100];
-int idx=0;
-
-
-int menq=4, womenq=4; int cardindex; int areas=4; int cusCount=0;
-bool deliveryop=false, delArea=false, billpaid=false;
-string arrM[30]={"Black T-Shirt", "Blue Dress Shirt", "Grey Sweatshirt", "Red Hoodie Printed"};
-int priceM[30]={500, 900, 600, 800};
-int availableM[30]={24, 20, 23, 24};
-int quantityM[30];
-string arrW[30]={"Black Printed Shirt", "Blue 3 Piece Suit", "Grey Frock Linen", "Red Dress Printed"};
-int priceW[30]={1200, 1100, 1000, 1800};
-int availableW[30]={36, 42, 65, 34};
-int quantityW[30];
-string delivery[30];
-int cardno[30];
-string deliveryAreas[30]={"Gulberg", "Askari", "DHA", "Model Town"};
-string userArea[30];
-int totalM[30];
-int totalW[30];
-int finalTotal[30];
-string reviews[30];
-int reviewindex=0;
-string customer[30];
+int adminmenu();
+int  customermenu();
+int genderpage();
+int printMitems(string arrM[], int priceM[], int availableM[], int quantityM[], int menq);
+int printWitems(string arrW[], int priceW[], int availableW[],int quantityW[], int womenq);
+int bill(string arrM[], string arrW[], int totalM[], int totalW[], int priceM[], int priceW[], int quantityM[], int quantityW[], int menq, int womenq, int cardindex, int finalTotal[], string delivery[], string userArea[], bool deliveryop, bool delArea);
+int PayBill(int totalM[], int totalW[], int quantityM[], int quantityW[], int priceM[], int priceW[], int availableM[], int availableW[], int menq, int womenq, bool delArea, bool deliveryop, bool billpaid);
+int cart(string arrM[], string arrW[], int quantityM[], int quantityW[], int menq, int womenq);
+int status(bool billpaid);
+int updatequantity(int quantityM[], int quantityW[], string arrM[], string arrW[], int menq, int womenq, int availableM[], int availableW[]);
+int signupMenu(string username[], string password[], string role[], string customer[], int &cusCount, int &idx, int range);
+string signinMenu(string username[], string password[], string role[], int &cardindex, int range, int idx);
+bool checkUser(string name, string username[], int range);
+int usernameInd(string name, int idx, string username[], int range);
+int deliveryoptions(bool deliveryop, string delivery[], int cardindex, int cardno[]);
+int deliveryArea(int areas, string deliveryAreas[], string userArea[], bool delArea, int cardindex);
+void resetCart(int menq, int womenq, int quantityM[], int quantityW[]);
+int leaveReview(string reviews[], int &reviewindex, int cardindex);
+void restrictGo(int go);
+int adminGenderPage();
+int AdminMitems(string arrM[], int priceM[], int availableM[], int menq);
+int AdminWitems(string arrW[], int priceW[], int availableW[], int womenq);
+int returnforAll();
+int addItems();
+int addMitem(int &menq, string arrM[], int priceM[], int availableM[]);
+int addWitem(int &womenq, string arrW[], int priceW[], int availableW[]);
+int changeStock(int menq, string arrM[], int availableM[], string arrW[], int womenq, int availableW[] );
+int checkReviews(string reviews[], int cardindex, string username[], int reviewindex);
+int changeName(int menq, int womenq, string arrM[], string arrW[]);
+int removeItem(int &menq, int &womenq, string arrM[], string arrW[], int priceM[], int priceW[], int availableM[], int availableW[]);
+int seeCustomer(int cusCount, int cardindex, string userArea[], string delivery[], string customer[]);
+int addDeliveryArea(int &areas, string deliveryAreas[]);
+int removeAddress(int &areas, string deliveryAreas[]);
 
 
 
 
 main()
 {
+int range=30;
+string username[range];
+string password[range];
+string role[range];
+int idx=0;
+
+int menq=4, womenq=4; int cardindex; int areas=4; int cusCount=0;
+bool deliveryop=false, delArea=false, billpaid=false;
+string arrM[range]={"Black T-Shirt", "Blue Dress Shirt", "Grey Sweatshirt", "Red Hoodie Printed"};
+int priceM[range]={500, 900, 600, 800};
+int availableM[range]={24, 20, 23, 24};
+int quantityM[range];
+string arrW[range]={"Black Printed Shirt", "Blue 3 Piece Suit", "Grey Frock Linen", "Red Dress Printed"};
+int priceW[range]={1200, 1100, 1000, 1800};
+int availableW[range]={36, 42, 65, 34};
+int quantityW[range];
+string delivery[range];
+int cardno[range];
+string deliveryAreas[range]={"Gulberg", "Askari", "DHA", "Model Town"};
+string userArea[range];
+int totalM[range];
+int totalW[range];
+int finalTotal[range];
+string reviews[range];
+int reviewindex=0;
+string customer[range];
+
     int op;
 
-    while(op!=3)
+    while(true)
     {
     system("cls");
     printHeader();
@@ -89,18 +84,307 @@ main()
 
     if(op==1)
     {
-        signinMenu();
+        string role1=signinMenu(username, password, role, cardindex, range, idx);
+        if(role1=="Admin" )
+        {
+            int adminchoice;
+            int choose;
+            while(true)
+            {
+                adminchoice=adminmenu();
+                choose=adminchoice;
+            
+            if(adminchoice==1)
+            {
+                int gender=adminGenderPage();
+                if(gender==1)
+                {
+                    int go=AdminMitems(arrM, priceM, availableM, menq);
+                    if(go!=0)
+                    {
+                        restrictGo(go);
+                    }
+            
+                }
+                else if(gender==2)
+                {
+                    int go=AdminWitems(arrW, priceW, availableW, womenq);
+                    if(go!=0)
+                    {
+                        restrictGo(go);
+                    }
+                        
+                }
+
+                else if(gender==0)
+                {
+                    
+                }
+
+                else
+                {
+                    cout << "Incorrect Input...";
+                    Sleep(300);
+                }
+            }
+
+            else if(adminchoice==2)
+            {
+                int gender=adminGenderPage();
+                if(gender==1)
+                {
+                    int go=addMitem(menq, arrM, priceM, availableM);
+                    if(go!=0)
+                    {
+                        restrictGo(go);
+                        
+                    }
+                        
+                }
+                else if(gender==2)
+                {
+                    int go=addWitem(womenq, arrW, priceW, availableW);
+                    if(go!=0)
+                    {
+                        restrictGo(go);
+                    }
+                }
+
+                else if(gender==0)
+                {
+                }
+
+                else
+                {
+                    cout << "Incorrect Input...";
+                    Sleep(300);
+                }
+            }
+
+            else if(adminchoice==3)
+            {
+                int go=changeStock(menq, arrM, availableM, arrW, womenq, availableW);
+                if(go!=0)
+                    {
+                        restrictGo(go);
+                    }
+            }
+
+            else if(adminchoice==4)
+            {
+                int go=checkReviews(reviews, cardindex, username, reviewindex);
+                if(go!=0)
+                    {
+                        restrictGo(go);
+                    }
+            }
+
+            else if(adminchoice==6)
+            {
+                int go=changeName(menq, womenq, arrM, arrW);
+                if(go!=0)
+                    {
+                        restrictGo(go);
+                    }
+            }
+
+            
+
+            else if(adminchoice==5)
+            {
+                int go=removeItem(menq, womenq, arrM, arrW, priceM, priceW, availableM, availableW);
+                if(go!=0)
+                    {
+                        restrictGo(go);
+                    }
+            }
+
+            else if(adminchoice==7)
+            {
+                int go=seeCustomer(cusCount, cardindex, userArea, delivery, customer);
+                if(go!=0)
+                    {
+                        restrictGo(go);
+                    }
+            }
+
+            else if(adminchoice==8)
+            {
+                int go=addDeliveryArea(areas, deliveryAreas);
+                if(go!=0)
+                    {
+                        restrictGo(go);
+                    }
+            }
+
+            else if(adminchoice==9)
+            {
+                int go=removeAddress(areas, deliveryAreas);
+                if(go!=0)
+                    {
+                        restrictGo(go);
+                    }
+            }
+
+            else if(adminchoice==10)
+            {
+                break;
+
+            }
+
+            else
+            {
+            cout << "Incorrect Input...";
+            Sleep(300);
+            }
+
+            
+            }
+
+        }
+
+        else if(role1=="Customer")
+        {
+            int customerchoice;
+            int choose;
+            while(true)
+            {
+                customerchoice=customermenu();
+                choose=customerchoice;
+                if(customerchoice==1)
+                {
+                    int gender=genderpage();
+                    if(gender==1)
+                    {
+                        int go=printMitems(arrM, priceM, availableM, quantityM, menq);
+                        if(go!=0)
+                        {
+                            restrictGo(go);
+                        }
+                    }
+                    else if(gender==2)
+                    {
+                        int go=printWitems(arrW, priceW, availableW, quantityW, womenq);
+                        if(go!=0)
+                        {
+                            restrictGo(go);
+                        }
+                    }
+                    else if(gender==0)
+                    {
+                    }
+
+                    else
+                    {
+                    cout << "Incorrect Input...";
+                    Sleep(300);
+                    }
+                }
+                else if(customerchoice==5)
+                {
+                    int go=bill(arrM, arrW, totalM, totalW, priceM, priceW, quantityM, quantityW, menq, womenq, cardindex, finalTotal, delivery, userArea, deliveryop, delArea);
+                    if(go!=0)
+                    {
+                        restrictGo(go);
+                    }
+                }
+                else if(customerchoice==7)
+                {
+                    int go=PayBill(totalM, totalW, quantityM, quantityW, priceM, priceW, availableM, availableW, menq, womenq, delArea, deliveryop, billpaid);
+                    if(go!=0)
+                    {
+                        restrictGo(go);
+                    }
+                }
+                else if(customerchoice==3)
+                {
+                    int go=deliveryoptions(deliveryop, delivery, cardindex, cardno);
+                    if(go!=0)
+                    {
+                        restrictGo(go);
+                    }
+                }
+                else if(customerchoice==2)
+                {
+                    int go=cart(arrM, arrW, quantityM, quantityW, menq, womenq);
+                    if(go!=0)
+                    {
+                        restrictGo(go);
+                    }
+                }
+                else if(customerchoice==4)
+                {
+                    int go=deliveryArea(areas, deliveryAreas, userArea, delArea, cardindex);
+                    if(go!=0)
+                    {
+                        restrictGo(go);
+                    }
+                }
+                else if(customerchoice==6)
+                {
+                    int go=updatequantity(quantityM, quantityW, arrM, arrW, menq, womenq, availableM, availableW);
+                    if(go!=0)
+                    {
+                        restrictGo(go);
+                    }
+                }
+                else if(customerchoice==8)
+                {
+                    int go=status(billpaid);
+                    if(go!=0)
+                    {
+                        restrictGo(go);
+                    }
+                }
+                else if(customerchoice==10)
+                {
+                    resetCart(menq, womenq, quantityM, quantityW);
+                    break;
+                }
+                else if(customerchoice==9)
+                {
+                    int go=leaveReview(reviews, reviewindex, cardindex);
+                    if(go!=0)
+                    {
+                        restrictGo(go);
+                    }
+                }
+
+                else
+                {
+                    cout << "Incorrect Input...";
+                    Sleep(300);
+                }
+            }
+        }
     }
 
-    if(op==2)
+    else if(op==2)
     {
-        signupMenu();
+            int go=signupMenu(username, password, role, customer, cusCount, idx, range);
+            if(go==0)
+            {
+            }
+
+    }
+
+    else if(op==3)
+    {
+        break;
+    }
+
+    else
+    {
+    cout << "Incorrect Input...";
+    Sleep(300);
     }
 
 
     }
 
 }
+
+
 
 
 
@@ -123,10 +407,11 @@ void printHeader()
 }
 
 
-void signinMenu()
+string signinMenu(string username[], string password[], string role[], int &cardindex, int range, int idx)
 {
     string name;
     string password1;
+    string role1;
     int index;
     system("cls");
     printHeader();
@@ -136,47 +421,44 @@ void signinMenu()
     cout << "\t \t \t  Enter Password: ";
     cin >> password1;
 
-
-    if(checkUser(name))
+    cout << endl << endl;
+    if(checkUser(name, username, range))
     {
-    
-    index=usernameInd(name);
+    index=usernameInd(name, idx, username, range);
     cardindex=index;
     if(password1==password[index])
     {
-       string role1= role[index];
-    
-
-        if(role1=="Admin" )
-        {
-            adminmenu();
-        }
-
-        else if(role1=="Customer")
-        {
-            customermenu();
-        }
+       role1= role[index];
 
     }
 
-    
+    else
+    {
+        cout << "User Not Found.";
+        Sleep(300);
+        main();
+    }
 
     }
+
+    return role1;
 
 }
 
 
-void signupMenu(){
+int signupMenu(string username[], string password[], string role[], string customer[], int &cusCount, int &idx, int range)
+{
     string name;
     string role1;
     string password1;
+    int go;
     cout << endl<<endl ;
     cout << "Enter Username: ";
     cin >> name;
-    if(checkUser(name))
+    if(checkUser(name, username, range))
     {
         cout << "Username Already Taken..";
-        signupMenu();
+        signupMenu(username, password, role, customer, cusCount, idx, range);
     }
     else
     {
@@ -186,6 +468,7 @@ void signupMenu(){
 
     cout << "Enter Role (Admin or Customer): ";
     cin >> role1;
+    cout << endl << endl;
     if(role1=="Admin" || role1=="Customer")
     {
         if(role1=="Customer")
@@ -197,23 +480,37 @@ void signupMenu(){
         username[idx]=name;
         password[idx]=password1;
         idx++;
+
+        
+        cout << "You have successfully signed up." << endl;
+        cout << "Press 0 to return : ";
+        cin >> go;
+        
+        if(go!=0)
+        {
+            while(go!=0)
+            {
+                cout << "Incorrect Input Enter again: ";
+                cin >> go;
+            }
+        }
     }
     else
     {
         cout << "Incorrect role..";
-        signupMenu();
+        signupMenu(username, password, role, customer, cusCount, idx, range);
     }
 
     }
 
-
+    return go;
 
 
 }
 
 
 
-int usernameInd(string name)
+int usernameInd(string name, int idx, string username[], int range)
 {
     for(int x=0; x<idx; x++)
     {
@@ -226,9 +523,9 @@ int usernameInd(string name)
 }
 
 
-bool checkUser(string name)
+bool checkUser(string name, string username[], int range)
 {
-    for(int x=0; x<100; x++)
+    for(int x=0; x<range; x++)
     {
         if(name==username[x])
         {
@@ -240,7 +537,7 @@ bool checkUser(string name)
 
 
 
-void adminmenu(){
+int adminmenu(){
 
     system("cls");
     printHeader();
@@ -261,68 +558,15 @@ void adminmenu(){
     cout <<"Enter your choice: ";
     cin >> adminchoice;
 
-    if(adminchoice==1)
-    {
-        adminGenderPage();
-    }
+    cout << endl << endl;
 
-    else if(adminchoice==2)
-    {
-        addItems();
-    }
-
-    else if(adminchoice==3)
-    {
-        changeStock();
-    }
-
-    else if(adminchoice==4)
-    {
-        checkReviews();
-    }
-
-    else if(adminchoice==6)
-    {
-        changeName();
-    }
-
-    else if(adminchoice==10)
-    {
-        main();
-    }
-
-    else if(adminchoice==5)
-    {
-        removeItem();
-    }
-
-    else if(adminchoice==7)
-    {
-        seeCustomer();
-    }
-
-    else if(adminchoice==8)
-    {
-        addDeliveryArea();
-    }
-
-    else if(adminchoice==9)
-    {
-        removeAddress();
-    }
-
-    else
-    {
-        cout << "Incorrect Input...";
-        Sleep(200);
-        adminmenu();
-    }
+    return adminchoice;
 
     
 }
 
 
-void customermenu(){
+int customermenu(){
 
     system("cls");
     printHeader();
@@ -343,60 +587,13 @@ void customermenu(){
     cout <<"Enter your choice: ";
     cin >> customerchoice;
 
-    
-    if(customerchoice==1)
-    {
-        genderpage();
-    }
-    else if(customerchoice==5)
-    {
-        bill();
-    }
-    else if(customerchoice==7)
-    {
-        PayBill();
-    }
-    else if(customerchoice==3)
-    {
-        deliveryoptions();
-    }
-    else if(customerchoice==2)
-    {
-        cart();
-    }
-    else if(customerchoice==4)
-    {
-        deliveryArea();
-    }
-    else if(customerchoice==6)
-    {
-        updatequantity();
-    }
-    else if(customerchoice==8)
-    {
-        status();
-    }
-    else if(customerchoice==10)
-    {
-        resetCart();
-        main();
-    }
-    else if(customerchoice==9)
-    {
-        leaveReview();
-    }
+    cout << endl << endl;
 
-    else
-    {
-        cout << "Incorrect Input...";
-        Sleep(200);
-        customermenu();
-    }
-
+    return customerchoice;
     
 }
 
-void genderpage()
+int genderpage()
 {
     int gender;
     system("cls");
@@ -405,29 +602,18 @@ void genderpage()
     cout << "Enter the gender to shop for:" << endl;
     cout << "1. \t Men" << endl;
     cout << "2. \t Women" << endl;
+    cout << " Press 0 to return." << endl;
     cout << endl;
     cout << "Enter your choice: ";
     cin >> gender;
-    if(gender==1)
-    {
-        printMitems();
-    }
-    else if(gender==2)
-    {
-        printWitems();
-    }
 
-    else
-    {
-        cout << "Incorrect Input...";
-        Sleep(300);
-        genderpage();
-    }
+    cout << endl << endl;
 
+    return gender;
 }
 
 
-void printMitems()
+int printMitems(string arrM[], int priceM[], int availableM[], int quantityM[], int menq)
 {
     int men;
     system("cls");
@@ -469,37 +655,19 @@ else
     {
         cout << "Incorrect Input...";
         Sleep(200);
-        printMitems();
+        ;
         
     }
     
 
-    int go;
-    cout << "Press O to return , 1 to continue: ";
-    cin >> go;
-
-    if(go!=0 && go!=1)
-    {
-        cout << "Not a correct Option...";
-        cout << "Try again.";
-        cin >> go;
-    }
-
-    if(go==1)
-    {
-        printMitems();
-    }
-    else if(go==0)
-    {
-
-        customermenu();
-    }
+    int go=returnforAll();
+    return go;
     
 }
 
 
 
-void printWitems()
+int printWitems(string arrW[], int priceW[], int availableW[],int quantityW[], int womenq)
 {
     int women;
     system("cls");
@@ -541,36 +709,18 @@ else
     {
         cout << "Incorrect Input...";
         Sleep(200);
-        printWitems();
+        printWitems(arrW, priceW, availableW, quantityW, womenq);
         
     }
     
 
-    int go;
-    cout << "Press O to return , 1 to continue: ";
-    cin >> go;
-
-    if(go!=0 && go!=1)
-    {
-        cout << "Not a correct Option...";
-        cout << "Try again.";
-        cin >> go;
-    }
-
-    if(go==1)
-    {
-        printWitems();
-    }
-    else if(go==0)
-    {
-
-        customermenu();
-    }
+    int go=returnforAll();
+    return go;
     
 }
 
 
-void cart()
+int cart(string arrM[], string arrW[], int quantityM[], int quantityW[], int menq, int womenq)
 {
     system("cls");
     printHeader();
@@ -592,10 +742,11 @@ void cart()
     }
 
     cout << endl << endl;
-   returnforCus();
+   int go=returnforAll();
+   return go;
 }
 
-void bill()
+int bill(string arrM[], string arrW[], int totalM[], int totalW[], int priceM[], int priceW[], int quantityM[], int quantityW[], int menq, int womenq, int cardindex, int finalTotal[], string delivery[], string userArea[], bool deliveryop, bool delArea)
 {
     int sumM=0;
     int sumW=0;
@@ -647,10 +798,11 @@ void bill()
         cout <<"Your deliver Address: (Not selected yet) " << endl; 
     }
 
-    returnforCus();
+    int go=returnforAll();
+    return go;
 }
 
-void PayBill()
+int PayBill(int totalM[], int totalW[], int quantityM[], int quantityW[], int priceM[], int priceW[], int availableM[], int availableW[], int menq, int womenq, bool delArea, bool deliveryop, bool billpaid)
 {
     system("cls");
     printHeader();
@@ -691,19 +843,18 @@ void PayBill()
             billpaid=true;
 
             cout << "Your bill has been paid.";
-            resetCart();  
+            resetCart(menq, womenq, quantityM, quantityW);  
 
-            returnforCus();  
+            int go=returnforAll();
+            return go;  
         }
         else if(choice==0)
         {
-            customermenu();
         }
 
         else{
             cout << "Not correct Option...";
             Sleep(300);
-            PayBill();
         }
 
     }
@@ -712,25 +863,28 @@ void PayBill()
     {
         cout << endl << endl;
         cout << "Your delivery Area is not selected yet. You can't Pay Bill.";
-        returnforCus();
+        int go=returnforAll();
+        return go;
     }
 
     else if(delArea==1 && deliveryop==0)
     {
         cout << endl << endl;
         cout << "Your payment option is not selected yet. You can't Pay Bill." << endl;
-        returnforCus();
+        int go=returnforAll();
+        return go;
     }
 
     else
     {
         cout << endl << endl;
         cout << "Neither your payment method or your delivery Area is selected yet. You can't Pay Bill." << endl;
-        returnforCus();
+        int go=returnforAll();
+        return go;
     }
 }
 
-void deliveryoptions()
+int deliveryoptions(bool deliveryop, string delivery[], int cardindex, int cardno[])
 {
    system("cls");
    printHeader();
@@ -778,16 +932,17 @@ void deliveryoptions()
     {
         cout << "Incorrect Method...";
         Sleep(300);
-        deliveryoptions();
+        deliveryoptions(deliveryop, delivery, cardindex, cardno);
     }
 
-    returnforCus();
+    int go=returnforAll();
+    return go;
 
 
 }
 
 
-void deliveryArea()
+int deliveryArea(int areas, string deliveryAreas[], string userArea[], bool delArea, int cardindex)
 {
     system("cls");
     printHeader();
@@ -816,14 +971,15 @@ void deliveryArea()
     {
         cout << "Incorrect Area...";
         Sleep(300);
-        deliveryArea();
+        deliveryArea(areas, deliveryAreas, userArea, delArea, cardindex);
     }
 
-    returnforCus();
+    int go=returnforAll();
+    return go;
     
 }
 
-void updatequantity()
+int updatequantity(int quantityM[], int quantityW[], string arrM[], string arrW[], int menq, int womenq, int availableM[], int availableW[])
 {
     system("cls");
     printHeader();
@@ -907,26 +1063,22 @@ void updatequantity()
         {
             cout << "Not a correct option.";
             Sleep(300);
-            updatequantity();
+            updatequantity(quantityM, quantityW, arrM, arrW, menq, womenq, availableM, availableW);
             
         }
     }
     else
     {
-       cout <<  "Nothing to change.";
+       cout <<  "Nothing to change." << endl;
     }
 
-    returnforCus();
-
-
-
-    
-    
+    int go=returnforAll();
+    return go;
 
 }
 
 
-void status()
+int status(bool billpaid)
 {
     system("cls");
     printHeader();
@@ -952,33 +1104,12 @@ void status()
         cout << "Your order has not been placed yet." << endl;
     }
 
-    returnforCus();
+    int go=returnforAll();
+    return go;
 }
 
 
-void returnforCus()
-{
-    int go;
-    cout << "Press 0 to return..";
-    cin >> go;
-
-    if(go!=0)
-    {
-        while(go!=0)
-        {
-        cout << "Try again...: ";
-        cin >> go;
-        }
-        customermenu();
-    }
-    else
-    {
-        customermenu();
-    }
-}
-
-
-void resetCart() 
+void resetCart(int menq, int womenq, int quantityM[], int quantityW[]) 
 {
     for (int i = 0; i < menq; i++) {
         quantityM[i] = 0;
@@ -990,8 +1121,7 @@ void resetCart()
 }
 
 
-void leaveReview()
-
+int leaveReview(string reviews[], int &reviewindex, int cardindex)
 {
     system("cls");
     printHeader();
@@ -1007,10 +1137,11 @@ void leaveReview()
 
     cout << "Your review has been submitted successfully!" << endl;
     reviewindex++;
-    returnforCus();
+    int go=returnforAll();
+    return go;
 }
 
-void adminGenderPage()
+int adminGenderPage()
 {
     int gender;
     system("cls");
@@ -1019,28 +1150,18 @@ void adminGenderPage()
     cout << "Enter the gender." << endl;
     cout << "1. \t Men" << endl;
     cout << "2. \t Women" << endl;
+    cout << "Press 0 to return." << endl;
     cout << endl;
     cout << "Enter your choice: ";
     cin >> gender;
-    if(gender==1)
-    {
-        AdminMitems();
-    }
-    else if(gender==2)
-    {
-        AdminWitems();
-    }
 
-    else
-    {
-        cout << "Incorrect Input...";
-        Sleep(300);
-        genderpage();
-    }
+    cout << endl << endl;
+    return gender;
+    
 }
 
 
-void AdminMitems()
+int AdminMitems(string arrM[], int priceM[], int availableM[], int menq)
 {
     system("cls");
     printHeader();
@@ -1051,11 +1172,13 @@ void AdminMitems()
         cout << idx+1 <<". "<< arrM[idx] << " \t " <<" Rs " << priceM[idx] << " \t   " << availableM[idx] << endl;
     }
 
-    returnforAdm();
+    int go=returnforAll();
+    return go;
+
 }
 
 
-void AdminWitems()
+int AdminWitems(string arrW[], int priceW[], int availableW[], int womenq)
 {
     system("cls");
     printHeader();
@@ -1066,32 +1189,21 @@ void AdminWitems()
         cout << idx+1 <<". "<< arrW[idx] << " \t " <<" Rs " << priceW[idx] << " \t   " << availableW[idx] << endl;
     }
 
-    returnforAdm();
+    int go=returnforAll();
+    return go;
 }
 
 
-void returnforAdm()
+int returnforAll()
 {
     int go;
     cout << "Press 0 to return..";
     cin >> go;
 
-    if(go!=0)
-    {
-        while(go!=0)
-        {
-        cout << "Try again...: ";
-        cin >> go;
-        }
-        adminmenu();
-    }
-    else
-    {
-        adminmenu();
-    }
+    return go;
 }
 
-void addMitem()
+int addMitem(int &menq, string arrM[], int priceM[], int availableM[])
 {
     system("cls");
     printHeader();
@@ -1144,10 +1256,11 @@ void addMitem()
 
     }
 
-    returnforAdm();
+    int go = returnforAll();
+    return go;
 }
 
-void addWitem()
+int addWitem(int &womenq, string arrW[], int priceW[], int availableW[])
 {
     system("cls");
     printHeader();
@@ -1201,11 +1314,12 @@ void addWitem()
 
     }
 
-    returnforAdm();
+    int go=returnforAll();
+    return go;
 }
 
 
-void addItems()
+int addItems()
 {
     int gender;
     system("cls");
@@ -1214,28 +1328,18 @@ void addItems()
     cout << "Enter the gender." << endl;
     cout << "1. \t Men" << endl;
     cout << "2. \t Women" << endl;
+    cout << "Press 0 to return: " ;
     cout << endl;
     cout << "Enter your choice: ";
     cin >> gender;
-    if(gender==1)
-    {
-        addMitem();
-    }
-    else if(gender==2)
-    {
-        addWitem();
-    }
+    
+    cout << endl << endl;
 
-    else
-    {
-        cout << "Incorrect Input...";
-        Sleep(300);
-        genderpage();
-    }
+    return gender;
 }
 
 
-void changeStock()
+int changeStock(int menq, string arrM[], int availableM[], string arrW[], int womenq, int availableW[] )
 {
     system("cls");
     printHeader();
@@ -1313,16 +1417,17 @@ void changeStock()
     {
         cout << "Not a correct option." << endl;
         Sleep(300);
-        changeStock();
+        changeStock(menq, arrM, availableM, arrW, womenq, availableW);
             
     }
 
-    returnforAdm();
+    int go=returnforAll();
+    return go;
 
 }
 
 
-void checkReviews()
+int checkReviews(string reviews[], int cardindex, string username[], int reviewindex)
 {
     system("cls");
     printHeader();
@@ -1347,11 +1452,12 @@ void checkReviews()
 
     }
 
-    returnforAdm();
+    int go=returnforAll();
+    return go;
 
 }
 
-void changeName()
+int changeName(int menq, int womenq, string arrM[], string arrW[])
 {
     system("cls");
     printHeader();
@@ -1414,18 +1520,19 @@ void changeName()
     {
         cout << "Not a correct option." << endl;
         Sleep(300);
-        changeName();
+        changeName(menq, womenq, arrM, arrW);
             
     }
 
-    returnforAdm();
+    int go=returnforAll();
+    return go;
 
 
 
 }
 
 
-void removeItem()
+int removeItem(int &menq, int &womenq, string arrM[], string arrW[], int priceM[], int priceW[], int availableM[], int availableW[])
 {
     system("cls");
     printHeader();
@@ -1486,15 +1593,16 @@ void removeItem()
     {
         cout << "Not a correct option." << endl;
         Sleep(300);
-        removeItem();
+        removeItem(menq, womenq, arrM, arrW, priceM, priceW, availableM, availableW);
             
     }
 
 
-    returnforAdm();
+    int go=returnforAll();
+    return go;
 }
 
-void seeCustomer()
+int seeCustomer(int cusCount, int cardindex, string userArea[], string delivery[], string customer[])
 {
     system("cls");
     printHeader();
@@ -1535,13 +1643,14 @@ void seeCustomer()
     else
     {
         cout << endl << endl;
-        cout << "There are no Customers yet.";
+        cout << "There are no Customers yet." << endl;
     }
 
-    returnforAdm();
+    int go=returnforAll();
+    return go;
 }
 
-void addDeliveryArea()
+int addDeliveryArea(int &areas, string deliveryAreas[])
 {
     system("cls");
     printHeader();
@@ -1582,10 +1691,11 @@ void addDeliveryArea()
 
     }
 
-    returnforAdm();
+    int go=returnforAll();
+    return go;
 }
 
-void removeAddress()
+int removeAddress(int &areas, string deliveryAreas[])
 {
     int choice;
     system("cls");
@@ -1620,8 +1730,19 @@ void removeAddress()
     {
         cout << "Not a corrext option...";
         Sleep(300);
-        removeAddress();
+        removeAddress(areas, deliveryAreas);
     }
 
-    returnforAdm();
+    int go=returnforAll();
+    return go;
+}
+
+
+void restrictGo(int go)
+{
+    while(go!=0)
+    {
+    cout << "Try again...: ";
+    cin >> go;
+    }
 }

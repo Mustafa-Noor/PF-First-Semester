@@ -1573,7 +1573,6 @@ int changeStock(int menq, string arrM[], int availableM[], string arrW[], int wo
 
 int showreviews(string reviews[], int cusCount, string username[], int &counter)
 {
-    cusCount=10;
     for(int idx=0; idx<cusCount; idx++)
         {
             if(reviews[idx]!="")

@@ -5,7 +5,7 @@
 using namespace std;
 
 void printHeader();
-int employeemenu();
+int adminmenu();
 int customermenu();
 int printMitems(string arrM[], int priceM[], int availableM[], int quantityM[], int &menq);
 int printWitems(string arrW[], int priceW[], int availableW[],int quantityW[], int &womenq);
@@ -23,9 +23,9 @@ int deliveryArea(int areas, string deliveryAreas[], string userArea[], bool &del
 void resetCart(int menq, int womenq, int quantityM[], int quantityW[]);
 int leaveReview(string reviews[], int &reviewindex, int cusCount);
 void restrictGo(int go);
-int employeeGenderPage();
-int employeeMitems(string arrM[], int priceM[], int availableM[], int menq);
-int employeeWitems(string arrW[], int priceW[], int availableW[], int womenq);
+int adminGenderPage();
+int AdminMitems(string arrM[], int priceM[], int availableM[], int menq);
+int AdminWitems(string arrW[], int priceW[], int availableW[], int womenq);
 int returnforAll();
 int addMitem(int &menq, string arrM[], int priceM[], int availableM[]);
 int addWitem(int &womenq, string arrW[], int priceW[], int availableW[]);
@@ -127,32 +127,32 @@ string customer[range];
     {
         clearScreen();
         string role1=signinMenu(username, password, role, cardindex, range, idx);
-        if(role1=="Employee")
+        if(role1=="Admin")
         {
-            int employeechoice;
+            int adminchoice;
             int choose;
             while(true)
             {
                 clearScreen();
                 cout << endl;
-                cout << "----------Employee Menu-----------" << endl;
-                employeechoice=employeemenu();
+                cout << "----------Admin Menu-----------" << endl;
+                adminchoice=adminmenu();
                 cout << endl;
-                choose=employeechoice;
+                choose=adminchoice;
             
-            if(employeechoice==1)
+            if(adminchoice==1)
             {
                 clearScreen();
                 cout << endl;
-                cout << "----------Employee Gender Page-----------" << endl;
-                int gender=employeeGenderPage();
+                cout << "----------Admin Gender Page-----------" << endl;
+                int gender=adminGenderPage();
                 cout << endl;
                 if(gender==1)
                 {
                     clearScreen();
                     cout << endl;
-                    cout << "-------------------Employee Male Items-------------------" << endl;
-                    int go=employeeMitems(arrM, priceM, availableM, menq);
+                    cout << "-------------------Admin Male Items-------------------" << endl;
+                    int go=AdminMitems(arrM, priceM, availableM, menq);
                     if(go!=0)
                     {
                         restrictGo(go);
@@ -163,8 +163,8 @@ string customer[range];
                 {
                     clearScreen();
                     cout << endl;
-                    cout << "-------------------Employee Female Items-------------------" << endl;
-                    int go=employeeWitems(arrW, priceW, availableW, womenq);
+                    cout << "-------------------Admin Female Items-------------------" << endl;
+                    int go=AdminWitems(arrW, priceW, availableW, womenq);
                     if(go!=0)
                     {
                         restrictGo(go);
@@ -178,12 +178,12 @@ string customer[range];
                 }
             }
 
-            else if(employeechoice==2)
+            else if(adminchoice==2)
             {
                 clearScreen();
                 cout << endl;
-                cout << "----------Emplyoee Gender Page-----------" << endl;
-                int gender=employeeGenderPage();
+                cout << "----------Admin Gender Page-----------" << endl;
+                int gender=adminGenderPage();
                 cout << endl;
                 if(gender==1)
                 {
@@ -216,7 +216,7 @@ string customer[range];
                 }
             }
 
-            else if(employeechoice==3)
+            else if(adminchoice==3)
             {
                 clearScreen();
                 cout << endl;
@@ -237,7 +237,7 @@ string customer[range];
                     }
             }
 
-            else if(employeechoice==4)
+            else if(adminchoice==4)
             {
                 clearScreen();
                 cout << endl;
@@ -249,7 +249,7 @@ string customer[range];
                     }
             }
 
-            else if(employeechoice==6)
+            else if(adminchoice==6)
             {
                 clearScreen();
                 cout << endl;
@@ -263,7 +263,7 @@ string customer[range];
 
             
 
-            else if(employeechoice==5)
+            else if(adminchoice==5)
             {
                 clearScreen();
                 cout << endl;
@@ -275,7 +275,7 @@ string customer[range];
                     }
             }
 
-            else if(employeechoice==7)
+            else if(adminchoice==7)
             {
                 clearScreen();
                 cout << endl;
@@ -287,7 +287,7 @@ string customer[range];
                     }
             }
 
-            else if(employeechoice==8)
+            else if(adminchoice==8)
             {
                 clearScreen();
                 cout << endl;
@@ -304,7 +304,7 @@ string customer[range];
                     }
             }
 
-            else if(employeechoice==9)
+            else if(adminchoice==9)
             {
                 clearScreen();
                 cout << endl;
@@ -321,7 +321,7 @@ string customer[range];
                         restrictGo(go);
                     }
             }
-            else if(employeechoice==10)
+            else if(adminchoice==10)
             {
                 clearScreen();
                 cout << endl;
@@ -337,7 +337,7 @@ string customer[range];
                     }
             }
 
-            else if(employeechoice==11)
+            else if(adminchoice==11)
             {
                 break;
 
@@ -371,7 +371,7 @@ string customer[range];
                     clearScreen();
                     cout << endl;
                     cout << "-------------------Gender Page-------------------" << endl;
-                    int gender=employeeGenderPage();
+                    int gender=adminGenderPage();
                     if(gender==1)
                     {
                         clearScreen();
@@ -381,7 +381,7 @@ string customer[range];
                         cout << "Enter your choice: " << endl;
                         for(int idx=0; idx<menq; idx++)
                         {
-                        cout <<left << setw(12) << to_string(idx+1)+". "<< setw(25) <<  arrM[idx] << setw(20) <<" Rs "+to_string(priceM[idx]) << endl;
+                        cout << idx+1 <<". "<< arrM[idx] << " \t " <<" Rs " << priceM[idx] << endl;
                         }
                         cout << endl;
                         int go=printMitems(arrM, priceM, availableM, quantityM, menq);
@@ -399,7 +399,7 @@ string customer[range];
                         cout << "Enter your choice: " << endl;
                             for(int idx=0; idx<womenq; idx++)
                             {
-                            cout <<left << setw(12) << to_string(idx+1)+". "<< setw(25) <<  arrW[idx] << setw(20) <<" Rs "+to_string(priceW[idx]) << endl;
+                            cout << idx+1 <<". "<< arrW[idx] << " \t " <<" Rs " << priceW[idx] << endl;
                             }
                         int go=printWitems(arrW, priceW, availableW, quantityW, womenq);
                         if(go!=0)
@@ -563,22 +563,21 @@ string customer[range];
     {
             clearScreen();
             string role1=signupMenu(username, name, password1, customer, cusCount, idx, range);
-            if((role1=="Employee")|| (role1=="Customer") || (role1=="employee") || (role1=="customer"))
+            if((role1=="Admin")|| (role1=="Customer") || (role1=="admin") || (role1=="customer"))
             {
                 if(role1=="Customer" || role1=="customer")
                 {
-                    customer[cusCount]=name;
                     cusCount++;
-                    
+                    customer[idx]=name;
                 }
 
                 if(role1=="customer")
                 {
                     role1="Customer";
                 }
-                else if(role1=="employee")
+                else if(role1=="admin")
                 {
-                    role1="Employee";
+                    role1="Admin";
                 }
                 role[idx]=role1;
                 username[idx]=name;
@@ -592,6 +591,8 @@ string customer[range];
             {
                 cout << "Incorrect role...";
                 Sleep(300);
+                clearScreen();
+                signupMenu(username, name, password1, customer, cusCount, idx, range);
             }
             
 
@@ -677,7 +678,7 @@ void signupWindow(string &name, string &password1)
 string takeRole()
 {
     string role1;
-    cout << "Enter Role (Employee or Customer): ";
+    cout << "Enter Role (Admin or Customer): ";
     cin >> role1;
     cout << endl;
     return role1;
@@ -755,9 +756,9 @@ bool checkUser(string name, string username[], int range)
 
 
 
-int employeemenu(){
+int adminmenu(){
 
-    int employeechoice;
+    int adminchoice;
     cout << endl << endl;
     cout << "Enter one of the following options number..." << endl;
     cout << "1. \t View List Of Clothes" << endl;
@@ -772,8 +773,8 @@ int employeemenu(){
     cout << "10. \t Change Contact Us Information" << endl;
     cout << "11. \t Log out" << endl;
     cout <<"Enter your choice: ";
-    cin >> employeechoice;
-    return employeechoice; 
+    cin >> adminchoice;
+    return adminchoice; 
 }
 
 
@@ -1311,14 +1312,14 @@ int leaveReview(string reviews[], int &reviewindex, int cusCount)
 {
     string review;
     review=reviews1();
-    reviews[reviewindex]=review;
+    reviews[cusCount]=review;
     cout << "Your review has been submitted successfully!" << endl;
     reviewindex++;
     int go=returnforAll();
     return go;
 }
 
-int employeeGenderPage()
+int adminGenderPage()
 {
     int gender;
     cout << endl << endl;
@@ -1334,7 +1335,7 @@ int employeeGenderPage()
 }
 
 
-int employeeMitems(string arrM[], int priceM[], int availableM[], int menq)
+int AdminMitems(string arrM[], int priceM[], int availableM[], int menq)
 {
     cout << left << setw(7) << "Index" << setw(25) << "Name" << setw(20) << "Price" << setw(20) << "Available Articles" << endl;
     for (int idx = 0; idx < menq; idx++) {
@@ -1347,7 +1348,7 @@ int employeeMitems(string arrM[], int priceM[], int availableM[], int menq)
 }
 
 
-int employeeWitems(string arrW[], int priceW[], int availableW[], int womenq)
+int AdminWitems(string arrW[], int priceW[], int availableW[], int womenq)
 {
     cout << left << setw(7) << "Index" << setw(25) << "Name" << setw(20) << "Price" << setw(20) << "Available Articles" << endl;
     for (int idx = 0; idx < womenq; idx++) {
@@ -1573,7 +1574,6 @@ int changeStock(int menq, string arrM[], int availableM[], string arrW[], int wo
 
 int showreviews(string reviews[], int cusCount, string username[], int &counter)
 {
-    cusCount=10;
     for(int idx=0; idx<cusCount; idx++)
         {
             if(reviews[idx]!="")

@@ -10,7 +10,7 @@ int customermenu();
 int printMitems(string arrM[], int priceM[], int availableM[], int quantityM[], int &menq);
 int printWitems(string arrW[], int priceW[], int availableW[],int quantityW[], int &womenq);
 int bill(string arrM[], string arrW[], int totalM[], int totalW[], int priceM[], int priceW[], int quantityM[], int quantityW[], int menq, int womenq, int cardindex, int finalTotal[], string delivery[], string userArea[], bool deliveryop, bool delArea);
-int PayBill(int totalM[], int totalW[], int quantityM[], int quantityW[], int priceM[], int priceW[], int availableM[], int availableW[], int menq, int womenq, bool delArea, bool deliveryop, bool &billpaid);
+int PayBill(int totalM[], int totalW[], int quantityM[], int quantityW[], int priceM[], int priceW[], int availableM[], int availableW[], int menq, int womenq, bool &delArea, bool &deliveryop, bool &billpaid);
 int cart(string arrM[], string arrW[], int quantityM[], int quantityW[], int menq, int womenq);
 int status(bool billpaid);
 int updatequantity(int quantityM[], int quantityW[], string arrM[], string arrW[], int menq, int womenq, int availableM[], int availableW[], int counter);
@@ -18,8 +18,8 @@ string signupMenu(string username[], string &name, string &password1, string cus
 string signinMenu(string username[], string password[], string role[], int &cardindex, int range, int idx);
 bool checkUser(string name, string username[], int range);
 int usernameInd(string name, int idx, string username[], int range);
-int deliveryoptions(bool &deliveryop, string delivery[], int cardindex, int cardno[]);
-int deliveryArea(int areas, string deliveryAreas[], string userArea[], bool &delArea, int cardindex);
+int deliveryoptions(bool &deliveryop, string delivery[], int cardindex, int cardno[], int cusCount);
+int deliveryArea(int areas, string deliveryAreas[], string userArea[], bool &delArea, int cardindex, int cusCount);
 void resetCart(int menq, int womenq, int quantityM[], int quantityW[]);
 int leaveReview(string reviews[], int &reviewindex, int cusCount);
 void restrictGo(int go);
@@ -30,7 +30,7 @@ int returnforAll();
 int addMitem(int &menq, string arrM[], int priceM[], int availableM[]);
 int addWitem(int &womenq, string arrW[], int priceW[], int availableW[]);
 int changeStock(int menq, string arrM[], int availableM[], string arrW[], int womenq, int availableW[] );
-int checkReviews(string reviews[], int cardindex, string username[], int reviewindex);
+int checkReviews(string reviews[], int cardindex, string customer[], int reviewindex);
 int changeName(int menq, int womenq, string arrM[], string arrW[]);
 int removeItem(int &menq, int &womenq, string arrM[], string arrW[], int priceM[], int priceW[], int availableM[], int availableW[]);
 int seeCustomer(int cusCount, int cardindex, string userArea[], string delivery[], string customer[]);
@@ -242,7 +242,7 @@ string customer[range];
                 clearScreen();
                 cout << endl;
                 cout << "-------------------Show Reviews-------------------" << endl;
-                int go=checkReviews(reviews, cardindex, username, reviewindex);
+                int go=checkReviews(reviews, cardindex, customer, reviewindex);
                 if(go!=0)
                     {
                         restrictGo(go);
@@ -441,7 +441,7 @@ string customer[range];
                     cout << endl;
                     cout << "-------------------------Payment Options------------------------" << endl;
                     cout << endl;
-                    int go=deliveryoptions(deliveryop, delivery, cardindex, cardno);
+                    int go=deliveryoptions(deliveryop, delivery, cardindex, cardno, cusCount);
                     if(go!=0)
                     {
                         restrictGo(go);
@@ -470,7 +470,7 @@ string customer[range];
                     {
                     cout << idx+1 << ". " << deliveryAreas[idx] << endl;
                     }
-                    int go=deliveryArea(areas, deliveryAreas, userArea, delArea, cardindex);
+                    int go=deliveryArea(areas, deliveryAreas, userArea, delArea, cardindex, cusCount);
                     if(go!=0)
                     {
                         restrictGo(go);
@@ -1068,7 +1068,7 @@ string reasonsForBill(bool deliveryop, bool delArea)
     return reason;
 }
 
-int PayBill(int totalM[], int totalW[], int quantityM[], int quantityW[], int priceM[], int priceW[], int availableM[], int availableW[], int menq, int womenq, bool delArea, bool deliveryop, bool &billpaid)
+int PayBill(int totalM[], int totalW[], int quantityM[], int quantityW[], int priceM[], int priceW[], int availableM[], int availableW[], int menq, int womenq, bool &delArea, bool &deliveryop, bool &billpaid)
 {
     int total=findTotalForBill(menq,womenq, totalM, quantityM, priceM, totalW, quantityW, priceW);
     cout << "Your total Purchase Amount is Rs " << total << endl;
@@ -1078,6 +1078,8 @@ int PayBill(int totalM[], int totalW[], int quantityM[], int quantityW[], int pr
         if(choice==1){
             string result=billPaid(menq, availableM, quantityM, womenq, availableW, quantityW, billpaid);
             cout << result << endl;
+            deliveryop=false;
+            delArea=false;
             int go=returnforAll();
             return go;  
         }
@@ -1134,7 +1136,7 @@ int restrictCard(int &a, bool &deliveryop, int cardindex, int cardno[])
 
     return a;
 }
-int deliveryoptions(bool &deliveryop, string delivery[], int cardindex, int cardno[])
+int deliveryoptions(bool &deliveryop, string delivery[], int cardindex, int cardno[], int cusCount)
 {
     
     string delivery1=payOp();
@@ -1143,11 +1145,11 @@ int deliveryoptions(bool &deliveryop, string delivery[], int cardindex, int card
         
       cout << "It will be a cash on delivery." << endl;
       deliveryop=true;
-      delivery[cardindex]="Cash";
+      delivery[cusCount]="Cash";
     }
     else if(delivery1=="Card")
     {
-        delivery[cardindex]="Card";
+        delivery[cusCount]="Card";
         int card=takeCardNum();
         int a=card;
         card=restrictCard(a, deliveryop, cardindex, cardno);
@@ -1170,7 +1172,7 @@ int takeDelArea()
     cin >> choice;
     return choice;
 }
-int deliveryArea(int areas, string deliveryAreas[], string userArea[], bool &delArea, int cardindex)
+int deliveryArea(int areas, string deliveryAreas[], string userArea[], bool &delArea, int cardindex, int cusCount)
 {
     int choice=takeDelArea();
     if(choice>0 && choice<=areas)
@@ -1179,7 +1181,7 @@ int deliveryArea(int areas, string deliveryAreas[], string userArea[], bool &del
         {
             if(choice==idx+1)
             {
-            userArea[cardindex]=deliveryAreas[idx];
+            userArea[cusCount]=deliveryAreas[idx];
             delArea=true;
             }
         }
@@ -1571,14 +1573,14 @@ int changeStock(int menq, string arrM[], int availableM[], string arrW[], int wo
     return go;
 }
 
-int showreviews(string reviews[], int cusCount, string username[], int &counter)
+int showreviews(string reviews[], int cusCount, string customer[], int &counter)
 {
     cusCount=10;
     for(int idx=0; idx<cusCount; idx++)
         {
             if(reviews[idx]!="")
             {
-            cout << counter << ". Review by " << username[idx]  << ": " << endl;
+            cout << counter << ". Review by " << customer[idx+1]  << ": " << endl;
             cout <<"\t"  << reviews[idx] << endl << endl; 
             counter++;
             }

@@ -2,6 +2,7 @@
 #include <windows.h>
 #include <conio.h>
 #include <iomanip>
+#include <fstream>
 using namespace std;
 
 void printHeader();
@@ -81,23 +82,47 @@ void changeInfo(string &phoneN, string &email);
 int findCustomerIndex(string name, int cusIndex, string customerArr[]);
 bool validateint(string convert);
 
+void saveRecordsofCred(int range, string username[], string password[], string role[], int idx, int cusIndex, int cardindex);
+void saveCustomerInfo(string customerArr[], int billPaidcount[], int totalM[], int totalW[], int finalTotal[], string userArea[], string delivery[], int cardno[], int cusIndex);
+void saveCustomerReview(int cusCount, string reviews[], string customer[]);
+void saveRecordsofWomenitems(string arrW[], int priceW[], int availableW[], int womenq);
+void saveRecordsofMenitems(string arrM[], int priceM[], int availableM[], int menq);
+void saveQuantitybought(int cardindex, int menq, int womenq, int quantforMen[][30], int quantforWomen[][30]);
+void saveAdresses(int areas, string deliveryAreas[]);
+
+
 main()
 {
     system("color 0F");
+    //Credentials
     int range = 30;
     string username[range];
     string password[range];
     string role[range];
     int idx = 0;
     int cusIndex = 0;
+    
+    int cardindex;
+
+    //Customer Related
     string customerArr[range];
     int quantforMen[range][30];
     int quantforWomen[range][30];
     int billPaidcount[range];
-    int menq = 4, womenq = 4;
-    int cardindex;
-    int areas = 4;
+    int totalM[range];
+    int totalW[range];
+    int finalTotal[range];
+    string reviews[range];
+    int reviewindex;
+    string customer[range];
+    string userArea[range];
     int cusCount = 0;
+    string delivery[range];
+    int cardno[range];
+
+    //Store Related
+    int menq = 4, womenq = 4;
+    int areas = 4;
     bool deliveryop = false, delArea = false, billpaid = false;
     string name, password1;
     string phoneN = "0423-123456", email = "fashionisu@gmail,com";
@@ -107,16 +132,9 @@ main()
     string arrW[range] = {"Black Printed Shirt", "Blue 3 Piece Suit", "Grey Frock Linen", "Red Dress Printed"};
     int priceW[range] = {1200, 1100, 1000, 1800};
     int availableW[range] = {36, 42, 65, 34};
-    string delivery[range];
-    int cardno[range];
     string deliveryAreas[range] = {"Gulberg", "Askari", "DHA", "Model Town"};
-    string userArea[range];
-    int totalM[range];
-    int totalW[range];
-    int finalTotal[range];
-    string reviews[range];
-    int reviewindex;
-    string customer[range];
+    
+    
 
     string op;
 
@@ -568,6 +586,13 @@ main()
 
         else if (op == "3")
         {
+            saveCustomerInfo(customerArr,billPaidcount, totalM, totalW,finalTotal,userArea,delivery, cardno, cusIndex);
+            saveRecordsofCred(range, username, password, role, idx, cusIndex,cardindex);
+            saveCustomerReview(cusCount, reviews, customer);
+            saveRecordsofMenitems(arrM,priceM, availableM,menq);
+            saveRecordsofWomenitems(arrW, priceW, availableW, womenq);
+            saveQuantitybought(cardindex, menq, womenq, quantforMen, quantforWomen);
+            saveAdresses(areas, deliveryAreas);
             break;
         }
 
@@ -578,6 +603,174 @@ main()
         }
     }
 }
+
+
+void saveRecordsofCred(int range, string username[], string password[], string role[], int idx, int cusIndex, int cardindex)
+{
+    fstream file;
+    file.open("Credentials.txt", ios::out);
+
+    for(int x=0; x<idx; x++)
+    {
+       file << username[x];
+       file << ",";
+       file << password[x];
+       file << ",";
+       file << role[x];
+       if (x != idx-1)
+       {
+			file<<'\n';
+       }
+		
+    }
+
+    file.close();
+}
+
+void saveCustomerInfo(string customerArr[], int billPaidcount[], int totalM[], int totalW[], int finalTotal[], string userArea[], string delivery[], int cardno[], int cusIndex)
+{
+    fstream file;
+    file.open("CustomerDetails.txt", ios::out);
+
+    for(int x=0; x<cusIndex; x++)
+    {
+        file << customerArr[x];
+        file << ",";
+        file << userArea[x];
+        file << ",";
+        file << delivery[x];
+        file << ",";
+        file << billPaidcount[x];
+        file << ",";
+        file << totalM[x];
+        file << ",";
+        file << totalW[x];
+        file << ",";
+        file << finalTotal[x];
+        if(delivery[x]=="Card")
+        {
+        file << ",";
+        file << cardno[x];
+        }
+
+        if (x != cusIndex-1)
+       {
+			file<<'\n';
+       }
+    }
+
+    file.close();
+}
+
+void saveCustomerReview(int cusCount, string reviews[], string customer[])
+{
+    fstream file;
+    file.open("reviewsdetail.txt", ios::out);
+    {
+        for(int x=0; x<cusCount; x++)
+        {
+            file << customer[x];
+            file << ",";
+            file << reviews[x];
+
+            if(x != cusCount-1)
+            {
+            file << '\n';
+            }
+        }
+    }
+
+    file.close();
+}
+
+void saveRecordsofMenitems(string arrM[], int priceM[], int availableM[], int menq)
+{
+    fstream file;
+    file.open("Menitems.txt", ios::out);
+
+    for(int x=0; x<menq; x++)
+    {
+        file << arrM[x];
+        file << ",";
+        file << priceM[x];
+        file << ", ";
+        file << availableM[x];
+        if(x != menq-1)
+        {
+            file << '\n';
+        }
+
+    }
+
+    file.close();
+}
+
+void saveRecordsofWomenitems(string arrW[], int priceW[], int availableW[], int womenq)
+{
+    fstream file;
+    file.open("Womenitems.txt", ios::out);
+
+    for(int x=0; x<womenq; x++)
+    {
+        file << arrW[x];
+        file << ",";
+        file << priceW[x];
+        file << ", ";
+        file << availableW[x];
+        if(x != womenq-1)
+        {
+            file << '\n';
+        }
+
+    }
+
+    file.close();
+}
+
+void saveAdresses(int areas, string deliveryAreas[])
+{
+    fstream file;
+    file.open("DeliveryArea.txt", ios::out);
+
+    for(int x=0; x<areas; x++)
+    {
+        file << deliveryAreas[x];
+        if(x!=areas-1)
+        {
+            file << ",";
+        }
+    }
+
+    file.close();
+}
+
+void saveQuantitybought(int cardindex, int menq, int womenq, int quantforMen[][30], int quantforWomen[][30])
+{
+    fstream file;
+    file.open("SaveQuantity.txt", ios::out);
+
+    for(int x=0; x<cardindex; x++)
+    {
+        for(int i=0; i<menq; i++)
+        {
+            file << quantforMen[cardindex][i];
+            file <<",";
+        }
+
+        for(int j=0; j<womenq; j++)
+        {
+            file << quantforWomen[cardindex][j];
+            if(j!=womenq-1)
+            {
+                file << ",";
+            }
+        }
+    }
+
+    file.close();
+}
+
+
 
 void printHeader()
 {

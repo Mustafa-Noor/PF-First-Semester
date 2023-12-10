@@ -34,6 +34,9 @@ void printfire();
 void removefire();
 void movefire();
 void enemydata();
+void moveEnemyBullet();
+void printEnemyBullets();
+void enemyShoot();
 
 int px=17, py=15, ex1=90, ey1=4, ex2=4, ey2=4, ex3=33, ey3=27, ex4=91, ey4=12, ex5=85, ey5=25, ex6=37, ey6=18, hx=46, hy=4;
 int contact1=0, contact2=0, contact3=0, contact4=0;
@@ -44,6 +47,9 @@ int by=py+1;
 bool bulletActive=false;
 char bulletDir='r';
 bool checkFirstEnemy=true, checkSecondEnemy=true, checkThirdEnemy=true, checkFourthEnemy=true, checkFifthEnemy=true, checkSixthEnemy=true;
+
+int ebulletX1,ebulletY1,ebulletX2,ebulletY2, ebulletX3, ebulletY3, ebulletX4, ebulletY4, ebulletX5, ebulletY5, ebulletX6, ebulletY6;
+bool bulletactiveE1=false, bulletactiveE2=false, bulletactiveE3=false, bulletactiveE4=false, bulletactiveE5=false, bulletactiveE6=false;
 
 int countForE1=0;
 
@@ -79,31 +85,41 @@ int main()
     while(true){
         Sleep(100);
 
+        enemyShoot();
+        moveEnemyBullet();
+        printEnemyBullets();
+
         if(enemy1<=0)
         {
             
             checkFirstEnemy=false;
+            bulletactiveE1=true;
         }
         if(enemy2<=0)
         {
             checkSecondEnemy=false;
+            bulletactiveE2=true;
         }
         if(enemy3<=0)
         {
             checkThirdEnemy=false;
+            bulletactiveE3=true;
         }
         if(enemy4<=0)
         {
             enemy4=0;
             checkFourthEnemy=false;
+            bulletactiveE4=true;
         }
         if(enemy5<=0)
         {
             checkFifthEnemy=false;
+            bulletactiveE5=true;
         }
         if(enemy6<=0)
         {
             checkSixthEnemy=false;
+            bulletactiveE6=true;
         }
 
         if (GetAsyncKeyState(VK_LEFT))
@@ -143,7 +159,7 @@ int main()
             }
 
         }
-        if (GetAsyncKeyState(VK_SHIFT))
+        if (GetAsyncKeyState(VK_LSHIFT))
         {
             if (!bulletActive)
             {
@@ -152,6 +168,18 @@ int main()
                 bulletActive = true;
                 bulletDir='l';
             }
+        }
+
+        if(GetAsyncKeyState(VK_RSHIFT))
+        {
+            if (!bulletActive)
+            {
+                bx= px;
+                by=py+2;
+                bulletActive=true;
+                bulletDir='d';
+            }
+        
         }
 
         if (bulletActive)
@@ -620,11 +648,22 @@ void movefire()
             bulletActive = false;
         }
     }
-    else
+    else if (bulletDir == 'l')
     {
         if (getCharAtxy(bx - 3, by) != '#')
         {
             bx -= 3; // Move left
+        }
+        else
+        {
+            bulletActive = false;
+        }
+    }
+    else if (bulletDir=='d')
+    {
+        if (getCharAtxy(bx, by+3) != '#')
+        {
+            by += 3; // Move down
         }
         else
         {
@@ -676,7 +715,7 @@ void movefire()
     }
 
     // Check if the bullet has hit an enemy or reached the right edge of the screen
-    if (getCharAtxy(bx, by) == '#' || bx >= 97 || getCharAtxy(bx+1,by)=='#' || getCharAtxy(bx-1,by)=='#' || bx<=0 || getCharAtxy(bx+2,by)=='#' || getCharAtxy(bx+3,by)=='#' || getCharAtxy(bx-2,by)=='#' || getCharAtxy(bx-3,by)=='#')
+    if (getCharAtxy(bx, by) == '#' || bx >= 97  || by>37 || by<1 || getCharAtxy(bx+1,by)=='#' || getCharAtxy(bx-1,by)=='#' || bx<=0 || getCharAtxy(bx+2,by)=='#' || getCharAtxy(bx+3,by)=='#' || getCharAtxy(bx-2,by)=='#' || getCharAtxy(bx-3,by)=='#')
     {
         bulletActive = false;
         removefire();
@@ -686,6 +725,168 @@ void movefire()
         gotoxy(bx, by);
         cout << "o";
     }
+}
+
+void printEnemyBullets() {
+    if (bulletactiveE1) {
+        gotoxy(ebulletX1, ebulletY1);
+        cout << "<";
+    }
+    if (bulletactiveE2) {
+        gotoxy(ebulletX2, ebulletY2);
+        cout << ">";
+    }
+    if (bulletactiveE3) {
+        gotoxy(ebulletX3, ebulletY3);
+        cout << "^";
+    }
+    if (bulletactiveE4) {
+        gotoxy(ebulletX4, ebulletY4);
+        cout << "x";
+    }
+    if (bulletactiveE5) {
+        gotoxy(ebulletX5, ebulletY5);
+        cout << "<<";
+    }
+    if (bulletactiveE6) {
+        gotoxy(ebulletX6, ebulletY6);
+        cout << "<";
+    }
+    
+}
+
+void moveEnemyBullet()
+{
+    if (bulletactiveE1) 
+    {
+        gotoxy(ebulletX1, ebulletY1);
+        cout << " ";
+        ebulletX1-=2;
+        if (ebulletX1 <=0 || ebulletX1<35 || getCharAtxy(ebulletX1,ebulletY1)=='#') {
+            bulletactiveE1 = false;
+        }
+
+        if(getCharAtxy(ebulletX1,ebulletY1)=='o'|| getCharAtxy(ebulletX1,ebulletY1)=='|' || getCharAtxy(ebulletX1,ebulletY1)=='\\' || getCharAtxy(ebulletX1,ebulletY1)=='/')
+        {
+            health-=25;
+        }
+    }
+
+    if (bulletactiveE2) 
+    {
+        gotoxy(ebulletX2, ebulletY2);
+        cout << " ";
+        ebulletX2+=2;
+        if (ebulletX2 >=97 || ebulletX2>39 || getCharAtxy(ebulletX2,ebulletY2)=='#') {
+            bulletactiveE2 = false;
+        }
+
+        if(getCharAtxy(ebulletX2,ebulletY2)=='o'|| getCharAtxy(ebulletX2,ebulletY2)=='|' || getCharAtxy(ebulletX2,ebulletY2)=='\\' || getCharAtxy(ebulletX2,ebulletY2)=='/')
+        {
+            health-=25;
+        }
+    }
+
+    if (bulletactiveE3) 
+    {
+        gotoxy(ebulletX3, ebulletY3);
+        cout << " ";
+        ebulletY3-=2;
+        if (ebulletY3 <=20 || getCharAtxy(ebulletX3,ebulletY3)=='#') {
+            bulletactiveE3 = false;
+        }
+
+        if(getCharAtxy(ebulletX3,ebulletY3)=='o'|| getCharAtxy(ebulletX3,ebulletY3)=='|' || getCharAtxy(ebulletX3,ebulletY3)=='\\' || getCharAtxy(ebulletX3,ebulletY3)=='/')
+        {
+            health-=25;
+        }
+    }
+
+    if (bulletactiveE6) 
+    {
+        gotoxy(ebulletX6, ebulletY6);
+        cout << " ";
+        ebulletX6-=1;
+        if (ebulletX6 <=20 || getCharAtxy(ebulletX6,ebulletY6)=='#') {
+            bulletactiveE6 = false;
+        }
+
+        if(getCharAtxy(ebulletX6,ebulletY6)=='o'|| getCharAtxy(ebulletX6,ebulletY6)=='|' || getCharAtxy(ebulletX6,ebulletY6)=='\\' || getCharAtxy(ebulletX6,ebulletY6)=='/')
+        {
+            health-=25;
+        }
+    }
+
+    if (bulletactiveE4) 
+    {
+        gotoxy(ebulletX4, ebulletY4);
+        cout << " ";
+        ebulletY4+=2;
+        if (ebulletY4 >=22 || getCharAtxy(ebulletX4,ebulletY4)=='#') {
+            bulletactiveE4 = false;
+        }
+
+        if(getCharAtxy(ebulletX4,ebulletY4)=='o'|| getCharAtxy(ebulletX4,ebulletY4)=='|' || getCharAtxy(ebulletX4,ebulletY4)=='\\' || getCharAtxy(ebulletX4,ebulletY4)=='/')
+        {
+            health-=25;
+        }
+    }
+
+    if (bulletactiveE5) 
+    {
+        gotoxy(ebulletX5, ebulletY5);
+        cout << "  ";
+        ebulletX5-=2;
+        if (ebulletX4 <=20 || getCharAtxy(ebulletX5,ebulletY5)=='#') {
+            bulletactiveE5 = false;
+        }
+
+        if(getCharAtxy(ebulletX5,ebulletY5)=='o'|| getCharAtxy(ebulletX5,ebulletY5)=='|' || getCharAtxy(ebulletX5,ebulletY5)=='\\' || getCharAtxy(ebulletX5,ebulletY5)=='/')
+        {
+            health-=25;
+        }
+    }
+}
+
+void enemyShoot() 
+{
+    if (!bulletactiveE1) 
+    {
+        ebulletX1 = ex1 + 2;
+        ebulletY1 = ey1+1;
+        bulletactiveE1 = true;
+    }
+    if (!bulletactiveE2) 
+    {
+        ebulletX2 = ex2+2;
+        ebulletY2 = ey2+1;
+        bulletactiveE2 = true;
+    }
+    if (!bulletactiveE3) 
+    {
+        ebulletX3 = ex3+1;
+        ebulletY3 = ey3-2;
+        bulletactiveE3 = true;
+    }
+    if (!bulletactiveE6) 
+    {
+        ebulletX6 = ex6+2;
+        ebulletY6 = ey6+1;
+        bulletactiveE6 = true;
+    }
+    if (!bulletactiveE4) 
+    {
+        ebulletX4 = ex4+1;
+        ebulletY4 = ey4+2;
+        bulletactiveE4 = true;
+    }
+    if (!bulletactiveE5) 
+    {
+        ebulletX5 = ex5+2;
+        ebulletY5 = ey5+1;
+        bulletactiveE5 = true;
+    }
+
 }
 
 

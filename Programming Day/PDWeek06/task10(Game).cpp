@@ -94,32 +94,44 @@ int main()
             
             checkFirstEnemy=false;
             bulletactiveE1=true;
+            gotoxy(ebulletX1,ebulletY1);
+            cout << " ";
         }
         if(enemy2<=0)
         {
             checkSecondEnemy=false;
             bulletactiveE2=true;
+            gotoxy(ebulletX2,ebulletY2);
+            cout << " ";
         }
         if(enemy3<=0)
         {
             checkThirdEnemy=false;
             bulletactiveE3=true;
+            gotoxy(ebulletX3,ebulletY3);
+            cout << " ";
         }
         if(enemy4<=0)
         {
             enemy4=0;
             checkFourthEnemy=false;
             bulletactiveE4=true;
+            gotoxy(ebulletX4,ebulletY4);
+            cout << " ";
         }
         if(enemy5<=0)
         {
             checkFifthEnemy=false;
             bulletactiveE5=true;
+            gotoxy(ebulletX5,ebulletY5);
+            cout << "  ";
         }
         if(enemy6<=0)
         {
             checkSixthEnemy=false;
             bulletactiveE6=true;
+            gotoxy(ebulletX6,ebulletY6);
+            cout << " ";
         }
 
         if (GetAsyncKeyState(VK_LEFT))
@@ -757,7 +769,7 @@ void printEnemyBullets() {
 
 void moveEnemyBullet()
 {
-    if (bulletactiveE1) 
+    if (bulletactiveE1 && checkFirstEnemy) 
     {
         gotoxy(ebulletX1, ebulletY1);
         cout << " ";
@@ -772,7 +784,7 @@ void moveEnemyBullet()
         }
     }
 
-    if (bulletactiveE2) 
+    if (bulletactiveE2 && checkSecondEnemy) 
     {
         gotoxy(ebulletX2, ebulletY2);
         cout << " ";
@@ -787,12 +799,12 @@ void moveEnemyBullet()
         }
     }
 
-    if (bulletactiveE3) 
+    if (bulletactiveE3 && checkThirdEnemy) 
     {
         gotoxy(ebulletX3, ebulletY3);
         cout << " ";
         ebulletY3-=2;
-        if (ebulletY3 <=20 || getCharAtxy(ebulletX3,ebulletY3)=='#') {
+        if (ebulletY3 <=20 || ebulletY3>=37 ||  getCharAtxy(ebulletX3,ebulletY3)=='#') {
             bulletactiveE3 = false;
         }
 
@@ -802,7 +814,7 @@ void moveEnemyBullet()
         }
     }
 
-    if (bulletactiveE6) 
+    if (bulletactiveE6 && checkSixthEnemy) 
     {
         gotoxy(ebulletX6, ebulletY6);
         cout << " ";
@@ -817,7 +829,7 @@ void moveEnemyBullet()
         }
     }
 
-    if (bulletactiveE4) 
+    if (bulletactiveE4 && checkFourthEnemy) 
     {
         gotoxy(ebulletX4, ebulletY4);
         cout << " ";
@@ -832,12 +844,12 @@ void moveEnemyBullet()
         }
     }
 
-    if (bulletactiveE5) 
+    if (bulletactiveE5 && checkFifthEnemy) 
     {
         gotoxy(ebulletX5, ebulletY5);
         cout << "  ";
         ebulletX5-=2;
-        if (ebulletX4 <=20 || getCharAtxy(ebulletX5,ebulletY5)=='#') {
+        if (ebulletX5 <=20  || getCharAtxy(ebulletX5,ebulletY5)=='#') {
             bulletactiveE5 = false;
         }
 

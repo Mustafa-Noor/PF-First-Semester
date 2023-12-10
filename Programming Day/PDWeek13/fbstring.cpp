@@ -3,6 +3,9 @@
 #include <conio.h>
 #include <iomanip>
 #include <fstream>
+#include<sstream>
+#include <cstdlib>
+#include<string>
 using namespace std;
 
 void printHeader();
@@ -89,6 +92,9 @@ void saveRecordsofWomenitems(string arrW[], int priceW[], int availableW[], int 
 void saveRecordsofMenitems(string arrM[], int priceM[], int availableM[], int menq);
 void saveQuantitybought(int cardindex, int menq, int womenq, int quantforMen[][30], int quantforWomen[][30]);
 void saveAdresses(int areas, string deliveryAreas[]);
+void retrieveCredentialsRec(int range, string username[], string password[], string role[], int idx, int cusIndex, int cardindex);
+
+string getField(string record, int field);
 
 
 main()
@@ -135,6 +141,8 @@ main()
     string deliveryAreas[range] = {"Gulberg", "Askari", "DHA", "Model Town"};
     
     
+    retrieveCredentialsRec(range, username, password, role,idx, cusIndex, cardindex);
+
 
     string op;
 
@@ -152,7 +160,7 @@ main()
         {
             clearScreen();
             string role1 = signinMenu(username, password, role, cardindex, range, idx, reviewindex, cusIndex, customerArr);
-            if (role1 == "Employee")
+            if (role1 == "Employee" || role1 == "employee")
             {
                 string employeechoice;
                 system("color 01");
@@ -336,7 +344,7 @@ main()
                 }
             }
 
-            else if (role1 == "Customer")
+            else if (role1 == "Customer" || role1 == "customer")
             {
                 system("color 01");
                 for (int x = 0; x < menq; x++)
@@ -768,6 +776,42 @@ void saveQuantitybought(int cardindex, int menq, int womenq, int quantforMen[][3
     }
 
     file.close();
+}
+
+void retrieveCredentialsRec(int range, string username[], string password[], string role[], int idx, int cusIndex, int cardindex)
+{
+    int a=0;
+    string record="";
+    fstream file;
+    file.open("Credentials.txt", ios::in);
+    while(!file.eof())
+    {
+        getline(file, record);
+        username[a]=getField(record,1);
+        password[a]=getField(record,2);
+        role[a]=getField(record,3);
+        a=a+1;
+    }
+
+    file.close();
+}
+
+string getField(string record, int field)
+{
+	int comma=1;
+	string result="";
+	for (int x = 0; x < record.length(); x++)
+	{
+	if (record[x]==',')
+	{
+	comma=comma+1;
+	}
+	else if(comma==field)
+	{
+	result=result+record[x];
+	}
+	}
+	return result;
 }
 
 

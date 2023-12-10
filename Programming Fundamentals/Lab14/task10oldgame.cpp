@@ -30,26 +30,11 @@ void moveHeroup();
 void moveHerodown();
 void hp();
 void powerup();
-void printfire();
-void removefire();
-void movefire();
-void enemydata();
 
 int px=17, py=15, ex1=90, ey1=4, ex2=4, ey2=4, ex3=33, ey3=27, ex4=91, ey4=12, ex5=85, ey5=25, ex6=37, ey6=18, hx=46, hy=4;
 int contact1=0, contact2=0, contact3=0, contact4=0;
 int contact5=0, contact6=0;
 int health=100;
-int bx=px+5;
-int by=py+1;
-bool bulletActive=false;
-char bulletDir='r';
-bool checkFirstEnemy=true, checkSecondEnemy=true, checkThirdEnemy=true, checkFourthEnemy=true, checkFifthEnemy=true, checkSixthEnemy=true;
-
-int countForE1=0;
-
-
-int enemy1=100, enemy2=100, enemy3=100, enemy4=100, enemy5=100 , enemy6=100;
-
 
 char getCharAtxy(short int x, short int y)
 {
@@ -79,84 +64,26 @@ int main()
     while(true){
         Sleep(100);
 
-        if(enemy1<=0)
-        {
-            
-            checkFirstEnemy=false;
-        }
-        if(enemy2<=0)
-        {
-            checkSecondEnemy=false;
-        }
-        if(enemy3<=0)
-        {
-            checkThirdEnemy=false;
-        }
-        if(enemy4<=0)
-        {
-            enemy4=0;
-            checkFourthEnemy=false;
-        }
-        if(enemy5<=0)
-        {
-            checkFifthEnemy=false;
-        }
-        if(enemy6<=0)
-        {
-            checkSixthEnemy=false;
-        }
-
         if (GetAsyncKeyState(VK_LEFT))
         {
             moveHeroleft();
             hp();
-            enemydata();
         }
         if (GetAsyncKeyState(VK_RIGHT))
         {
             moveHeroright();
             hp();
-            enemydata();
         }
         if (GetAsyncKeyState(VK_UP))
         {
             moveHeroup();
             hp();
-            enemydata();
         }
         if (GetAsyncKeyState(VK_DOWN))
         {
             moveHerodown();
             hp();
-            enemydata();
             
-        }
-        if (GetAsyncKeyState(VK_SPACE))
-        {
-            if (!bulletActive)
-            {
-                bx = px + 5; 
-                by = py + 1;
-                bulletActive = true;
-
-                bulletDir='r';
-            }
-
-        }
-        if (GetAsyncKeyState(VK_SHIFT))
-        {
-            if (!bulletActive)
-            {
-                bx = px - 2; 
-                by = py + 1;
-                bulletActive = true;
-                bulletDir='l';
-            }
-        }
-
-        if (bulletActive)
-        {
-            movefire();
         }
 
         
@@ -224,7 +151,6 @@ void printmaze()
     cout << "#                                    #                                                         #" << endl;
     cout << "#                                    #                                                         #" << endl;
     cout << "################################################################################################" << endl;
-    cout << "#                                   |              |                                           #" << endl;
     cout << "#                                                                                              #" << endl;
     cout << "################################################################################################" << endl;
 
@@ -246,25 +172,8 @@ void powerup(){
 void hp() {
     
     
-    gotoxy(38, 31);
+    gotoxy(5, 31);
     cout << "Health: " << health;
-}
-
-void enemydata()
-{
-    gotoxy(1,32);
-    cout << "Enemy1: " << enemy1;
-    gotoxy(16,32);
-    cout << "Enemy2: " << enemy2;
-    gotoxy(32,32);
-    cout << "Enemy3: " << enemy3;
-    gotoxy(48,32);
-    cout << "Enemy4: " << enemy4;
-    gotoxy(64,32);
-    cout << "Enemy5: " << enemy5;
-    gotoxy(80,32);
-    cout << "Enemy6: " << enemy6;
-
 }
 
 
@@ -285,65 +194,65 @@ void printenemy1()
 {
     
     gotoxy(ex1, ey1);
-    cout <<" @ " ;
+    cout <<" ' " ;
     gotoxy(ex1,ey1+1);
-    cout <<"@@@" ;
+    cout <<"#=#" ;
     gotoxy(ex1,ey1+2);
-    cout <<"@@@" ;
+    cout <<"#^#" ;
 }
 
 void printenemy2()
 {
     gotoxy(ex2, ey2);
-    cout <<" $ " ;
+    cout <<" _ " ;
     gotoxy(ex2,ey2+1);
-    cout <<"$$$" ;
+    cout <<"(=)" ;
     gotoxy(ex2,ey2+2);
-    cout <<"$$$" ;
+    cout <<"#^#" ;
 }
 
 void printenemy3()
 {
     gotoxy(ex3, ey3);
-    cout <<" & " ;
+    cout <<" ' " ;
     gotoxy(ex3,ey3+1);
-    cout <<"&&&" ;
+    cout <<"#=#" ;
     gotoxy(ex3,ey3+2);
-    cout <<"&&&" ;
+    cout <<"#^#" ;
 }
 
 void printenemy4()
 {
     gotoxy(ex4, ey4);
-    cout <<" * " ;
+    cout <<" _ " ;
     gotoxy(ex4,ey4+1);
-    cout <<"***" ;
+    cout <<"(=)" ;
     gotoxy(ex4,ey4+2);
-    cout <<"***" ;
+    cout <<"#^#" ;
 }
 
 
 void printenemy5()
 {
     gotoxy(ex5, ey5);
-    cout <<"  8  " ;
+    cout <<"  #  " ;
     gotoxy(ex5,ey5+1);
-    cout <<"88888" ;
+    cout <<"##=##" ;
     gotoxy(ex5,ey5+2);
-    cout <<"88888" ;
+    cout <<"##^##" ;
     gotoxy(ex5,ey5+3);
-    cout <<" 8 8 " ;
+    cout <<" # # " ;
 
 }
 
 void printenemy6()
 {
     gotoxy(ex6, ey6);
-    cout <<" % " ;
+    cout <<" _ " ;
     gotoxy(ex6,ey6+1);
-    cout <<"%%%" ;
+    cout <<"(=)" ;
     gotoxy(ex6,ey6+2);
-    cout <<"%%%" ;
+    cout <<"#^#" ;
 }
 
 void removeHero(){
@@ -416,8 +325,6 @@ void removeEnemy6(){
 void moveEnemy1(){
    
     removeEnemy1();
-    if(checkFirstEnemy)
-    {
     if(contact1==0){
     ey1=ey1+1;}
     if(ey1==9){
@@ -433,13 +340,10 @@ void moveEnemy1(){
 
 
     printenemy1();
-    }
 }
 
 void moveEnemy2(){
     removeEnemy2();
-    if(checkSecondEnemy)
-    {
     if(contact2==0){
     ey2=ey2-1;}
     if(ey2==0){
@@ -453,15 +357,12 @@ void moveEnemy2(){
         contact2=0;
     }
     printenemy2();
-    }
 
 
     }
 
 void moveEnemy3(){
     removeEnemy3();
-    if(checkThirdEnemy)
-    {
     if(contact3==0){
     ex3=ex3-1;}
     if(ex3==1){
@@ -475,17 +376,14 @@ void moveEnemy3(){
         contact3=0;
     }
     printenemy3();
+
+
     }
-
-
-}
 
 
 
 void moveEnemy4(){
     removeEnemy4();
-    if(checkFourthEnemy)
-    {
     if(contact4==0){
     ex4=ex4-1;}
     if(ex4==60){
@@ -499,15 +397,12 @@ void moveEnemy4(){
         contact4=0;
     }
     printenemy4();
-    }
 
 
     }
 
 void moveEnemy5(){
     removeEnemy5();
-    if(checkFifthEnemy)
-    {
     if(contact5==0){
     ey5=ey5+1;}
     if(ey5==27){
@@ -521,15 +416,12 @@ void moveEnemy5(){
         contact5=0;
     }
     printenemy5();
-    }
 
 
     }
 
 void moveEnemy6(){
     removeEnemy6();
-    if(checkSixthEnemy)
-    {
     if(contact6==0){
     ey6=ey6-1;
     ex6=ex6+3;}
@@ -545,10 +437,9 @@ void moveEnemy6(){
         contact6=0;
     }
     printenemy6();
-    }
 
 
-}    
+    }    
 
 void moveHeroleft(){
     if (getCharAtxy(px-2,py) == ' ' && getCharAtxy(px-2,py+1) == ' ' && getCharAtxy(px-2,py+2) == ' '){
@@ -591,102 +482,8 @@ void moveHerodown(){
 }
 
 
-void printfire()
-{
-    gotoxy(px+5,py+1);
-    {
-        cout << "o";
-    }
-}
 
-void removefire()
-{
-    gotoxy(bx, by);
-    cout << " ";
-}
 
-void movefire()
-{
-    removefire();
-
-    if (bulletDir == 'r')
-    {
-        if (getCharAtxy(bx + 3, by) != '#')
-        {
-            bx += 3; // Move right
-        }
-        else
-        {
-            bulletActive = false;
-        }
-    }
-    else
-    {
-        if (getCharAtxy(bx - 3, by) != '#')
-        {
-            bx -= 3; // Move left
-        }
-        else
-        {
-            bulletActive = false;
-        }
-    }
-
-    if(getCharAtxy(bx,by) == '@')
-    {
-        enemy1-=50;
-        bulletActive = false; // Bullet should be inactive after hitting an enemy
-        removefire();
-        
-    }
-
-    if(getCharAtxy(bx,by)=='$')
-    {
-        enemy2-=50;
-        bulletActive=false;
-        removefire();
-    }
-
-    if(getCharAtxy(bx,by)=='&')
-    {
-        enemy3-=50;
-        bulletActive=false;
-        removefire();
-    }
-
-    if(getCharAtxy(bx,by)=='*')
-    {
-        enemy4-=50;
-        bulletActive=false;
-        removefire();
-    }
-
-    if(getCharAtxy(bx,by)=='8')
-    {
-        enemy5-=50;
-        bulletActive=false;
-        removefire();
-    }
-
-    if(getCharAtxy(bx,by)=='%')
-    {
-        enemy6-=50;
-        bulletActive=false;
-        removefire();
-    }
-
-    // Check if the bullet has hit an enemy or reached the right edge of the screen
-    if (getCharAtxy(bx, by) == '#' || bx >= 97 || getCharAtxy(bx+1,by)=='#' || getCharAtxy(bx-1,by)=='#' || bx<=0 || getCharAtxy(bx+2,by)=='#' || getCharAtxy(bx+3,by)=='#' || getCharAtxy(bx-2,by)=='#' || getCharAtxy(bx-3,by)=='#')
-    {
-        bulletActive = false;
-        removefire();
-    }
-    else
-    {
-        gotoxy(bx, by);
-        cout << "o";
-    }
-}
 
 
 

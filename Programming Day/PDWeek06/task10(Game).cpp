@@ -37,6 +37,12 @@ void enemydata();
 void moveEnemyBullet();
 void printEnemyBullets();
 void enemyShoot();
+string printfrontpage();
+void loadingScreen();
+void level();
+void header();
+
+void gameover();
 
 int px=17, py=15, ex1=90, ey1=4, ex2=4, ey2=4, ex3=33, ey3=27, ex4=91, ey4=12, ex5=85, ey5=25, ex6=37, ey6=18, hx=46, hy=4;
 int contact1=0, contact2=0, contact3=0, contact4=0;
@@ -71,160 +77,305 @@ return ReadConsoleOutput(GetStdHandle(STD_OUTPUT_HANDLE), &ci, coordBufSize, xy,
 
 
 int main()
-{
+{  
     system("cls");
-    printmaze();
-    printhero();
-    printenemy1();
-    printenemy2();
-    printenemy3();
-    printenemy4();
-    printenemy5();
-    printenemy6();
-    powerup();
-    while(true){
-        Sleep(100);
-
-        enemyShoot();
-        moveEnemyBullet();
-        printEnemyBullets();
-
-        if(enemy1<=0)
-        {
+    string choice=printfrontpage();
+    if(choice=="1")
+    {
+        system("cls");
+        loadingScreen();
+        Sleep(400);
+        
+        
+        system("cls");
+        printmaze();
+        printhero();
+        printenemy1();
+        printenemy2();
+        printenemy3();
+        printenemy4();
+        printenemy5();
+        printenemy6();
+        powerup();
+        while(true){
+            if(health<0)
+            {
+                break;
+            }
             
-            checkFirstEnemy=false;
-            bulletactiveE1=true;
-            gotoxy(ebulletX1,ebulletY1);
-            cout << " ";
-        }
-        if(enemy2<=0)
-        {
-            checkSecondEnemy=false;
-            bulletactiveE2=true;
-            gotoxy(ebulletX2,ebulletY2);
-            cout << " ";
-        }
-        if(enemy3<=0)
-        {
-            checkThirdEnemy=false;
-            bulletactiveE3=true;
-            gotoxy(ebulletX3,ebulletY3);
-            cout << " ";
-        }
-        if(enemy4<=0)
-        {
-            enemy4=0;
-            checkFourthEnemy=false;
-            bulletactiveE4=true;
-            gotoxy(ebulletX4,ebulletY4);
-            cout << " ";
-        }
-        if(enemy5<=0)
-        {
-            checkFifthEnemy=false;
-            bulletactiveE5=true;
-            gotoxy(ebulletX5,ebulletY5);
-            cout << "  ";
-        }
-        if(enemy6<=0)
-        {
-            checkSixthEnemy=false;
-            bulletactiveE6=true;
-            gotoxy(ebulletX6,ebulletY6);
-            cout << " ";
-        }
 
-        if (GetAsyncKeyState(VK_LEFT))
-        {
-            moveHeroleft();
-            hp();
-            enemydata();
-        }
-        if (GetAsyncKeyState(VK_RIGHT))
-        {
-            moveHeroright();
-            hp();
-            enemydata();
-        }
-        if (GetAsyncKeyState(VK_UP))
-        {
-            moveHeroup();
-            hp();
-            enemydata();
-        }
-        if (GetAsyncKeyState(VK_DOWN))
-        {
-            moveHerodown();
-            hp();
-            enemydata();
-            
-        }
-        if (GetAsyncKeyState(VK_SPACE))
-        {
-            if (!bulletActive)
+            Sleep(100);
+
+            enemyShoot();
+            moveEnemyBullet();
+            printEnemyBullets();
+
+            if(enemy1<=0)
             {
-                bx = px + 5; 
-                by = py + 1;
-                bulletActive = true;
 
-                bulletDir='r';
+                checkFirstEnemy=false;
+                bulletactiveE1=true;
+                gotoxy(ebulletX1,ebulletY1);
+                cout << " ";
             }
-
-        }
-        if (GetAsyncKeyState(VK_LSHIFT))
-        {
-            if (!bulletActive)
+            if(enemy2<=0)
             {
-                bx = px - 2; 
-                by = py + 1;
-                bulletActive = true;
-                bulletDir='l';
+                checkSecondEnemy=false;
+                bulletactiveE2=true;
+                gotoxy(ebulletX2,ebulletY2);
+                cout << " ";
             }
-        }
-
-        if(GetAsyncKeyState(VK_RSHIFT))
-        {
-            if (!bulletActive)
+            if(enemy3<=0)
             {
-                bx= px;
-                by=py+2;
-                bulletActive=true;
-                bulletDir='d';
+                checkThirdEnemy=false;
+                bulletactiveE3=true;
+                gotoxy(ebulletX3,ebulletY3);
+                cout << " ";
             }
-        
-        }
+            if(enemy4<=0)
+            {
+                enemy4=0;
+                checkFourthEnemy=false;
+                bulletactiveE4=true;
+                gotoxy(ebulletX4,ebulletY4);
+                cout << " ";
+            }
+            if(enemy5<=0)
+            {
+                checkFifthEnemy=false;
+                bulletactiveE5=true;
+                gotoxy(ebulletX5,ebulletY5);
+                cout << "  ";
+            }
+            if(enemy6<=0)
+            {
+                checkSixthEnemy=false;
+                bulletactiveE6=true;
+                gotoxy(ebulletX6,ebulletY6);
+                cout << " ";
+            }
 
-        if (bulletActive)
+            if (GetAsyncKeyState(VK_LEFT))
+            {
+                moveHeroleft();
+                hp();
+                enemydata();
+            }
+            if (GetAsyncKeyState(VK_RIGHT))
+            {
+                moveHeroright();
+                hp();
+                enemydata();
+            }
+            if (GetAsyncKeyState(VK_UP))
+            {
+                moveHeroup();
+                hp();
+                enemydata();
+            }
+            if (GetAsyncKeyState(VK_DOWN))
+            {
+                moveHerodown();
+                hp();
+                enemydata();
+
+            }
+            if (GetAsyncKeyState(VK_SPACE))
+            {
+                if (!bulletActive)
+                {
+                    bx = px + 5; 
+                    by = py + 1;
+                    bulletActive = true;
+
+                    bulletDir='r';
+                }
+
+            }
+            if (GetAsyncKeyState(VK_LSHIFT))
+            {
+                if (!bulletActive)
+                {
+                    bx = px - 2; 
+                    by = py + 1;
+                    bulletActive = true;
+                    bulletDir='l';
+                }
+            }
+
+            if(GetAsyncKeyState(VK_RSHIFT))
+            {
+                if (!bulletActive)
+                {
+                    bx= px;
+                    by=py+2;
+                    bulletActive=true;
+                    bulletDir='d';
+                }
+
+            }
+
+            if (bulletActive)
+            {
+                movefire();
+            }
+
+
+            moveEnemy1();
+
+            moveEnemy2();
+
+            moveEnemy3();
+
+            moveEnemy4();
+
+            moveEnemy5(); 
+
+            moveEnemy6();
+
+
+
+            if (px == hx && py >= hy && py <= hy + 2) 
+            {
+                health = 200;
+                hp();
+            }
+
+        }
+        void powerup();
+        void hp();
+
+        if(health<=0)
         {
-            movefire();
+            system("cls");
+            loadingScreen();
+            Sleep(1000);
+
+            system("cls");
+            gameover();
+            gotoxy(70,70);
         }
-
-        
-        moveEnemy1();
-        
-        moveEnemy2();
-        
-        moveEnemy3();
-        
-        moveEnemy4();
-       
-        moveEnemy5(); 
-
-        moveEnemy6();
-
-        
-    
-    if (px == hx && py >= hy && py <= hy + 2) {
-            health = 200;
-            hp();
-            }
-        }
-    void powerup();
-    void hp();
+    }
 
 }
   
+string printfrontpage()
+{
+    cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%% #######   ### ##   #######   #####   ##   ##      ##   ##  #######  ### ##    #####  %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##  ##  ##   ##   ## ##       ##   ##   ##  ##   ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  # ### #      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ## ##    ####    #######  ## # ##      #######   ####     ## ##   ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  ##   ##      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##   ##  ##  ##  ##   ##  ##   ##      ##   ##   ##  ##   ##   ## ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%% #######    ##   ## #######  ##   ##  ##   ##      ##   ##  #######   ##   ##  #####  %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<"                                                                                                                              " << endl;
+	cout <<"                                                                                                                              " << endl;
+	cout <<"                                                                                                                              " << endl;
+	cout <<"                              /___\\                                The Saviour                                               " << endl;
+	cout <<"                             | <><>|                                   of our                                                 " << endl;
+	cout <<"                             (__/\\_)                                  Kingdom                                                " << endl;
+	cout <<"                            /       \\                                   has                                                  " << endl;
+	cout <<"                            ||     ||                                 RETURNED!                                               " << endl;
+	cout <<"                            | /  \\  |                                                                                        " << endl;
+	cout <<"                            \\/] [][\\/                                                                                       " << endl;
+	cout <<"                             | | | |                                                                                          " << endl;
+	cout <<"                             |_| |_|                                                                                          " << endl;
+	cout <<"                             [ ] [ ]                                                                                          " << endl;
+	cout <<"                             | | | |                                                                                          " << endl;
+	cout <<"                             |_| |_|                                                                                          " << endl;
+	cout <<"____________________________ [ \\ [ \\_______________________________________________________________________________________ " << endl;
+	cout <<"----------------------------------------------------Enter 1 to play the game--------------------------------------------------" << endl;
+	cout <<"-----------------------------------------------Enter any other key to exit the game-------------------------------------------" << endl;
+    cout <<"---------------------------------------------------------Your choice:     ----------------------------------------------------" << endl;
+     string choice;
+     gotoxy(70,29);
+     cin >> choice;
+     return choice;
+}
 
+void loadingScreen()
+{
+    cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%% #######   ### ##   #######   #####   ##   ##      ##   ##  #######  ### ##    #####  %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##  ##  ##   ##   ## ##       ##   ##   ##  ##   ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  # ### #      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ## ##    ####    #######  ## # ##      #######   ####     ## ##   ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  ##   ##      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##   ##  ##  ##  ##   ##  ##   ##      ##   ##   ##  ##   ##   ## ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%% #######    ##   ## #######  ##   ##  ##   ##      ##   ##  #######   ##   ##  #####  %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<"                                                                                                                              " << endl;
+	cout <<"                                                                                                                              " << endl;
+	cout <<"                                                                                                                              " << endl;
+    cout <<"                                                                                                                              " << endl;
+	cout <<"                                                                                                                              " << endl;
+    cout <<"                                                     Loading please Wait!                                                     " << endl;
+	cout <<"                                                                                                                              " << endl;
+    cout <<"                                                                                                                              " << endl;
+	cout <<"                                                                                                                              " << endl;
+    cout <<"                                                                                                                              " << endl;
+	cout <<"                                                                                                                              " << endl;
+    cout <<"                                                                                                                              " << endl;
+	cout <<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
+}
+
+void header()
+{
+    cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%% #######   ### ##   #######   #####   ##   ##      ##   ##  #######  ### ##    #####  %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##  ##  ##   ##   ## ##       ##   ##   ##  ##   ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  # ### #      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ## ##    ####    #######  ## # ##      #######   ####     ## ##   ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  ##   ##      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##   ##  ##  ##  ##   ##  ##   ##      ##   ##   ##  ##   ##   ## ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%% #######    ##   ## #######  ##   ##  ##   ##      ##   ##  #######   ##   ##  #####  %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+}
+
+void gameover()
+{
+    cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%% #######   ### ##   #######   #####   ##   ##      ##   ##  #######  ### ##    #####  %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##  ##  ##   ##   ## ##       ##   ##   ##  ##   ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  # ### #      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ## ##    ####    #######  ## # ##      #######   ####     ## ##   ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  ##   ##      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##   ##  ##  ##  ##   ##  ##   ##      ##   ##   ##  ##   ##   ## ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%% #######    ##   ## #######  ##   ##  ##   ##      ##   ##  #######   ##   ##  #####  %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<"                                                                                                                              " << endl;
+	cout <<"                                                                                                                              " << endl;
+	cout <<"                                                                                                                              " << endl;
+    cout <<"                                                                                                                              " << endl;
+	cout <<"                                                        GAME OVER!                                                             " << endl;
+    cout <<"                                                                                                                              " << endl;
+	cout <<"                                                                                                                              " << endl;
+    cout <<"                                                                                                                              " << endl;
+	cout <<"                                                                                                                              " << endl;
+	cout <<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
+   
+    
+}
+
+void level()
+{
+        cout <<R"(
+                     __,    ____,  __  _, ____,  __,      ___, 
+                    (-|    (-|_,  (-\  / (-|_,  (-|      (-/|  
+                     _|__,  _|__,   _\/   _|__,  _|__,    '_|, 
+                    (      (       (     (      (         (   
+                                                            )";;
+}
 
 
 
@@ -267,6 +418,7 @@ void printmaze()
     cout << "#                                   |              |                                           #" << endl;
     cout << "#                                                                                              #" << endl;
     cout << "################################################################################################" << endl;
+    level();
 
 }
 

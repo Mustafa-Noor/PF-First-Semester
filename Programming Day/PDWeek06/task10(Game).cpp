@@ -41,18 +41,27 @@ string printfrontpage();
 void loadingScreen();
 void level();
 void header();
-
+void finalLevel();
+void finalmaze();
+void printenemy7();
+void printenemy8();
+void removeEnemy7();
+void removeEnemy8();
+void moveEnemy7();
+void moveEnemy8();
 void gameover();
 
 int px=17, py=15, ex1=90, ey1=4, ex2=4, ey2=4, ex3=33, ey3=27, ex4=91, ey4=12, ex5=85, ey5=25, ex6=37, ey6=18, hx=46, hy=4;
+int ex7, ex8, ey7, ey8;
 int contact1=0, contact2=0, contact3=0, contact4=0;
-int contact5=0, contact6=0;
+int contact5=0, contact6=0, contact7=0, contact8=0;
 int health=100;
 int bx=px+5;
 int by=py+1;
 bool bulletActive=false;
 char bulletDir='r';
 bool checkFirstEnemy=true, checkSecondEnemy=true, checkThirdEnemy=true, checkFourthEnemy=true, checkFifthEnemy=true, checkSixthEnemy=true;
+bool checkSeventhEnemy=true, checkEightEnemy=true;
 
 int ebulletX1,ebulletY1,ebulletX2,ebulletY2, ebulletX3, ebulletY3, ebulletX4, ebulletY4, ebulletX5, ebulletY5, ebulletX6, ebulletY6;
 bool bulletactiveE1=false, bulletactiveE2=false, bulletactiveE3=false, bulletactiveE4=false, bulletactiveE5=false, bulletactiveE6=false;
@@ -61,6 +70,7 @@ int countForE1=0;
 
 
 int enemy1=100, enemy2=100, enemy3=100, enemy4=100, enemy5=100 , enemy6=100;
+bool nextLevel=false;
 
 
 char getCharAtxy(short int x, short int y)
@@ -102,10 +112,18 @@ int main()
             {
                 break;
             }
+
+            if(health>0 && !checkFifthEnemy && !checkSecondEnemy && !checkThirdEnemy && !checkFourthEnemy && !checkFifthEnemy && !checkSixthEnemy)
+            {
+                nextLevel=true;
+                break;
+
+            }
             
 
             Sleep(100);
-
+            hp();
+            enemydata();
             enemyShoot();
             moveEnemyBullet();
             printEnemyBullets();
@@ -158,27 +176,21 @@ int main()
             if (GetAsyncKeyState(VK_LEFT))
             {
                 moveHeroleft();
-                hp();
-                enemydata();
+                
             }
             if (GetAsyncKeyState(VK_RIGHT))
             {
                 moveHeroright();
-                hp();
-                enemydata();
+                
             }
             if (GetAsyncKeyState(VK_UP))
             {
                 moveHeroup();
-                hp();
-                enemydata();
+                
             }
             if (GetAsyncKeyState(VK_DOWN))
             {
                 moveHerodown();
-                hp();
-                enemydata();
-
             }
             if (GetAsyncKeyState(VK_SPACE))
             {
@@ -213,6 +225,11 @@ int main()
                     bulletDir='d';
                 }
 
+            }
+            if(GetAsyncKeyState(VK_ESCAPE))
+            {
+                nextLevel=true;
+                break;
             }
 
             if (bulletActive)
@@ -254,6 +271,96 @@ int main()
             system("cls");
             gameover();
             gotoxy(70,70);
+        }
+
+
+        if(nextLevel)
+        {
+
+            system("cls");
+            loadingScreen();
+            Sleep(400);
+
+
+            px=58;
+            py=24;
+            ex7=36;
+            ey7=18;
+            ey8=29;
+            ex8=79;
+            
+            system("cls");
+            
+            header();
+            finalLevel();
+            finalmaze();
+            printhero();
+            printenemy7();
+            printenemy8();
+
+            while(true)
+            {
+                Sleep(100);
+                if (GetAsyncKeyState(VK_LEFT))
+            {
+                moveHeroleft();
+            }
+            if (GetAsyncKeyState(VK_RIGHT))
+            {
+                moveHeroright();
+            }
+            if (GetAsyncKeyState(VK_UP))
+            {
+                moveHeroup();
+            }
+            if (GetAsyncKeyState(VK_DOWN))
+            {
+                moveHerodown();
+            }
+            if (GetAsyncKeyState(VK_SPACE))
+            {
+                if (!bulletActive)
+                {
+                    bx = px + 5; 
+                    by = py + 1;
+                    bulletActive = true;
+
+                    bulletDir='r';
+                }
+
+            }
+            if (GetAsyncKeyState(VK_LSHIFT))
+            {
+                if (!bulletActive)
+                {
+                    bx = px - 2; 
+                    by = py + 1;
+                    bulletActive = true;
+                    bulletDir='l';
+                }
+            }
+
+            if(GetAsyncKeyState(VK_RSHIFT))
+            {
+                if (!bulletActive)
+                {
+                    bx= px;
+                    by=py+2;
+                    bulletActive=true;
+                    bulletDir='d';
+                }
+
+            }
+
+            if (bulletActive)
+            {
+                movefire();
+            }
+
+            moveEnemy7();
+            moveEnemy8();
+            }
+            
         }
     }
 
@@ -375,6 +482,42 @@ void level()
                      _|__,  _|__,   _\/   _|__,  _|__,    '_|, 
                     (      (       (     (      (         (   
                                                             )";;
+}
+
+void finalLevel()
+{
+    cout <<R"(
+                                ___  _              _   _                    _ 
+                                | __|(_) _ _   __ _ | | | |    ___ __ __ ___ | |
+                                | _| | || ' \ / _` || | | |__ / -_)\ V // -_)| |
+                                |_|  |_||_||_|\__,_||_| |____|\___| \_/ \___||_|
+                                               
+    )";;
+}
+
+
+void finalmaze()
+{
+    cout << "\t" << "\t" << "\t"<< "\t"<<"########################################################" << endl;
+    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
+    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
+    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
+    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
+    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
+    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
+    cout << "\t" << "\t" << "\t"<< "\t"<<"#                       #     #                        #" << endl;
+    cout << "\t" << "\t" << "\t"<< "\t"<<"#                       #     #                        #" << endl;
+    cout << "\t" << "\t" << "\t"<< "\t"<<"#                       #     #                        #" << endl;
+    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
+    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
+    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
+    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
+    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
+    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
+    cout << "\t" << "\t" << "\t"<< "\t"<<"########################################################" << endl;
+    
+    
+
 }
 
 
@@ -538,6 +681,53 @@ void printenemy6()
     cout <<"%%%" ;
 }
 
+void printenemy7()
+{
+    gotoxy(ex7, ey7);
+    cout <<"  X  " ;
+    gotoxy(ex7,ey7+1);
+    cout <<"XXXXX" ;
+    gotoxy(ex7,ey7+2);
+    cout <<"XXXXX" ;
+    gotoxy(ex7,ey7+3);
+    cout <<" X X " ;
+
+}
+
+void printenemy8()
+{
+    gotoxy(ex8, ey8);
+    cout <<"  A  " ;
+    gotoxy(ex8,ey8+1);
+    cout <<"AAAAA" ;
+    gotoxy(ex8,ey8+2);
+    cout <<"AAAAA" ;
+    gotoxy(ex8,ey8+3);
+    cout <<" A A " ;
+
+}
+
+void removeEnemy7(){
+    gotoxy(ex7, ey7);
+    cout <<"     " ;
+    gotoxy(ex7,ey7+1);
+    cout <<"     " ;
+    gotoxy(ex7,ey7+2);
+    cout <<"     " ;
+    gotoxy(ex7,ey7+3);
+    cout <<"     " ;
+}
+void removeEnemy8(){
+    gotoxy(ex8, ey8);
+    cout <<"     " ;
+    gotoxy(ex8,ey8+1);
+    cout <<"     " ;
+    gotoxy(ex8,ey8+2);
+    cout <<"     " ;
+    gotoxy(ex8,ey8+3);
+    cout <<"     " ;
+}
+
 void removeHero(){
     gotoxy(px, py);
     cout <<"   " ;
@@ -603,6 +793,51 @@ void removeEnemy6(){
     cout <<"   " ;
     gotoxy(ex6,ey6+2);
     cout <<"   " ;
+}
+
+void moveEnemy7(){
+   
+    removeEnemy7();
+    if(checkSeventhEnemy)
+    {
+    if(contact7==0){
+    ey7=ey7+1;}
+    if(ey7==30){
+        contact7=1;
+    }
+    if(contact7==1){
+        ey7=ey7-1;
+    }
+ 
+    if(ey7==18){
+        contact7=0;
+    }
+
+
+    printenemy7();
+    }
+}
+void moveEnemy8(){
+   
+    removeEnemy8();
+    if(checkEightEnemy)
+    {
+    if(contact8==0){
+    ey8=ey8+1;}
+    if(ey8==30){
+        contact8=1;
+    }
+    if(contact8==1){
+        ey8=ey8-1;
+    }
+ 
+    if(ey8==18){
+        contact8=0;
+    }
+
+
+    printenemy8();
+    }
 }
 
 void moveEnemy1(){

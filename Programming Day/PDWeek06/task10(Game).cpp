@@ -50,6 +50,14 @@ void removeEnemy8();
 void moveEnemy7();
 void moveEnemy8();
 void gameover();
+void dataForfinallevel();
+
+void enemybulletfinalLevel();
+void moveBulletForfinal();
+void enemyShootFinal();
+void gamecomplete();
+
+
 
 int px=17, py=15, ex1=90, ey1=4, ex2=4, ey2=4, ex3=33, ey3=27, ex4=91, ey4=12, ex5=85, ey5=25, ex6=37, ey6=18, hx=46, hy=4;
 int ex7, ex8, ey7, ey8;
@@ -64,13 +72,17 @@ bool checkFirstEnemy=true, checkSecondEnemy=true, checkThirdEnemy=true, checkFou
 bool checkSeventhEnemy=true, checkEightEnemy=true;
 
 int ebulletX1,ebulletY1,ebulletX2,ebulletY2, ebulletX3, ebulletY3, ebulletX4, ebulletY4, ebulletX5, ebulletY5, ebulletX6, ebulletY6;
+int ebulletX7, ebulletY7, ebulletX8, ebulletY8;
 bool bulletactiveE1=false, bulletactiveE2=false, bulletactiveE3=false, bulletactiveE4=false, bulletactiveE5=false, bulletactiveE6=false;
+bool bulletactiveE7=false, bulletactiveE8=false;
 
 int countForE1=0;
 
 
 int enemy1=100, enemy2=100, enemy3=100, enemy4=100, enemy5=100 , enemy6=100;
+int enemy7=100, enemy8=100;
 bool nextLevel=false;
+bool gamecompletion=false;
 
 
 char getCharAtxy(short int x, short int y)
@@ -300,7 +312,41 @@ int main()
 
             while(true)
             {
+                enemyShootFinal();
+                moveBulletForfinal();
+                enemybulletfinalLevel();
+                dataForfinallevel();
                 Sleep(100);
+
+                if(health<0)
+                {
+                break;
+                }
+
+                if(health>0 && !checkSeventhEnemy && !checkEightEnemy)
+                {
+                gamecompletion=true;
+                break;
+
+                }
+
+                if(enemy7<=0)
+                {  
+                checkSeventhEnemy=false;
+                bulletactiveE7=true;
+                gotoxy(ebulletX7+1,ebulletY7);
+                cout << "  ";
+                }
+
+                if(enemy8<=0)
+                {
+                checkEightEnemy=false;
+                bulletactiveE8=true;
+                gotoxy(ebulletX8-1,ebulletY8);
+                cout << "  ";
+                }
+
+
                 if (GetAsyncKeyState(VK_LEFT))
             {
                 moveHeroleft();
@@ -352,6 +398,7 @@ int main()
 
             }
 
+
             if (bulletActive)
             {
                 movefire();
@@ -361,6 +408,28 @@ int main()
             moveEnemy8();
             }
             
+        }
+
+        if(health<=0)
+        {
+            system("cls");
+            loadingScreen();
+            Sleep(1000);
+
+            system("cls");
+            gameover();
+            gotoxy(70,70);
+        }
+
+        if(gamecompletion)
+        {
+            system("cls");
+            loadingScreen();
+            Sleep(1000);
+
+            system("cls");
+            gamecomplete();
+            gotoxy(70,70);
         }
     }
 
@@ -474,6 +543,33 @@ void gameover()
     
 }
 
+void gamecomplete()
+{
+    cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%% #######   ### ##   #######   #####   ##   ##      ##   ##  #######  ### ##    #####  %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##  ##  ##   ##   ## ##       ##   ##   ##  ##   ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  # ### #      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ## ##    ####    #######  ## # ##      #######   ####     ## ##   ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  ##   ##      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##   ##  ##  ##  ##   ##  ##   ##      ##   ##   ##  ##   ##   ## ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%% #######    ##   ## #######  ##   ##  ##   ##      ##   ##  #######   ##   ##  #####  %%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+	cout <<"                                                                                                                              " << endl;
+	cout <<"                                                                                                                              " << endl;
+	cout <<"                                                                                                                              " << endl;
+    cout <<"                                                                                                                              " << endl;
+	cout <<"                                                       Congratulation!                                                        " << endl;
+    cout <<"                                                    You have completed the game.                                              " << endl;
+	cout <<"                                                                                                                              " << endl;
+    cout <<"                                                                                                                              " << endl;
+	cout <<"                                                                                                                              " << endl;
+	cout <<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
+   
+    
+}
+
 void level()
 {
         cout <<R"(
@@ -515,6 +611,9 @@ void finalmaze()
     cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
     cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
     cout << "\t" << "\t" << "\t"<< "\t"<<"########################################################" << endl;
+    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
+    cout << "\t" << "\t" << "\t"<< "\t"<<"########################################################" << endl;
+
     
     
 
@@ -599,6 +698,17 @@ void enemydata()
     cout << "Enemy5: " << enemy5;
     gotoxy(80,32);
     cout << "Enemy6: " << enemy6;
+
+}
+
+void dataForfinallevel()
+{
+    gotoxy(37,34);
+    cout << "Health: " << health;
+    gotoxy(55,34);
+    cout << "Boss 1: " << enemy7;
+    gotoxy(70,34);
+    cout << "Boss 2: " << enemy8;
 
 }
 
@@ -1113,6 +1223,20 @@ void movefire()
         removefire();
     }
 
+    if(getCharAtxy(bx,by)=='A')
+    {
+        enemy8-=50;
+        bulletActive=false;
+        removefire();
+    }
+
+    if(getCharAtxy(bx,by)=='X')
+    {
+        enemy7-=50;
+        bulletActive=false;
+        removefire();
+    }
+
     // Check if the bullet has hit an enemy or reached the right edge of the screen
     if (getCharAtxy(bx, by) == '#' || bx >= 97  || by>37 || by<1 || getCharAtxy(bx+1,by)=='#' || getCharAtxy(bx-1,by)=='#' || bx<=0 || getCharAtxy(bx+2,by)=='#' || getCharAtxy(bx+3,by)=='#' || getCharAtxy(bx-2,by)=='#' || getCharAtxy(bx-3,by)=='#')
     {
@@ -1152,6 +1276,19 @@ void printEnemyBullets() {
         cout << "<";
     }
     
+    
+}
+
+void enemybulletfinalLevel()
+{
+    if (bulletactiveE7) {
+        gotoxy(ebulletX7, ebulletY7);
+        cout << ">>";
+    }
+    if (bulletactiveE8) {
+        gotoxy(ebulletX8, ebulletY8);
+        cout << "<<";
+    }
 }
 
 void moveEnemyBullet()
@@ -1245,6 +1382,43 @@ void moveEnemyBullet()
             health-=25;
         }
     }
+
+    
+
+    
+}
+
+void moveBulletForfinal()
+{
+    if (bulletactiveE7 && checkSeventhEnemy) 
+    {
+        gotoxy(ebulletX7, ebulletY7);
+        cout << "  ";
+        ebulletX7+=2;
+        if ( ebulletX7>=60 || getCharAtxy(ebulletX7,ebulletY7)=='#' || getCharAtxy(ebulletX7+1,ebulletY7)=='#') {
+            bulletactiveE7 = false;
+        }
+
+        if(getCharAtxy(ebulletX7,ebulletY7)=='o'|| getCharAtxy(ebulletX7,ebulletY7)=='|' || getCharAtxy(ebulletX7,ebulletY7)=='\\' || getCharAtxy(ebulletX7,ebulletY7)=='/' ||getCharAtxy(ebulletX7+1,ebulletY7)=='o'|| getCharAtxy(ebulletX7+1,ebulletY7)=='|' || getCharAtxy(ebulletX7+1,ebulletY7)=='\\' || getCharAtxy(ebulletX7+1,ebulletY7)=='/')
+        {
+            health-=25;
+        }
+    }
+
+    if (bulletactiveE8 && checkEightEnemy) 
+    {
+        gotoxy(ebulletX8, ebulletY8);
+        cout << "  ";
+        ebulletX8-=2;
+        if (ebulletX8<=40 || getCharAtxy(ebulletX8,ebulletY8)=='#' || getCharAtxy(ebulletX8-1,ebulletY8)=='#') {
+            bulletactiveE8 = false;
+        }
+
+        if(getCharAtxy(ebulletX8,ebulletY8)=='o'|| getCharAtxy(ebulletX8,ebulletY8)=='|' || getCharAtxy(ebulletX8,ebulletY8)=='\\' || getCharAtxy(ebulletX8,ebulletY8)=='/' || getCharAtxy(ebulletX8-1,ebulletY8)=='o'|| getCharAtxy(ebulletX8-1,ebulletY8)=='|' || getCharAtxy(ebulletX8-1,ebulletY8)=='\\' || getCharAtxy(ebulletX8-1,ebulletY8)=='/')
+        {
+            health-=25;
+        }
+    }
 }
 
 void enemyShoot() 
@@ -1285,7 +1459,24 @@ void enemyShoot()
         ebulletY5 = ey5+1;
         bulletactiveE5 = true;
     }
+    
 
+}
+
+void enemyShootFinal()
+{
+    if (!bulletactiveE7) 
+    {
+        ebulletX7 = ex7+2;
+        ebulletY7 = ey7+1;
+        bulletactiveE7 = true;
+    }
+    if (!bulletactiveE8) 
+    {
+        ebulletX8 = ex8+2;
+        ebulletY8 = ey8+1;
+        bulletactiveE8 = true;
+    }
 }
 
 

@@ -56,61 +56,63 @@ void enemybulletfinalLevel();
 void moveBulletForfinal();
 void enemyShootFinal();
 void gamecomplete();
-
-
-
-int px=17, py=15, ex1=90, ey1=4, ex2=4, ey2=4, ex3=33, ey3=27, ex4=91, ey4=12, ex5=85, ey5=25, ex6=37, ey6=18, hx=46, hy=4;
+//px and py are coordinates of player(hero);        ex1,ex2, etc and ey1, ey2, etc are coordinates of enemy1, enemy2,etc 
+int px = 17, py = 15, ex1 = 90, ey1 = 4, ex2 = 4, ey2 = 4, ex3 = 33, ey3 = 27, ex4 = 91, ey4 = 12, ex5 = 85, ey5 = 25, ex6 = 37, ey6 = 18, hx = 46, hy = 4;
 int ex7, ex8, ey7, ey8;
-int contact1=0, contact2=0, contact3=0, contact4=0;
-int contact5=0, contact6=0, contact7=0, contact8=0;
-int health=100;
-int bx=px+5;
-int by=py+1;
-bool bulletActive=false;
-char bulletDir='r';
-bool checkFirstEnemy=true, checkSecondEnemy=true, checkThirdEnemy=true, checkFourthEnemy=true, checkFifthEnemy=true, checkSixthEnemy=true;
-bool checkSeventhEnemy=true, checkEightEnemy=true;
-
-int ebulletX1,ebulletY1,ebulletX2,ebulletY2, ebulletX3, ebulletY3, ebulletX4, ebulletY4, ebulletX5, ebulletY5, ebulletX6, ebulletY6;
+// These are used to make the logic for movement of enemies i-e: if they hit the wall contact becomes 1;
+int contact1 = 0, contact2 = 0, contact3 = 0, contact4 = 0;
+int contact5 = 0, contact6 = 0, contact7 = 0, contact8 = 0;
+// It is the health of the hero
+int health = 100;
+// These are the coordinates of bullets of hero
+int bx = px + 5;
+int by = py + 1;
+// bool to check if the bullet of the hero is active
+bool bulletActive = false;
+// This give the direction of what the bullet will go
+char bulletDir = 'r';
+// These bool variavles check if the enemy is alive or not
+bool checkFirstEnemy = true, checkSecondEnemy = true, checkThirdEnemy = true, checkFourthEnemy = true, checkFifthEnemy = true, checkSixthEnemy = true;
+bool checkSeventhEnemy = true, checkEightEnemy = true;
+//These are the coordinates of bullets of enemies
+int ebulletX1, ebulletY1, ebulletX2, ebulletY2, ebulletX3, ebulletY3, ebulletX4, ebulletY4, ebulletX5, ebulletY5, ebulletX6, ebulletY6;
 int ebulletX7, ebulletY7, ebulletX8, ebulletY8;
-bool bulletactiveE1=false, bulletactiveE2=false, bulletactiveE3=false, bulletactiveE4=false, bulletactiveE5=false, bulletactiveE6=false;
-bool bulletactiveE7=false, bulletactiveE8=false;
+// This checks if the enemy bullet is active
+bool bulletactiveE1 = false, bulletactiveE2 = false, bulletactiveE3 = false, bulletactiveE4 = false, bulletactiveE5 = false, bulletactiveE6 = false;
+bool bulletactiveE7 = false, bulletactiveE8 = false;
 
-int countForE1=0;
-
-
-int enemy1=100, enemy2=100, enemy3=100, enemy4=100, enemy5=100 , enemy6=100;
-int enemy7=100, enemy8=100;
-bool nextLevel=false;
-bool gamecompletion=false;
-
+// These are the healths of enemies
+int enemy1 = 100, enemy2 = 100, enemy3 = 100, enemy4 = 100, enemy5 = 100, enemy6 = 100;
+int enemy7 = 100, enemy8 = 100;
+// This turn true when the condition for the next level becomes applicable
+bool nextLevel = false;
+// This checks if the game is completed
+bool gamecompletion = false;
 
 char getCharAtxy(short int x, short int y)
 {
-CHAR_INFO ci;
-COORD xy = {0, 0};
-SMALL_RECT rect = {x, y, x, y};
-COORD coordBufSize;
-coordBufSize.X = 1;
-coordBufSize.Y = 1;
-return ReadConsoleOutput(GetStdHandle(STD_OUTPUT_HANDLE), &ci, coordBufSize, xy, &rect) ? ci.Char.AsciiChar
-: ' ';
+    CHAR_INFO ci;
+    COORD xy = {0, 0};
+    SMALL_RECT rect = {x, y, x, y};
+    COORD coordBufSize;
+    coordBufSize.X = 1;
+    coordBufSize.Y = 1;
+    return ReadConsoleOutput(GetStdHandle(STD_OUTPUT_HANDLE), &ci, coordBufSize, xy, &rect) ? ci.Char.AsciiChar
+                                                                                            : ' ';
 }
 
-
 int main()
-{  
+{
     system("cls");
-    string choice=printfrontpage();
-    if(choice=="1")
+    string choice = printfrontpage(); //print the frint page of the game
+    if (choice == "1")
     {
         system("cls");
-        loadingScreen();
+        loadingScreen(); // loading screen
         Sleep(400);
-        
-        
-        system("cls");
-        printmaze();
+
+        system("cls");  
+        printmaze();    // print the objects of the first level
         printhero();
         printenemy1();
         printenemy2();
@@ -119,86 +121,84 @@ int main()
         printenemy5();
         printenemy6();
         powerup();
-        while(true){
-            if(health<0)
+        while (true)
+        {
+            if (health < 0) // checks health of hero
             {
                 break;
             }
 
-            if(health>0 && !checkFifthEnemy && !checkSecondEnemy && !checkThirdEnemy && !checkFourthEnemy && !checkFifthEnemy && !checkSixthEnemy)
+            if (health > 0 && !checkFifthEnemy && !checkSecondEnemy && !checkThirdEnemy && !checkFourthEnemy && !checkFifthEnemy && !checkSixthEnemy) // checks the condition for the next level
             {
-                nextLevel=true;
+                nextLevel = true;
                 break;
-
             }
-            
 
             Sleep(100);
             hp();
-            enemydata();
-            enemyShoot();
-            moveEnemyBullet();
-            printEnemyBullets();
+            enemydata();   // this displays the health of the enemies
+            enemyShoot();   // this checks if the bullet is active or not and give the bullet its coordinates
+            moveEnemyBullet(); // this move the bullets of the enemies in the first level
+            printEnemyBullets(); // this prints the bullets of the enemies in the first level
 
-            if(enemy1<=0)
+            // check if the enemies are alive or not
+            if (enemy1 <= 0)
             {
 
-                checkFirstEnemy=false;
-                bulletactiveE1=true;
-                gotoxy(ebulletX1,ebulletY1);
+                checkFirstEnemy = false;
+                bulletactiveE1 = true;
+                gotoxy(ebulletX1, ebulletY1);
                 cout << " ";
             }
-            if(enemy2<=0)
+            if (enemy2 <= 0)
             {
-                checkSecondEnemy=false;
-                bulletactiveE2=true;
-                gotoxy(ebulletX2,ebulletY2);
+                checkSecondEnemy = false;
+                bulletactiveE2 = true;
+                gotoxy(ebulletX2, ebulletY2);
                 cout << " ";
             }
-            if(enemy3<=0)
+            if (enemy3 <= 0)
             {
-                checkThirdEnemy=false;
-                bulletactiveE3=true;
-                gotoxy(ebulletX3,ebulletY3);
+                checkThirdEnemy = false;
+                bulletactiveE3 = true;
+                gotoxy(ebulletX3, ebulletY3);
                 cout << " ";
             }
-            if(enemy4<=0)
+            if (enemy4 <= 0)
             {
-                enemy4=0;
-                checkFourthEnemy=false;
-                bulletactiveE4=true;
-                gotoxy(ebulletX4,ebulletY4);
+                enemy4 = 0;
+                checkFourthEnemy = false;
+                bulletactiveE4 = true;
+                gotoxy(ebulletX4, ebulletY4);
                 cout << " ";
             }
-            if(enemy5<=0)
+            if (enemy5 <= 0)
             {
-                checkFifthEnemy=false;
-                bulletactiveE5=true;
-                gotoxy(ebulletX5,ebulletY5);
+                checkFifthEnemy = false;
+                bulletactiveE5 = true;
+                gotoxy(ebulletX5, ebulletY5);
                 cout << "  ";
             }
-            if(enemy6<=0)
+            if (enemy6 <= 0)
             {
-                checkSixthEnemy=false;
-                bulletactiveE6=true;
-                gotoxy(ebulletX6,ebulletY6);
+                checkSixthEnemy = false;
+                bulletactiveE6 = true;
+                gotoxy(ebulletX6, ebulletY6);
                 cout << " ";
             }
 
+            // for the movement of the hero
             if (GetAsyncKeyState(VK_LEFT))
             {
                 moveHeroleft();
-                
             }
             if (GetAsyncKeyState(VK_RIGHT))
             {
                 moveHeroright();
-                
             }
             if (GetAsyncKeyState(VK_UP))
             {
                 moveHeroup();
-                
             }
             if (GetAsyncKeyState(VK_DOWN))
             {
@@ -208,40 +208,38 @@ int main()
             {
                 if (!bulletActive)
                 {
-                    bx = px + 5; 
+                    bx = px + 5;
                     by = py + 1;
                     bulletActive = true;
 
-                    bulletDir='r';
+                    bulletDir = 'r'; // shoots bullet towards right
                 }
-
             }
             if (GetAsyncKeyState(VK_LSHIFT))
             {
                 if (!bulletActive)
                 {
-                    bx = px - 2; 
+                    bx = px - 2;
                     by = py + 1;
                     bulletActive = true;
-                    bulletDir='l';
+                    bulletDir = 'l'; // shoot bullets towards left
                 }
             }
 
-            if(GetAsyncKeyState(VK_RSHIFT))
+            if (GetAsyncKeyState(VK_RSHIFT))
             {
                 if (!bulletActive)
                 {
-                    bx= px;
-                    by=py+2;
-                    bulletActive=true;
-                    bulletDir='d';
+                    bx = px;
+                    by = py + 2;
+                    bulletActive = true;
+                    bulletDir = 'd'; // shoot bullets downwards
                 }
-
             }
-            if(GetAsyncKeyState(VK_ESCAPE))
+            if (GetAsyncKeyState(VK_ESCAPE))
             {
-                nextLevel=true;
-                break;
+                nextLevel = true;
+                break;              // shortcut fot the nextlevel
             }
 
             if (bulletActive)
@@ -249,7 +247,7 @@ int main()
                 movefire();
             }
 
-
+            // calls of functions for the movement of enemies
             moveEnemy1();
 
             moveEnemy2();
@@ -258,23 +256,21 @@ int main()
 
             moveEnemy4();
 
-            moveEnemy5(); 
+            moveEnemy5();
 
             moveEnemy6();
 
-
-
-            if (px == hx && py >= hy && py <= hy + 2) 
+            // checks the powerup coordinates of the health
+            if (px == hx && py >= hy && py <= hy + 2)
             {
                 health = 200;
                 hp();
             }
-
         }
         void powerup();
         void hp();
-
-        if(health<=0)
+        // if the health is less than zero then game is over
+        if (health <= 0)
         {
             system("cls");
             loadingScreen();
@@ -282,27 +278,28 @@ int main()
 
             system("cls");
             gameover();
-            gotoxy(70,70);
+            gotoxy(70, 70);
         }
 
-
-        if(nextLevel)
+        // the setup for the next level
+        if (nextLevel)
         {
 
             system("cls");
             loadingScreen();
             Sleep(400);
 
+            //sets the coordinates for the hero and the enemies of the final level
+            px = 58;
+            py = 24;
+            ex7 = 36;
+            ey7 = 18;
+            ey8 = 29;
+            ex8 = 79;
 
-            px=58;
-            py=24;
-            ex7=36;
-            ey7=18;
-            ey8=29;
-            ex8=79;
-            
             system("cls");
-            
+
+            // print the objects of the final level 
             header();
             finalLevel();
             finalmaze();
@@ -310,107 +307,105 @@ int main()
             printenemy7();
             printenemy8();
 
-            while(true)
+            while (true)
             {
-                enemyShootFinal();
-                moveBulletForfinal();
-                enemybulletfinalLevel();
-                dataForfinallevel();
+                enemyShootFinal();  // check if the bullet is active of enemies of the final level and reassigns them their coordinates
+                moveBulletForfinal();   // move the bullet for the enemies of the final level
+                enemybulletfinalLevel();    // prints the bullet of enemies of the finale level
+                dataForfinallevel();    // it displays the data of the final level(health , enemies health)
                 Sleep(100);
 
-                if(health<0)
+                if (health < 0) // condition of hero dying
                 {
-                break;
+                    break;
                 }
 
-                if(health>0 && !checkSeventhEnemy && !checkEightEnemy)
+                if (health > 0 && !checkSeventhEnemy && !checkEightEnemy) // condition for game completion
                 {
-                gamecompletion=true;
-                break;
-
+                    gamecompletion = true;
+                    break;
                 }
 
-                if(enemy7<=0)
-                {  
-                checkSeventhEnemy=false;
-                bulletactiveE7=true;
-                gotoxy(ebulletX7+1,ebulletY7);
-                cout << "  ";
-                }
-
-                if(enemy8<=0)
+                // changes after the enemy dies
+                if (enemy7 <= 0)    
                 {
-                checkEightEnemy=false;
-                bulletactiveE8=true;
-                gotoxy(ebulletX8-1,ebulletY8);
-                cout << "  ";
+                    checkSeventhEnemy = false;
+                    bulletactiveE7 = true;
+                    gotoxy(ebulletX7 + 1, ebulletY7);
+                    cout << "  ";
                 }
 
+                if (enemy8 <= 0)
+                {
+                    checkEightEnemy = false;
+                    bulletactiveE8 = true;
+                    gotoxy(ebulletX8 - 1, ebulletY8);
+                    cout << "  ";
+                }
 
+                // for the movements of the hero
                 if (GetAsyncKeyState(VK_LEFT))
-            {
-                moveHeroleft();
-            }
-            if (GetAsyncKeyState(VK_RIGHT))
-            {
-                moveHeroright();
-            }
-            if (GetAsyncKeyState(VK_UP))
-            {
-                moveHeroup();
-            }
-            if (GetAsyncKeyState(VK_DOWN))
-            {
-                moveHerodown();
-            }
-            if (GetAsyncKeyState(VK_SPACE))
-            {
-                if (!bulletActive)
                 {
-                    bx = px + 5; 
-                    by = py + 1;
-                    bulletActive = true;
+                    moveHeroleft();
+                }
+                if (GetAsyncKeyState(VK_RIGHT))
+                {
+                    moveHeroright();
+                }
+                if (GetAsyncKeyState(VK_UP))
+                {
+                    moveHeroup();
+                }
+                if (GetAsyncKeyState(VK_DOWN))
+                {
+                    moveHerodown();
+                }
+                if (GetAsyncKeyState(VK_SPACE))
+                {
+                    if (!bulletActive)
+                    {
+                        bx = px + 5;
+                        by = py + 1;
+                        bulletActive = true;
 
-                    bulletDir='r';
+                        bulletDir = 'r';  // for firing og hero bullet towards right
+                    }
+                }
+                if (GetAsyncKeyState(VK_LSHIFT))
+                {
+                    if (!bulletActive)
+                    {
+                        bx = px - 2;
+                        by = py + 1;
+                        bulletActive = true;
+                        bulletDir = 'l';  // for firing of hero bullet towards left
+                    }
                 }
 
-            }
-            if (GetAsyncKeyState(VK_LSHIFT))
-            {
-                if (!bulletActive)
+                if (GetAsyncKeyState(VK_RSHIFT))
                 {
-                    bx = px - 2; 
-                    by = py + 1;
-                    bulletActive = true;
-                    bulletDir='l';
-                }
-            }
-
-            if(GetAsyncKeyState(VK_RSHIFT))
-            {
-                if (!bulletActive)
-                {
-                    bx= px;
-                    by=py+2;
-                    bulletActive=true;
-                    bulletDir='d';
+                    if (!bulletActive)
+                    {
+                        bx = px;
+                        by = py + 2;
+                        bulletActive = true;
+                        bulletDir = 'd';  // for firing of hero bullet downwards
+                    }
                 }
 
-            }
+                if (bulletActive)
+                {
+                    movefire();
+                }
 
-
-            if (bulletActive)
-            {
-                movefire();
+                // functions for the movements of enemies
+                moveEnemy7();
+                moveEnemy8();
             }
-
-            moveEnemy7();
-            moveEnemy8();
-            }
-            
         }
 
-        if(health<=0)
+        // condition check for game over
+        if (health <= 0)
         {
             system("cls");
             loadingScreen();
@@ -418,10 +413,11 @@ int main()
 
             system("cls");
             gameover();
-            gotoxy(70,70);
+            gotoxy(70, 70);
         }
 
-        if(gamecompletion)
+        // if the game is completed
+        if (gamecompletion)
         {
             system("cls");
             loadingScreen();
@@ -429,200 +425,263 @@ int main()
 
             system("cls");
             gamecomplete();
-            gotoxy(70,70);
+            gotoxy(70, 70);
         }
     }
-
 }
-  
+
 string printfrontpage()
 {
-    cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%% #######   ### ##   #######   #####   ##   ##      ##   ##  #######  ### ##    #####  %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##  ##  ##   ##   ## ##       ##   ##   ##  ##   ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  # ### #      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ## ##    ####    #######  ## # ##      #######   ####     ## ##   ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  ##   ##      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##   ##  ##  ##  ##   ##  ##   ##      ##   ##   ##  ##   ##   ## ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%% #######    ##   ## #######  ##   ##  ##   ##      ##   ##  #######   ##   ##  #####  %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<"                                                                                                                              " << endl;
-	cout <<"                                                                                                                              " << endl;
-	cout <<"                                                                                                                              " << endl;
-	cout <<"                              /___\\                                The Saviour                                               " << endl;
-	cout <<"                             | <><>|                                   of our                                                 " << endl;
-	cout <<"                             (__/\\_)                                  Kingdom                                                " << endl;
-	cout <<"                            /       \\                                   has                                                  " << endl;
-	cout <<"                            ||     ||                                 RETURNED!                                               " << endl;
-	cout <<"                            | /  \\  |                                                                                        " << endl;
-	cout <<"                            \\/] [][\\/                                                                                       " << endl;
-	cout <<"                             | | | |                                                                                          " << endl;
-	cout <<"                             |_| |_|                                                                                          " << endl;
-	cout <<"                             [ ] [ ]                                                                                          " << endl;
-	cout <<"                             | | | |                                                                                          " << endl;
-	cout <<"                             |_| |_|                                                                                          " << endl;
-	cout <<"____________________________ [ \\ [ \\_______________________________________________________________________________________ " << endl;
-	cout <<"----------------------------------------------------Enter 1 to play the game--------------------------------------------------" << endl;
-	cout <<"-----------------------------------------------Enter any other key to exit the game-------------------------------------------" << endl;
-    cout <<"---------------------------------------------------------Your choice:     ----------------------------------------------------" << endl;
-     string choice;
-     gotoxy(70,29);
-     cin >> choice;
-     return choice;
+    cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%% #######   ### ##   #######   #####   ##   ##      ##   ##  #######  ### ##    #####  %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##  ##  ##   ##   ## ##       ##   ##   ##  ##   ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  # ### #      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ## ##    ####    #######  ## # ##      #######   ####     ## ##   ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  ##   ##      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ##   ##  ##  ##  ##   ##  ##   ##      ##   ##   ##  ##   ##   ## ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%% #######    ##   ## #######  ##   ##  ##   ##      ##   ##  #######   ##   ##  #####  %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                              /___\\                                The Saviour                                               " << endl;
+    cout << "                             | <><>|                                   of our                                                 " << endl;
+    cout << "                             (__/\\_)                                  Kingdom                                                " << endl;
+    cout << "                            /       \\                                   has                                                  " << endl;
+    cout << "                            ||     ||                                 RETURNED!                                               " << endl;
+    cout << "                            | /  \\  |                                                                                        " << endl;
+    cout << "                            \\/] [][\\/                                                                                       " << endl;
+    cout << "                             | | | |                                                                                          " << endl;
+    cout << "                             |_| |_|                                                                                          " << endl;
+    cout << "                             [ ] [ ]                                                                                          " << endl;
+    cout << "                             | | | |                                                                                          " << endl;
+    cout << "                             |_| |_|                                                                                          " << endl;
+    cout << "____________________________ [ \\ [ \\_______________________________________________________________________________________ " << endl;
+    cout << "----------------------------------------------------Enter 1 to play the game--------------------------------------------------" << endl;
+    cout << "-----------------------------------------------Enter any other key to exit the game-------------------------------------------" << endl;
+    cout << "---------------------------------------------------------Your choice:     ----------------------------------------------------" << endl;
+    string choice;
+    gotoxy(70, 29);
+    cin >> choice;
+    return choice;
 }
 
 void loadingScreen()
 {
-    cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%% #######   ### ##   #######   #####   ##   ##      ##   ##  #######  ### ##    #####  %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##  ##  ##   ##   ## ##       ##   ##   ##  ##   ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  # ### #      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ## ##    ####    #######  ## # ##      #######   ####     ## ##   ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  ##   ##      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##   ##  ##  ##  ##   ##  ##   ##      ##   ##   ##  ##   ##   ## ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%% #######    ##   ## #######  ##   ##  ##   ##      ##   ##  #######   ##   ##  #####  %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<"                                                                                                                              " << endl;
-	cout <<"                                                                                                                              " << endl;
-	cout <<"                                                                                                                              " << endl;
-    cout <<"                                                                                                                              " << endl;
-	cout <<"                                                                                                                              " << endl;
-    cout <<"                                                     Loading please Wait!                                                     " << endl;
-	cout <<"                                                                                                                              " << endl;
-    cout <<"                                                                                                                              " << endl;
-	cout <<"                                                                                                                              " << endl;
-    cout <<"                                                                                                                              " << endl;
-	cout <<"                                                                                                                              " << endl;
-    cout <<"                                                                                                                              " << endl;
-	cout <<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%% #######   ### ##   #######   #####   ##   ##      ##   ##  #######  ### ##    #####  %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##  ##  ##   ##   ## ##       ##   ##   ##  ##   ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  # ### #      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ## ##    ####    #######  ## # ##      #######   ####     ## ##   ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  ##   ##      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ##   ##  ##  ##  ##   ##  ##   ##      ##   ##   ##  ##   ##   ## ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%% #######    ##   ## #######  ##   ##  ##   ##      ##   ##  #######   ##   ##  #####  %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                     Loading please Wait!                                                     " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
 }
 
 void header()
 {
-    cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%% #######   ### ##   #######   #####   ##   ##      ##   ##  #######  ### ##    #####  %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##  ##  ##   ##   ## ##       ##   ##   ##  ##   ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  # ### #      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ## ##    ####    #######  ## # ##      #######   ####     ## ##   ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  ##   ##      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##   ##  ##  ##  ##   ##  ##   ##      ##   ##   ##  ##   ##   ## ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%% #######    ##   ## #######  ##   ##  ##   ##      ##   ##  #######   ##   ##  #####  %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%% #######   ### ##   #######   #####   ##   ##      ##   ##  #######  ### ##    #####  %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##  ##  ##   ##   ## ##       ##   ##   ##  ##   ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  # ### #      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ## ##    ####    #######  ## # ##      #######   ####     ## ##   ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  ##   ##      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ##   ##  ##  ##  ##   ##  ##   ##      ##   ##   ##  ##   ##   ## ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%% #######    ##   ## #######  ##   ##  ##   ##      ##   ##  #######   ##   ##  #####  %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
 }
 
 void gameover()
 {
-    cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%% #######   ### ##   #######   #####   ##   ##      ##   ##  #######  ### ##    #####  %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##  ##  ##   ##   ## ##       ##   ##   ##  ##   ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  # ### #      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ## ##    ####    #######  ## # ##      #######   ####     ## ##   ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  ##   ##      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##   ##  ##  ##  ##   ##  ##   ##      ##   ##   ##  ##   ##   ## ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%% #######    ##   ## #######  ##   ##  ##   ##      ##   ##  #######   ##   ##  #####  %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<"                                                                                                                              " << endl;
-	cout <<"                                                                                                                              " << endl;
-	cout <<"                                                                                                                              " << endl;
-    cout <<"                                                                                                                              " << endl;
-	cout <<"                                                        GAME OVER!                                                             " << endl;
-    cout <<"                                                                                                                              " << endl;
-	cout <<"                                                                                                                              " << endl;
-    cout <<"                                                                                                                              " << endl;
-	cout <<"                                                                                                                              " << endl;
-	cout <<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
-   
-    
+    cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%% #######   ### ##   #######   #####   ##   ##      ##   ##  #######  ### ##    #####  %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##  ##  ##   ##   ## ##       ##   ##   ##  ##   ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  # ### #      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ## ##    ####    #######  ## # ##      #######   ####     ## ##   ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  ##   ##      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ##   ##  ##  ##  ##   ##  ##   ##      ##   ##   ##  ##   ##   ## ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%% #######    ##   ## #######  ##   ##  ##   ##      ##   ##  #######   ##   ##  #####  %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                        GAME OVER!                                                             " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
 }
 
 void gamecomplete()
 {
-    cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%% #######   ### ##   #######   #####   ##   ##      ##   ##  #######  ### ##    #####  %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##  ##  ##   ##   ## ##       ##   ##   ##  ##   ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  # ### #      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ## ##    ####    #######  ## # ##      #######   ####     ## ##   ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  ##   ##      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%  ##   ##   ##   ##  ##  ##  ##   ##  ##   ##      ##   ##   ##  ##   ##   ## ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%% #######    ##   ## #######  ##   ##  ##   ##      ##   ##  #######   ##   ##  #####  %%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
-	cout <<"                                                                                                                              " << endl;
-	cout <<"                                                                                                                              " << endl;
-	cout <<"                                                                                                                              " << endl;
-    cout <<"                                                                                                                              " << endl;
-	cout <<"                                                       Congratulation!                                                        " << endl;
-    cout <<"                                                    You have completed the game.                                              " << endl;
-	cout <<"                                                                                                                              " << endl;
-    cout <<"                                                                                                                              " << endl;
-	cout <<"                                                                                                                              " << endl;
-	cout <<"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
-   
-    
+    cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%% #######   ### ##   #######   #####   ##   ##      ##   ##  #######  ### ##    #####  %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##  ##  ##   ##   ## ##       ##   ##   ##  ##   ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  # ### #      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ## ##    ####    #######  ## # ##      #######   ####     ## ##   ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ##  ##   ##      ##   ##  ##   ##      ##   ##   ##       ##  ##  ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%  ##   ##   ##   ##  ##  ##  ##   ##  ##   ##      ##   ##   ##  ##   ##   ## ##   ## %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%% #######    ##   ## #######  ##   ##  ##   ##      ##   ##  #######   ##   ##  #####  %%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+    cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                       Congratulation!                                                        " << endl;
+    cout << "                                                    You have completed the game.                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "                                                                                                                              " << endl;
+    cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
 }
 
 void level()
 {
-        cout <<R"(
+    cout << R"(
                      __,    ____,  __  _, ____,  __,      ___, 
                     (-|    (-|_,  (-\  / (-|_,  (-|      (-/|  
                      _|__,  _|__,   _\/   _|__,  _|__,    '_|, 
                     (      (       (     (      (         (   
-                                                            )";;
+                                                            )";
+    ;
 }
 
 void finalLevel()
 {
-    cout <<R"(
+    cout << R"(
                                 ___  _              _   _                    _ 
                                 | __|(_) _ _   __ _ | | | |    ___ __ __ ___ | |
                                 | _| | || ' \ / _` || | | |__ / -_)\ V // -_)| |
                                 |_|  |_||_||_|\__,_||_| |____|\___| \_/ \___||_|
                                                
-    )";;
+    )";
+    ;
 }
-
 
 void finalmaze()
 {
-    cout << "\t" << "\t" << "\t"<< "\t"<<"########################################################" << endl;
-    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
-    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
-    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
-    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
-    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
-    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
-    cout << "\t" << "\t" << "\t"<< "\t"<<"#                       #     #                        #" << endl;
-    cout << "\t" << "\t" << "\t"<< "\t"<<"#                       #     #                        #" << endl;
-    cout << "\t" << "\t" << "\t"<< "\t"<<"#                       #     #                        #" << endl;
-    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
-    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
-    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
-    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
-    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
-    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
-    cout << "\t" << "\t" << "\t"<< "\t"<<"########################################################" << endl;
-    cout << "\t" << "\t" << "\t"<< "\t"<<"#                                                      #" << endl;
-    cout << "\t" << "\t" << "\t"<< "\t"<<"########################################################" << endl;
-
-    
-    
-
+    cout << "\t"
+         << "\t"
+         << "\t"
+         << "\t"
+         << "########################################################" << endl;
+    cout << "\t"
+         << "\t"
+         << "\t"
+         << "\t"
+         << "#                                                      #" << endl;
+    cout << "\t"
+         << "\t"
+         << "\t"
+         << "\t"
+         << "#                                                      #" << endl;
+    cout << "\t"
+         << "\t"
+         << "\t"
+         << "\t"
+         << "#                                                      #" << endl;
+    cout << "\t"
+         << "\t"
+         << "\t"
+         << "\t"
+         << "#                                                      #" << endl;
+    cout << "\t"
+         << "\t"
+         << "\t"
+         << "\t"
+         << "#                                                      #" << endl;
+    cout << "\t"
+         << "\t"
+         << "\t"
+         << "\t"
+         << "#                                                      #" << endl;
+    cout << "\t"
+         << "\t"
+         << "\t"
+         << "\t"
+         << "#                       #     #                        #" << endl;
+    cout << "\t"
+         << "\t"
+         << "\t"
+         << "\t"
+         << "#                       #     #                        #" << endl;
+    cout << "\t"
+         << "\t"
+         << "\t"
+         << "\t"
+         << "#                       #     #                        #" << endl;
+    cout << "\t"
+         << "\t"
+         << "\t"
+         << "\t"
+         << "#                                                      #" << endl;
+    cout << "\t"
+         << "\t"
+         << "\t"
+         << "\t"
+         << "#                                                      #" << endl;
+    cout << "\t"
+         << "\t"
+         << "\t"
+         << "\t"
+         << "#                                                      #" << endl;
+    cout << "\t"
+         << "\t"
+         << "\t"
+         << "\t"
+         << "#                                                      #" << endl;
+    cout << "\t"
+         << "\t"
+         << "\t"
+         << "\t"
+         << "#                                                      #" << endl;
+    cout << "\t"
+         << "\t"
+         << "\t"
+         << "\t"
+         << "#                                                      #" << endl;
+    cout << "\t"
+         << "\t"
+         << "\t"
+         << "\t"
+         << "########################################################" << endl;
+    cout << "\t"
+         << "\t"
+         << "\t"
+         << "\t"
+         << "#                                                      #" << endl;
+    cout << "\t"
+         << "\t"
+         << "\t"
+         << "\t"
+         << "########################################################" << endl;
 }
-
-
-
-
-
 
 void printmaze()
 {
@@ -661,480 +720,510 @@ void printmaze()
     cout << "#                                                                                              #" << endl;
     cout << "################################################################################################" << endl;
     level();
-
 }
-
-
-
-void powerup(){
-    gotoxy(hx,hy);
+// sets the location of the powerup
+void powerup()
+{
+    gotoxy(hx, hy);
     cout << " H  ";
-    gotoxy(hx,hy+1);
+    gotoxy(hx, hy + 1);
     cout << " H  ";
-    gotoxy(hx,hy+2);
+    gotoxy(hx, hy + 2);
     cout << " H  ";
-    
-
-    
 }
-void hp() {
-    
-    
+// prints the hero health
+void hp()
+{
+
     gotoxy(38, 31);
     cout << "Health: " << health;
 }
-
+// prints the enemies health
 void enemydata()
 {
-    gotoxy(1,32);
+    gotoxy(1, 32);
     cout << "Enemy1: " << enemy1;
-    gotoxy(16,32);
+    gotoxy(16, 32);
     cout << "Enemy2: " << enemy2;
-    gotoxy(32,32);
+    gotoxy(32, 32);
     cout << "Enemy3: " << enemy3;
-    gotoxy(48,32);
+    gotoxy(48, 32);
     cout << "Enemy4: " << enemy4;
-    gotoxy(64,32);
+    gotoxy(64, 32);
     cout << "Enemy5: " << enemy5;
-    gotoxy(80,32);
+    gotoxy(80, 32);
     cout << "Enemy6: " << enemy6;
-
 }
-
+// print the health of hero and enemies for the final level
 void dataForfinallevel()
 {
-    gotoxy(37,34);
+    gotoxy(37, 34);
     cout << "Health: " << health;
-    gotoxy(55,34);
+    gotoxy(55, 34);
     cout << "Boss 1: " << enemy7;
-    gotoxy(70,34);
+    gotoxy(70, 34);
     cout << "Boss 2: " << enemy8;
-
 }
-
-
-
-
+// prints the hero
 void printhero()
 {
     gotoxy(px, py);
-    cout <<" o  " ;
-    gotoxy(px,py+1);
-    cout <<"/|\\" ;
-    gotoxy(px,py+2);
-    cout <<"/ \\" ;
+    cout << " o  ";
+    gotoxy(px, py + 1);
+    cout << "/|\\";
+    gotoxy(px, py + 2);
+    cout << "/ \\";
 }
 
-
+// functions for the printing of the enemies
 void printenemy1()
 {
-    
+
     gotoxy(ex1, ey1);
-    cout <<" @ " ;
-    gotoxy(ex1,ey1+1);
-    cout <<"@@@" ;
-    gotoxy(ex1,ey1+2);
-    cout <<"@@@" ;
+    cout << " @ ";
+    gotoxy(ex1, ey1 + 1);
+    cout << "@@@";
+    gotoxy(ex1, ey1 + 2);
+    cout << "@@@";
 }
 
 void printenemy2()
 {
     gotoxy(ex2, ey2);
-    cout <<" $ " ;
-    gotoxy(ex2,ey2+1);
-    cout <<"$$$" ;
-    gotoxy(ex2,ey2+2);
-    cout <<"$$$" ;
+    cout << " $ ";
+    gotoxy(ex2, ey2 + 1);
+    cout << "$$$";
+    gotoxy(ex2, ey2 + 2);
+    cout << "$$$";
 }
 
 void printenemy3()
 {
     gotoxy(ex3, ey3);
-    cout <<" & " ;
-    gotoxy(ex3,ey3+1);
-    cout <<"&&&" ;
-    gotoxy(ex3,ey3+2);
-    cout <<"&&&" ;
+    cout << " & ";
+    gotoxy(ex3, ey3 + 1);
+    cout << "&&&";
+    gotoxy(ex3, ey3 + 2);
+    cout << "&&&";
 }
 
 void printenemy4()
 {
     gotoxy(ex4, ey4);
-    cout <<" * " ;
-    gotoxy(ex4,ey4+1);
-    cout <<"***" ;
-    gotoxy(ex4,ey4+2);
-    cout <<"***" ;
+    cout << " * ";
+    gotoxy(ex4, ey4 + 1);
+    cout << "***";
+    gotoxy(ex4, ey4 + 2);
+    cout << "***";
 }
-
 
 void printenemy5()
 {
     gotoxy(ex5, ey5);
-    cout <<"  8  " ;
-    gotoxy(ex5,ey5+1);
-    cout <<"88888" ;
-    gotoxy(ex5,ey5+2);
-    cout <<"88888" ;
-    gotoxy(ex5,ey5+3);
-    cout <<" 8 8 " ;
-
+    cout << "  8  ";
+    gotoxy(ex5, ey5 + 1);
+    cout << "88888";
+    gotoxy(ex5, ey5 + 2);
+    cout << "88888";
+    gotoxy(ex5, ey5 + 3);
+    cout << " 8 8 ";
 }
 
 void printenemy6()
 {
     gotoxy(ex6, ey6);
-    cout <<" % " ;
-    gotoxy(ex6,ey6+1);
-    cout <<"%%%" ;
-    gotoxy(ex6,ey6+2);
-    cout <<"%%%" ;
+    cout << " % ";
+    gotoxy(ex6, ey6 + 1);
+    cout << "%%%";
+    gotoxy(ex6, ey6 + 2);
+    cout << "%%%";
 }
 
 void printenemy7()
 {
     gotoxy(ex7, ey7);
-    cout <<"  X  " ;
-    gotoxy(ex7,ey7+1);
-    cout <<"XXXXX" ;
-    gotoxy(ex7,ey7+2);
-    cout <<"XXXXX" ;
-    gotoxy(ex7,ey7+3);
-    cout <<" X X " ;
-
+    cout << "  X  ";
+    gotoxy(ex7, ey7 + 1);
+    cout << "XXXXX";
+    gotoxy(ex7, ey7 + 2);
+    cout << "XXXXX";
+    gotoxy(ex7, ey7 + 3);
+    cout << " X X ";
 }
 
 void printenemy8()
 {
     gotoxy(ex8, ey8);
-    cout <<"  A  " ;
-    gotoxy(ex8,ey8+1);
-    cout <<"AAAAA" ;
-    gotoxy(ex8,ey8+2);
-    cout <<"AAAAA" ;
-    gotoxy(ex8,ey8+3);
-    cout <<" A A " ;
-
+    cout << "  A  ";
+    gotoxy(ex8, ey8 + 1);
+    cout << "AAAAA";
+    gotoxy(ex8, ey8 + 2);
+    cout << "AAAAA";
+    gotoxy(ex8, ey8 + 3);
+    cout << " A A ";
 }
 
-void removeEnemy7(){
-    gotoxy(ex7, ey7);
-    cout <<"     " ;
-    gotoxy(ex7,ey7+1);
-    cout <<"     " ;
-    gotoxy(ex7,ey7+2);
-    cout <<"     " ;
-    gotoxy(ex7,ey7+3);
-    cout <<"     " ;
-}
-void removeEnemy8(){
-    gotoxy(ex8, ey8);
-    cout <<"     " ;
-    gotoxy(ex8,ey8+1);
-    cout <<"     " ;
-    gotoxy(ex8,ey8+2);
-    cout <<"     " ;
-    gotoxy(ex8,ey8+3);
-    cout <<"     " ;
-}
-
-void removeHero(){
-    gotoxy(px, py);
-    cout <<"   " ;
-    gotoxy(px,py+1);
-    cout <<"    " ;
-    gotoxy(px,py+2);
-    cout <<"    " ;
-
-}
-
-
-void removeEnemy1(){
-    gotoxy(ex1, ey1);
-    cout <<"   " ;
-    gotoxy(ex1,ey1+1);
-    cout <<"   " ;
-    gotoxy(ex1,ey1+2);
-    cout <<"   " ;
-}
-
-void removeEnemy2(){
-    gotoxy(ex2, ey2);
-    cout <<"   " ;
-    gotoxy(ex2,ey2+1);
-    cout <<"   " ;
-    gotoxy(ex2,ey2+2);
-    cout <<"   " ;
-}
-
-void removeEnemy3(){
-    gotoxy(ex3, ey3);
-    cout <<"   " ;
-    gotoxy(ex3,ey3+1);
-    cout <<"   " ;
-    gotoxy(ex3,ey3+2);
-    cout <<"   " ;
-}
-
-void removeEnemy4(){
-    gotoxy(ex4, ey4);
-    cout <<"   " ;
-    gotoxy(ex4,ey4+1);
-    cout <<"   " ;
-    gotoxy(ex4,ey4+2);
-    cout <<"   " ;
-}
-
-void removeEnemy5(){
-    gotoxy(ex5, ey5);
-    cout <<"     " ;
-    gotoxy(ex5,ey5+1);
-    cout <<"     " ;
-    gotoxy(ex5,ey5+2);
-    cout <<"     " ;
-    gotoxy(ex5,ey5+3);
-    cout <<"     " ;
-}
-
-void removeEnemy6(){
-    gotoxy(ex6, ey6);
-    cout <<"   " ;
-    gotoxy(ex6,ey6+1);
-    cout <<"   " ;
-    gotoxy(ex6,ey6+2);
-    cout <<"   " ;
-}
-
-void moveEnemy7(){
-   
-    removeEnemy7();
-    if(checkSeventhEnemy)
-    {
-    if(contact7==0){
-    ey7=ey7+1;}
-    if(ey7==30){
-        contact7=1;
-    }
-    if(contact7==1){
-        ey7=ey7-1;
-    }
- 
-    if(ey7==18){
-        contact7=0;
-    }
-
-
-    printenemy7();
-    }
-}
-void moveEnemy8(){
-   
-    removeEnemy8();
-    if(checkEightEnemy)
-    {
-    if(contact8==0){
-    ey8=ey8+1;}
-    if(ey8==30){
-        contact8=1;
-    }
-    if(contact8==1){
-        ey8=ey8-1;
-    }
- 
-    if(ey8==18){
-        contact8=0;
-    }
-
-
-    printenemy8();
-    }
-}
-
-void moveEnemy1(){
-   
-    removeEnemy1();
-    if(checkFirstEnemy)
-    {
-    if(contact1==0){
-    ey1=ey1+1;}
-    if(ey1==9){
-        contact1=1;
-    }
-    if(contact1==1){
-        ey1=ey1-1;
-    }
- 
-    if(ey1==1){
-        contact1=0;
-    }
-
-
-    printenemy1();
-    }
-}
-
-void moveEnemy2(){
-    removeEnemy2();
-    if(checkSecondEnemy)
-    {
-    if(contact2==0){
-    ey2=ey2-1;}
-    if(ey2==0){
-        contact2=1;
-    }
-    if(contact2==1){
-        ey2=ey2+1;
-    }
- 
-    if(ey2==8){
-        contact2=0;
-    }
-    printenemy2();
-    }
-
-
-    }
-
-void moveEnemy3(){
-    removeEnemy3();
-    if(checkThirdEnemy)
-    {
-    if(contact3==0){
-    ex3=ex3-1;}
-    if(ex3==1){
-        contact3=1;
-    }
-    if(contact3==1){
-        ex3=ex3+1;
-    }
- 
-    if(ex3==33){
-        contact3=0;
-    }
-    printenemy3();
-    }
-
-
-}
-
-
-
-void moveEnemy4(){
-    removeEnemy4();
-    if(checkFourthEnemy)
-    {
-    if(contact4==0){
-    ex4=ex4-1;}
-    if(ex4==60){
-        contact4=1;
-    }
-    if(contact4==1){
-        ex4=ex4+1;
-    }
- 
-    if(ex4==91){
-        contact4=0;
-    }
-    printenemy4();
-    }
-
-
-    }
-
-void moveEnemy5(){
-    removeEnemy5();
-    if(checkFifthEnemy)
-    {
-    if(contact5==0){
-    ey5=ey5+1;}
-    if(ey5==27){
-        contact5=1;
-    }
-    if(contact5==1){
-        ey5=ey5-1;
-    }
- 
-    if(ey5==21){
-        contact5=0;
-    }
-    printenemy5();
-    }
-
-
-    }
-
-void moveEnemy6(){
-    removeEnemy6();
-    if(checkSixthEnemy)
-    {
-    if(contact6==0){
-    ey6=ey6-1;
-    ex6=ex6+3;}
-    if(ey6==11){
-        contact6=1;
-    }
-    if(contact6==1){
-        ey6=ey6+1;
-        ex6=ex6-3;
-    }
- 
-    if(ey6==18){
-        contact6=0;
-    }
-    printenemy6();
-    }
-
-
-}    
-
-void moveHeroleft(){
-    if (getCharAtxy(px-2,py) == ' ' && getCharAtxy(px-2,py+1) == ' ' && getCharAtxy(px-2,py+2) == ' '){
-    removeHero();
-    px = px-1;
-    printhero();
-    }
-}
-
-void moveHeroright(){
-    if (getCharAtxy(px+4,py) == ' ' && getCharAtxy(px+4,py+1) == ' ' && getCharAtxy(px+4,py+2) == ' '){
-
-    removeHero();
-    px = px+1;
-    printhero();
-    }
-
-    if(getCharAtxy(px+4,py) == 'H' || getCharAtxy(px+4,py+1) == 'H' || getCharAtxy(px+4,py+2) == 'H'){
-    removeHero();
-    px = px+1;
-    printhero();
-    }
-    
-}
-
-void moveHeroup(){
-    if (getCharAtxy(px,py-1) == ' ' && getCharAtxy(px-1,py-1) == ' ' && getCharAtxy(px+3,py-1) == ' '){
-    removeHero();
-    py=py-1;
-    printhero();
-    }
-}
-
-void moveHerodown(){
-    if (getCharAtxy(px,py+3) == ' ' && getCharAtxy(px-1,py+3) == ' ' && getCharAtxy(px+3,py+3)== ' ' && getCharAtxy(px+1,py+3) == ' '){
-    removeHero();
-    py=py+1;
-    printhero();
-    }
-}
-
-
-void printfire()
+// functions for the removal of the enemies and hero
+void removeEnemy7()
 {
-    gotoxy(px+5,py+1);
+    gotoxy(ex7, ey7);
+    cout << "     ";
+    gotoxy(ex7, ey7 + 1);
+    cout << "     ";
+    gotoxy(ex7, ey7 + 2);
+    cout << "     ";
+    gotoxy(ex7, ey7 + 3);
+    cout << "     ";
+}
+void removeEnemy8()
+{
+    gotoxy(ex8, ey8);
+    cout << "     ";
+    gotoxy(ex8, ey8 + 1);
+    cout << "     ";
+    gotoxy(ex8, ey8 + 2);
+    cout << "     ";
+    gotoxy(ex8, ey8 + 3);
+    cout << "     ";
+}
+
+void removeHero()
+{
+    gotoxy(px, py);
+    cout << "   ";
+    gotoxy(px, py + 1);
+    cout << "    ";
+    gotoxy(px, py + 2);
+    cout << "    ";
+}
+
+void removeEnemy1()
+{
+    gotoxy(ex1, ey1);
+    cout << "   ";
+    gotoxy(ex1, ey1 + 1);
+    cout << "   ";
+    gotoxy(ex1, ey1 + 2);
+    cout << "   ";
+}
+
+void removeEnemy2()
+{
+    gotoxy(ex2, ey2);
+    cout << "   ";
+    gotoxy(ex2, ey2 + 1);
+    cout << "   ";
+    gotoxy(ex2, ey2 + 2);
+    cout << "   ";
+}
+
+void removeEnemy3()
+{
+    gotoxy(ex3, ey3);
+    cout << "   ";
+    gotoxy(ex3, ey3 + 1);
+    cout << "   ";
+    gotoxy(ex3, ey3 + 2);
+    cout << "   ";
+}
+
+void removeEnemy4()
+{
+    gotoxy(ex4, ey4);
+    cout << "   ";
+    gotoxy(ex4, ey4 + 1);
+    cout << "   ";
+    gotoxy(ex4, ey4 + 2);
+    cout << "   ";
+}
+
+void removeEnemy5()
+{
+    gotoxy(ex5, ey5);
+    cout << "     ";
+    gotoxy(ex5, ey5 + 1);
+    cout << "     ";
+    gotoxy(ex5, ey5 + 2);
+    cout << "     ";
+    gotoxy(ex5, ey5 + 3);
+    cout << "     ";
+}
+
+void removeEnemy6()
+{
+    gotoxy(ex6, ey6);
+    cout << "   ";
+    gotoxy(ex6, ey6 + 1);
+    cout << "   ";
+    gotoxy(ex6, ey6 + 2);
+    cout << "   ";
+}
+
+// functions for the movement of hero and the enemies
+void moveEnemy7()
+{
+
+    removeEnemy7();
+    if (checkSeventhEnemy)
     {
-        cout << "o";
+        if (contact7 == 0)
+        {
+            ey7 = ey7 + 1;
+        }
+        if (ey7 == 30)
+        {
+            contact7 = 1;
+        }
+        if (contact7 == 1)
+        {
+            ey7 = ey7 - 1;
+        }
+
+        if (ey7 == 18)
+        {
+            contact7 = 0;
+        }
+
+        printenemy7();
     }
 }
+void moveEnemy8()
+{
+
+    removeEnemy8();
+    if (checkEightEnemy)
+    {
+        if (contact8 == 0)
+        {
+            ey8 = ey8 + 1;
+        }
+        if (ey8 == 30)
+        {
+            contact8 = 1;
+        }
+        if (contact8 == 1)
+        {
+            ey8 = ey8 - 1;
+        }
+
+        if (ey8 == 18)
+        {
+            contact8 = 0;
+        }
+
+        printenemy8();
+    }
+}
+
+void moveEnemy1()
+{
+
+    removeEnemy1();
+    if (checkFirstEnemy)
+    {
+        if (contact1 == 0)
+        {
+            ey1 = ey1 + 1;
+        }
+        if (ey1 == 9)
+        {
+            contact1 = 1;
+        }
+        if (contact1 == 1)
+        {
+            ey1 = ey1 - 1;
+        }
+
+        if (ey1 == 1)
+        {
+            contact1 = 0;
+        }
+
+        printenemy1();
+    }
+}
+
+void moveEnemy2()
+{
+    removeEnemy2();
+    if (checkSecondEnemy)
+    {
+        if (contact2 == 0)
+        {
+            ey2 = ey2 - 1;
+        }
+        if (ey2 == 0)
+        {
+            contact2 = 1;
+        }
+        if (contact2 == 1)
+        {
+            ey2 = ey2 + 1;
+        }
+
+        if (ey2 == 8)
+        {
+            contact2 = 0;
+        }
+        printenemy2();
+    }
+}
+
+void moveEnemy3()
+{
+    removeEnemy3();
+    if (checkThirdEnemy)
+    {
+        if (contact3 == 0)
+        {
+            ex3 = ex3 - 1;
+        }
+        if (ex3 == 1)
+        {
+            contact3 = 1;
+        }
+        if (contact3 == 1)
+        {
+            ex3 = ex3 + 1;
+        }
+
+        if (ex3 == 33)
+        {
+            contact3 = 0;
+        }
+        printenemy3();
+    }
+}
+
+void moveEnemy4()
+{
+    removeEnemy4();
+    if (checkFourthEnemy)
+    {
+        if (contact4 == 0)
+        {
+            ex4 = ex4 - 1;
+        }
+        if (ex4 == 60)
+        {
+            contact4 = 1;
+        }
+        if (contact4 == 1)
+        {
+            ex4 = ex4 + 1;
+        }
+
+        if (ex4 == 91)
+        {
+            contact4 = 0;
+        }
+        printenemy4();
+    }
+}
+
+void moveEnemy5()
+{
+    removeEnemy5();
+    if (checkFifthEnemy)
+    {
+        if (contact5 == 0)
+        {
+            ey5 = ey5 + 1;
+        }
+        if (ey5 == 27)
+        {
+            contact5 = 1;
+        }
+        if (contact5 == 1)
+        {
+            ey5 = ey5 - 1;
+        }
+
+        if (ey5 == 21)
+        {
+            contact5 = 0;
+        }
+        printenemy5();
+    }
+}
+
+void moveEnemy6()
+{
+    removeEnemy6();
+    if (checkSixthEnemy)
+    {
+        if (contact6 == 0)
+        {
+            ey6 = ey6 - 1;
+            ex6 = ex6 + 3;
+        }
+        if (ey6 == 11)
+        {
+            contact6 = 1;
+        }
+        if (contact6 == 1)
+        {
+            ey6 = ey6 + 1;
+            ex6 = ex6 - 3;
+        }
+
+        if (ey6 == 18)
+        {
+            contact6 = 0;
+        }
+        printenemy6();
+    }
+}
+
+// functions to move hero
+void moveHeroleft()
+{
+    if (getCharAtxy(px - 2, py) == ' ' && getCharAtxy(px - 2, py + 1) == ' ' && getCharAtxy(px - 2, py + 2) == ' ')
+    {
+        removeHero();
+        px = px - 1;
+        printhero();
+    }
+}
+
+void moveHeroright()
+{
+    if (getCharAtxy(px + 4, py) == ' ' && getCharAtxy(px + 4, py + 1) == ' ' && getCharAtxy(px + 4, py + 2) == ' ')
+    {
+
+        removeHero();
+        px = px + 1;
+        printhero();
+    }
+
+    if (getCharAtxy(px + 4, py) == 'H' || getCharAtxy(px + 4, py + 1) == 'H' || getCharAtxy(px + 4, py + 2) == 'H')
+    {
+        removeHero();
+        px = px + 1;
+        printhero();
+    }
+}
+
+void moveHeroup()
+{
+    if (getCharAtxy(px, py - 1) == ' ' && getCharAtxy(px - 1, py - 1) == ' ' && getCharAtxy(px + 3, py - 1) == ' ')
+    {
+        removeHero();
+        py = py - 1;
+        printhero();
+    }
+}
+
+void moveHerodown()
+{
+    if (getCharAtxy(px, py + 3) == ' ' && getCharAtxy(px - 1, py + 3) == ' ' && getCharAtxy(px + 3, py + 3) == ' ' && getCharAtxy(px + 1, py + 3) == ' ')
+    {
+        removeHero();
+        py = py + 1;
+        printhero();
+    }
+}
+
 
 void removefire()
 {
@@ -1142,6 +1231,7 @@ void removefire()
     cout << " ";
 }
 
+// move the fires of the hero
 void movefire()
 {
     removefire();
@@ -1168,9 +1258,9 @@ void movefire()
             bulletActive = false;
         }
     }
-    else if (bulletDir=='d')
+    else if (bulletDir == 'd')
     {
-        if (getCharAtxy(bx, by+3) != '#')
+        if (getCharAtxy(bx, by + 3) != '#')
         {
             by += 3; // Move down
         }
@@ -1180,65 +1270,64 @@ void movefire()
         }
     }
 
-    if(getCharAtxy(bx,by) == '@')
+    if (getCharAtxy(bx, by) == '@')
     {
-        enemy1-=50;
+        enemy1 -= 50;
         bulletActive = false; // Bullet should be inactive after hitting an enemy
         removefire();
-        
     }
 
-    if(getCharAtxy(bx,by)=='$')
+    if (getCharAtxy(bx, by) == '$')
     {
-        enemy2-=50;
-        bulletActive=false;
+        enemy2 -= 50;
+        bulletActive = false;
         removefire();
     }
 
-    if(getCharAtxy(bx,by)=='&')
+    if (getCharAtxy(bx, by) == '&')
     {
-        enemy3-=50;
-        bulletActive=false;
+        enemy3 -= 50;
+        bulletActive = false;
         removefire();
     }
 
-    if(getCharAtxy(bx,by)=='*')
+    if (getCharAtxy(bx, by) == '*')
     {
-        enemy4-=50;
-        bulletActive=false;
+        enemy4 -= 50;
+        bulletActive = false;
         removefire();
     }
 
-    if(getCharAtxy(bx,by)=='8')
+    if (getCharAtxy(bx, by) == '8')
     {
-        enemy5-=50;
-        bulletActive=false;
+        enemy5 -= 50;
+        bulletActive = false;
         removefire();
     }
 
-    if(getCharAtxy(bx,by)=='%')
+    if (getCharAtxy(bx, by) == '%')
     {
-        enemy6-=50;
-        bulletActive=false;
+        enemy6 -= 50;
+        bulletActive = false;
         removefire();
     }
 
-    if(getCharAtxy(bx,by)=='A')
+    if (getCharAtxy(bx, by) == 'A')
     {
-        enemy8-=50;
-        bulletActive=false;
+        enemy8 -= 50;
+        bulletActive = false;
         removefire();
     }
 
-    if(getCharAtxy(bx,by)=='X')
+    if (getCharAtxy(bx, by) == 'X')
     {
-        enemy7-=50;
-        bulletActive=false;
+        enemy7 -= 50;
+        bulletActive = false;
         removefire();
     }
 
     // Check if the bullet has hit an enemy or reached the right edge of the screen
-    if (getCharAtxy(bx, by) == '#' || bx >= 97  || by>37 || by<1 || getCharAtxy(bx+1,by)=='#' || getCharAtxy(bx-1,by)=='#' || bx<=0 || getCharAtxy(bx+2,by)=='#' || getCharAtxy(bx+3,by)=='#' || getCharAtxy(bx-2,by)=='#' || getCharAtxy(bx-3,by)=='#')
+    if (getCharAtxy(bx, by) == '#' || bx >= 97 || by > 37 || by < 1 || getCharAtxy(bx + 1, by) == '#' || getCharAtxy(bx - 1, by) == '#' || bx <= 0 || getCharAtxy(bx + 2, by) == '#' || getCharAtxy(bx + 3, by) == '#' || getCharAtxy(bx - 2, by) == '#' || getCharAtxy(bx - 3, by) == '#')
     {
         bulletActive = false;
         removefire();
@@ -1250,241 +1339,253 @@ void movefire()
     }
 }
 
-void printEnemyBullets() {
-    if (bulletactiveE1) {
+void printEnemyBullets()
+{
+    // prints the bullets of the enemies for the first level
+    if (bulletactiveE1)
+    {
         gotoxy(ebulletX1, ebulletY1);
         cout << "<";
     }
-    if (bulletactiveE2) {
+    if (bulletactiveE2)
+    {
         gotoxy(ebulletX2, ebulletY2);
         cout << ">";
     }
-    if (bulletactiveE3) {
+    if (bulletactiveE3)
+    {
         gotoxy(ebulletX3, ebulletY3);
         cout << "^";
     }
-    if (bulletactiveE4) {
+    if (bulletactiveE4)
+    {
         gotoxy(ebulletX4, ebulletY4);
         cout << "x";
     }
-    if (bulletactiveE5) {
+    if (bulletactiveE5)
+    {
         gotoxy(ebulletX5, ebulletY5);
         cout << "<<";
     }
-    if (bulletactiveE6) {
+    if (bulletactiveE6)
+    {
         gotoxy(ebulletX6, ebulletY6);
         cout << "<";
     }
-    
-    
 }
 
 void enemybulletfinalLevel()
 {
-    if (bulletactiveE7) {
+    // prints the bullets of the enemies for the final level
+    if (bulletactiveE7)
+    {
         gotoxy(ebulletX7, ebulletY7);
         cout << ">>";
     }
-    if (bulletactiveE8) {
+    if (bulletactiveE8)
+    {
         gotoxy(ebulletX8, ebulletY8);
         cout << "<<";
     }
 }
-
+// functions to move the bullets of the enemies for the first level
 void moveEnemyBullet()
 {
-    if (bulletactiveE1 && checkFirstEnemy) 
+    if (bulletactiveE1 && checkFirstEnemy)
     {
         gotoxy(ebulletX1, ebulletY1);
         cout << " ";
-        ebulletX1-=2;
-        if (ebulletX1 <=0 || ebulletX1<35 || getCharAtxy(ebulletX1,ebulletY1)=='#') {
+        ebulletX1 -= 2;
+        if (ebulletX1 <= 0 || ebulletX1 < 35 || getCharAtxy(ebulletX1, ebulletY1) == '#') // location of the bullet and where it can move
+        {
             bulletactiveE1 = false;
         }
-
-        if(getCharAtxy(ebulletX1,ebulletY1)=='o'|| getCharAtxy(ebulletX1,ebulletY1)=='|' || getCharAtxy(ebulletX1,ebulletY1)=='\\' || getCharAtxy(ebulletX1,ebulletY1)=='/')
+        // detection of the hero
+        if (getCharAtxy(ebulletX1, ebulletY1) == 'o' || getCharAtxy(ebulletX1, ebulletY1) == '|' || getCharAtxy(ebulletX1, ebulletY1) == '\\' || getCharAtxy(ebulletX1, ebulletY1) == '/')
         {
-            health-=25;
+            health -= 25;
         }
     }
 
-    if (bulletactiveE2 && checkSecondEnemy) 
+    if (bulletactiveE2 && checkSecondEnemy)
     {
         gotoxy(ebulletX2, ebulletY2);
         cout << " ";
-        ebulletX2+=2;
-        if (ebulletX2 >=97 || ebulletX2>39 || getCharAtxy(ebulletX2,ebulletY2)=='#') {
+        ebulletX2 += 2;
+        if (ebulletX2 >= 97 || ebulletX2 > 39 || getCharAtxy(ebulletX2, ebulletY2) == '#') // location of the bullet and where it can move
+        {
             bulletactiveE2 = false;
         }
-
-        if(getCharAtxy(ebulletX2,ebulletY2)=='o'|| getCharAtxy(ebulletX2,ebulletY2)=='|' || getCharAtxy(ebulletX2,ebulletY2)=='\\' || getCharAtxy(ebulletX2,ebulletY2)=='/')
+        // detection of the hero
+        if (getCharAtxy(ebulletX2, ebulletY2) == 'o' || getCharAtxy(ebulletX2, ebulletY2) == '|' || getCharAtxy(ebulletX2, ebulletY2) == '\\' || getCharAtxy(ebulletX2, ebulletY2) == '/')
         {
-            health-=25;
+            health -= 25;
         }
     }
 
-    if (bulletactiveE3 && checkThirdEnemy) 
+    if (bulletactiveE3 && checkThirdEnemy)
     {
         gotoxy(ebulletX3, ebulletY3);
         cout << " ";
-        ebulletY3-=2;
-        if (ebulletY3 <=20 || ebulletY3>=37 ||  getCharAtxy(ebulletX3,ebulletY3)=='#') {
+        ebulletY3 -= 2;
+        if (ebulletY3 <= 20 || ebulletY3 >= 37 || getCharAtxy(ebulletX3, ebulletY3) == '#') // location of the bullet and where it can move
+        {
             bulletactiveE3 = false;
         }
-
-        if(getCharAtxy(ebulletX3,ebulletY3)=='o'|| getCharAtxy(ebulletX3,ebulletY3)=='|' || getCharAtxy(ebulletX3,ebulletY3)=='\\' || getCharAtxy(ebulletX3,ebulletY3)=='/')
+        // detection of the hero
+        if (getCharAtxy(ebulletX3, ebulletY3) == 'o' || getCharAtxy(ebulletX3, ebulletY3) == '|' || getCharAtxy(ebulletX3, ebulletY3) == '\\' || getCharAtxy(ebulletX3, ebulletY3) == '/')
         {
-            health-=25;
+            health -= 25;
         }
     }
 
-    if (bulletactiveE6 && checkSixthEnemy) 
+    if (bulletactiveE6 && checkSixthEnemy)
     {
         gotoxy(ebulletX6, ebulletY6);
         cout << " ";
-        ebulletX6-=1;
-        if (ebulletX6 <=20 || getCharAtxy(ebulletX6,ebulletY6)=='#') {
+        ebulletX6 -= 1;
+        if (ebulletX6 <= 20 || getCharAtxy(ebulletX6, ebulletY6) == '#') // location of the bullet and where it can move
+        {
             bulletactiveE6 = false;
         }
-
-        if(getCharAtxy(ebulletX6,ebulletY6)=='o'|| getCharAtxy(ebulletX6,ebulletY6)=='|' || getCharAtxy(ebulletX6,ebulletY6)=='\\' || getCharAtxy(ebulletX6,ebulletY6)=='/')
+        // detection of the hero
+        if (getCharAtxy(ebulletX6, ebulletY6) == 'o' || getCharAtxy(ebulletX6, ebulletY6) == '|' || getCharAtxy(ebulletX6, ebulletY6) == '\\' || getCharAtxy(ebulletX6, ebulletY6) == '/')
         {
-            health-=25;
+            health -= 25;
         }
     }
 
-    if (bulletactiveE4 && checkFourthEnemy) 
+    if (bulletactiveE4 && checkFourthEnemy)
     {
         gotoxy(ebulletX4, ebulletY4);
         cout << " ";
-        ebulletY4+=2;
-        if (ebulletY4 >=22 || getCharAtxy(ebulletX4,ebulletY4)=='#') {
+        ebulletY4 += 2;
+        if (ebulletY4 >= 22 || getCharAtxy(ebulletX4, ebulletY4) == '#') // location of the bullet and where it can move
+        {
             bulletactiveE4 = false;
         }
-
-        if(getCharAtxy(ebulletX4,ebulletY4)=='o'|| getCharAtxy(ebulletX4,ebulletY4)=='|' || getCharAtxy(ebulletX4,ebulletY4)=='\\' || getCharAtxy(ebulletX4,ebulletY4)=='/')
+        // detection of the hero
+        if (getCharAtxy(ebulletX4, ebulletY4) == 'o' || getCharAtxy(ebulletX4, ebulletY4) == '|' || getCharAtxy(ebulletX4, ebulletY4) == '\\' || getCharAtxy(ebulletX4, ebulletY4) == '/')
         {
-            health-=25;
+            health -= 25;
         }
     }
 
-    if (bulletactiveE5 && checkFifthEnemy) 
+    if (bulletactiveE5 && checkFifthEnemy)
     {
         gotoxy(ebulletX5, ebulletY5);
         cout << "  ";
-        ebulletX5-=2;
-        if (ebulletX5 <=20  || getCharAtxy(ebulletX5,ebulletY5)=='#') {
+        ebulletX5 -= 2;
+        if (ebulletX5 <= 20 || getCharAtxy(ebulletX5, ebulletY5) == '#') // location of the bullet and where it can move
+        {
             bulletactiveE5 = false;
         }
-
-        if(getCharAtxy(ebulletX5,ebulletY5)=='o'|| getCharAtxy(ebulletX5,ebulletY5)=='|' || getCharAtxy(ebulletX5,ebulletY5)=='\\' || getCharAtxy(ebulletX5,ebulletY5)=='/')
+        // detection of the hero
+        if (getCharAtxy(ebulletX5, ebulletY5) == 'o' || getCharAtxy(ebulletX5, ebulletY5) == '|' || getCharAtxy(ebulletX5, ebulletY5) == '\\' || getCharAtxy(ebulletX5, ebulletY5) == '/')
         {
-            health-=25;
+            health -= 25;
         }
     }
-
-    
-
-    
 }
 
 void moveBulletForfinal()
 {
-    if (bulletactiveE7 && checkSeventhEnemy) 
+    if (bulletactiveE7 && checkSeventhEnemy)
     {
         gotoxy(ebulletX7, ebulletY7);
         cout << "  ";
-        ebulletX7+=2;
-        if ( ebulletX7>=60 || getCharAtxy(ebulletX7,ebulletY7)=='#' || getCharAtxy(ebulletX7+1,ebulletY7)=='#') {
+        ebulletX7 += 2;
+        if (ebulletX7 >= 60 || getCharAtxy(ebulletX7, ebulletY7) == '#' || getCharAtxy(ebulletX7 + 1, ebulletY7) == '#') // location of the bullet and where it can move
+        {
             bulletactiveE7 = false;
         }
-
-        if(getCharAtxy(ebulletX7,ebulletY7)=='o'|| getCharAtxy(ebulletX7,ebulletY7)=='|' || getCharAtxy(ebulletX7,ebulletY7)=='\\' || getCharAtxy(ebulletX7,ebulletY7)=='/' ||getCharAtxy(ebulletX7+1,ebulletY7)=='o'|| getCharAtxy(ebulletX7+1,ebulletY7)=='|' || getCharAtxy(ebulletX7+1,ebulletY7)=='\\' || getCharAtxy(ebulletX7+1,ebulletY7)=='/')
+        // detection of the hero
+        if (getCharAtxy(ebulletX7, ebulletY7) == 'o' || getCharAtxy(ebulletX7, ebulletY7) == '|' || getCharAtxy(ebulletX7, ebulletY7) == '\\' || getCharAtxy(ebulletX7, ebulletY7) == '/' || getCharAtxy(ebulletX7 + 1, ebulletY7) == 'o' || getCharAtxy(ebulletX7 + 1, ebulletY7) == '|' || getCharAtxy(ebulletX7 + 1, ebulletY7) == '\\' || getCharAtxy(ebulletX7 + 1, ebulletY7) == '/')
         {
-            health-=25;
+            health -= 25;
         }
     }
 
-    if (bulletactiveE8 && checkEightEnemy) 
+    if (bulletactiveE8 && checkEightEnemy)
     {
         gotoxy(ebulletX8, ebulletY8);
         cout << "  ";
-        ebulletX8-=2;
-        if (ebulletX8<=40 || getCharAtxy(ebulletX8,ebulletY8)=='#' || getCharAtxy(ebulletX8-1,ebulletY8)=='#') {
+        ebulletX8 -= 2;
+        if (ebulletX8 <= 40 || getCharAtxy(ebulletX8, ebulletY8) == '#' || getCharAtxy(ebulletX8 - 1, ebulletY8) == '#') // location of the bullet and where it can move
+        {
             bulletactiveE8 = false;
         }
-
-        if(getCharAtxy(ebulletX8,ebulletY8)=='o'|| getCharAtxy(ebulletX8,ebulletY8)=='|' || getCharAtxy(ebulletX8,ebulletY8)=='\\' || getCharAtxy(ebulletX8,ebulletY8)=='/' || getCharAtxy(ebulletX8-1,ebulletY8)=='o'|| getCharAtxy(ebulletX8-1,ebulletY8)=='|' || getCharAtxy(ebulletX8-1,ebulletY8)=='\\' || getCharAtxy(ebulletX8-1,ebulletY8)=='/')
+        // detection of the hero
+        if (getCharAtxy(ebulletX8, ebulletY8) == 'o' || getCharAtxy(ebulletX8, ebulletY8) == '|' || getCharAtxy(ebulletX8, ebulletY8) == '\\' || getCharAtxy(ebulletX8, ebulletY8) == '/' || getCharAtxy(ebulletX8 - 1, ebulletY8) == 'o' || getCharAtxy(ebulletX8 - 1, ebulletY8) == '|' || getCharAtxy(ebulletX8 - 1, ebulletY8) == '\\' || getCharAtxy(ebulletX8 - 1, ebulletY8) == '/')
         {
-            health-=25;
+            health -= 25;
         }
     }
 }
 
-void enemyShoot() 
+void enemyShoot()
 {
-    if (!bulletactiveE1) 
+    // gives the green flag if the bullet of enemies is not active
+    if (!bulletactiveE1)
     {
         ebulletX1 = ex1 + 2;
-        ebulletY1 = ey1+1;
+        ebulletY1 = ey1 + 1;
         bulletactiveE1 = true;
     }
-    if (!bulletactiveE2) 
+    if (!bulletactiveE2)
     {
-        ebulletX2 = ex2+2;
-        ebulletY2 = ey2+1;
+        ebulletX2 = ex2 + 2;
+        ebulletY2 = ey2 + 1;
         bulletactiveE2 = true;
     }
-    if (!bulletactiveE3) 
+    if (!bulletactiveE3)
     {
-        ebulletX3 = ex3+1;
-        ebulletY3 = ey3-2;
+        ebulletX3 = ex3 + 1;
+        ebulletY3 = ey3 - 2;
         bulletactiveE3 = true;
     }
-    if (!bulletactiveE6) 
+    if (!bulletactiveE6)
     {
-        ebulletX6 = ex6+2;
-        ebulletY6 = ey6+1;
+        ebulletX6 = ex6 + 2;
+        ebulletY6 = ey6 + 1;
         bulletactiveE6 = true;
     }
-    if (!bulletactiveE4) 
+    if (!bulletactiveE4)
     {
-        ebulletX4 = ex4+1;
-        ebulletY4 = ey4+2;
+        ebulletX4 = ex4 + 1;
+        ebulletY4 = ey4 + 2;
         bulletactiveE4 = true;
     }
-    if (!bulletactiveE5) 
+    if (!bulletactiveE5)
     {
-        ebulletX5 = ex5+2;
-        ebulletY5 = ey5+1;
+        ebulletX5 = ex5 + 2;
+        ebulletY5 = ey5 + 1;
         bulletactiveE5 = true;
     }
-    
-
 }
 
 void enemyShootFinal()
 {
-    if (!bulletactiveE7) 
+    // gives the green flag if the bullet of the enemies of the finale level and also sets the coordinates of the bullet of enemies
+
+    if (!bulletactiveE7)
     {
-        ebulletX7 = ex7+2;
-        ebulletY7 = ey7+1;
+        ebulletX7 = ex7 + 2;
+        ebulletY7 = ey7 + 1;
         bulletactiveE7 = true;
     }
-    if (!bulletactiveE8) 
+    if (!bulletactiveE8)
     {
-        ebulletX8 = ex8+2;
-        ebulletY8 = ey8+1;
+        ebulletX8 = ex8 + 2;
+        ebulletY8 = ey8 + 1;
         bulletactiveE8 = true;
     }
 }
 
-
-
-void gotoxy(int x,int y)
+void gotoxy(int x, int y)
 {
-	COORD coordinates;
-	coordinates.X = x;
-	coordinates.Y = y;
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),coordinates);
+    COORD coordinates;
+    coordinates.X = x;
+    coordinates.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinates);
 }

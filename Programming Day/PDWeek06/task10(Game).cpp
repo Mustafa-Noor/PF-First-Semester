@@ -80,7 +80,8 @@ int ebulletX7, ebulletY7, ebulletX8, ebulletY8;
 // This checks if the enemy bullet is active
 bool bulletactiveE1 = false, bulletactiveE2 = false, bulletactiveE3 = false, bulletactiveE4 = false, bulletactiveE5 = false, bulletactiveE6 = false;
 bool bulletactiveE7 = false, bulletactiveE8 = false;
-
+// this to ensure the removal of enemy after their death
+int counterforEnemy1=0, counterforEnemy2=0, counterforEnemy3=0, counterforEnemy4=0, counterforEnemy5=0, counterforEnemy6=0, counterforEnemy7=0, counterforEnemy8=0;
 // These are the healths of enemies
 int enemy1 = 100, enemy2 = 100, enemy3 = 100, enemy4 = 100, enemy5 = 100, enemy6 = 100;
 int enemy7 = 100, enemy8 = 100;
@@ -149,6 +150,7 @@ int main()
                 bulletactiveE1 = true;
                 gotoxy(ebulletX1, ebulletY1);
                 cout << " ";
+                counterforEnemy1++;
             }
             if (enemy2 <= 0)
             {
@@ -156,6 +158,7 @@ int main()
                 bulletactiveE2 = true;
                 gotoxy(ebulletX2, ebulletY2);
                 cout << " ";
+                counterforEnemy2++;
             }
             if (enemy3 <= 0)
             {
@@ -163,6 +166,7 @@ int main()
                 bulletactiveE3 = true;
                 gotoxy(ebulletX3, ebulletY3);
                 cout << " ";
+                counterforEnemy3++;
             }
             if (enemy4 <= 0)
             {
@@ -171,6 +175,7 @@ int main()
                 bulletactiveE4 = true;
                 gotoxy(ebulletX4, ebulletY4);
                 cout << " ";
+                counterforEnemy4++;
             }
             if (enemy5 <= 0)
             {
@@ -178,6 +183,7 @@ int main()
                 bulletactiveE5 = true;
                 gotoxy(ebulletX5, ebulletY5);
                 cout << "  ";
+                counterforEnemy5++;
             }
             if (enemy6 <= 0)
             {
@@ -185,6 +191,7 @@ int main()
                 bulletactiveE6 = true;
                 gotoxy(ebulletX6, ebulletY6);
                 cout << " ";
+                counterforEnemy6++;
             }
 
             // for the movement of the hero
@@ -208,14 +215,14 @@ int main()
             {
                 if (!bulletActive)
                 {
-                    bx = px + 5;
+                    bx = px + 3;
                     by = py + 1;
                     bulletActive = true;
 
                     bulletDir = 'r'; // shoots bullet towards right
                 }
             }
-            if (GetAsyncKeyState(VK_LSHIFT))
+            if (GetAsyncKeyState(VK_HOME))
             {
                 if (!bulletActive)
                 {
@@ -226,12 +233,12 @@ int main()
                 }
             }
 
-            if (GetAsyncKeyState(VK_RSHIFT))
+            if (GetAsyncKeyState(VK_END))
             {
                 if (!bulletActive)
                 {
                     bx = px;
-                    by = py + 2;
+                    by = py + 3;
                     bulletActive = true;
                     bulletDir = 'd'; // shoot bullets downwards
                 }
@@ -248,6 +255,7 @@ int main()
             }
 
             // calls of functions for the movement of enemies
+            
             moveEnemy1();
 
             moveEnemy2();
@@ -331,27 +339,21 @@ int main()
                 {
                     checkSeventhEnemy = false;
                     bulletactiveE7 = true;
-                    gotoxy(ebulletX7 + 1, ebulletY7);
+                    gotoxy(ebulletX7,ebulletY7);
                     cout << "  ";
+                    counterforEnemy7++;
                 }
 
                 if (enemy8 <= 0)
                 {
                     checkEightEnemy = false;
                     bulletactiveE8 = true;
-                    gotoxy(ebulletX8 - 1, ebulletY8);
+                    gotoxy(ebulletX8, ebulletY8);
                     cout << "  ";
+                    counterforEnemy8++;
                 }
 
                 // for the movements of the hero
-                if (GetAsyncKeyState(VK_LEFT))
-                {
-                    moveHeroleft();
-                }
-                if (GetAsyncKeyState(VK_RIGHT))
-                {
-                    moveHeroright();
-                }
                 if (GetAsyncKeyState(VK_UP))
                 {
                     moveHeroup();
@@ -364,14 +366,14 @@ int main()
                 {
                     if (!bulletActive)
                     {
-                        bx = px + 5;
+                        bx = px + 3;
                         by = py + 1;
                         bulletActive = true;
 
                         bulletDir = 'r';  // for firing og hero bullet towards right
                     }
                 }
-                if (GetAsyncKeyState(VK_LSHIFT))
+                if (GetAsyncKeyState(VK_HOME))
                 {
                     if (!bulletActive)
                     {
@@ -382,12 +384,12 @@ int main()
                     }
                 }
 
-                if (GetAsyncKeyState(VK_RSHIFT))
+                if (GetAsyncKeyState(VK_END))
                 {
                     if (!bulletActive)
                     {
                         bx = px;
-                        by = py + 2;
+                        by = py + 3;
                         bulletActive = true;
                         bulletDir = 'd';  // for firing of hero bullet downwards
                     }
@@ -625,17 +627,17 @@ void finalmaze()
          << "\t"
          << "\t"
          << "\t"
-         << "#                       #     #                        #" << endl;
+         << "#                      ##     ##                       #" << endl;
     cout << "\t"
          << "\t"
          << "\t"
          << "\t"
-         << "#                       #     #                        #" << endl;
+         << "#                      ##     ##                       #" << endl;
     cout << "\t"
          << "\t"
          << "\t"
          << "\t"
-         << "#                       #     #                        #" << endl;
+         << "#                      ##     ##                       #" << endl;
     cout << "\t"
          << "\t"
          << "\t"
@@ -734,15 +736,37 @@ void powerup()
 // prints the hero health
 void hp()
 {
+    
+    if(health==100)
+    {
+        gotoxy(38,31);
+        cout << "Health: " << 100;
+    }
+    else
+    {
 
-    gotoxy(38, 31);
-    cout << "Health: " << health;
+        gotoxy(38,31);
+        cout << "Health: " <<"    ";
+        gotoxy(38,31);
+        cout << "Health: " << health;
+    }
 }
 // prints the enemies health
 void enemydata()
 {
-    gotoxy(1, 32);
-    cout << "Enemy1: " << enemy1;
+    if(enemy1==100)
+    {
+        gotoxy(1, 32);
+        cout << "Enemy1: " << 100;
+    }
+    else
+    {
+         gotoxy(1, 32);
+        cout << "Enemy1: " << "    ";
+         gotoxy(1, 32);
+        cout << "Enemy1: " << enemy1;
+    }
+   
     gotoxy(16, 32);
     cout << "Enemy2: " << enemy2;
     gotoxy(32, 32);
@@ -963,6 +987,8 @@ void removeEnemy6()
 void moveEnemy7()
 {
 
+    if(counterforEnemy7<=1)
+    {
     removeEnemy7();
     if (checkSeventhEnemy)
     {
@@ -986,10 +1012,12 @@ void moveEnemy7()
 
         printenemy7();
     }
+    }
 }
 void moveEnemy8()
 {
-
+    if(counterforEnemy8<=1)
+    {
     removeEnemy8();
     if (checkEightEnemy)
     {
@@ -1013,11 +1041,14 @@ void moveEnemy8()
 
         printenemy8();
     }
+    }
 }
 
 void moveEnemy1()
 {
 
+    if(counterforEnemy1<=1)
+    {
     removeEnemy1();
     if (checkFirstEnemy)
     {
@@ -1041,10 +1072,14 @@ void moveEnemy1()
 
         printenemy1();
     }
+
+    }
 }
 
 void moveEnemy2()
 {
+    if(counterforEnemy2<=1)
+    {
     removeEnemy2();
     if (checkSecondEnemy)
     {
@@ -1067,10 +1102,13 @@ void moveEnemy2()
         }
         printenemy2();
     }
+    }
 }
 
 void moveEnemy3()
 {
+    if(counterforEnemy3<=1)
+    {
     removeEnemy3();
     if (checkThirdEnemy)
     {
@@ -1093,10 +1131,13 @@ void moveEnemy3()
         }
         printenemy3();
     }
+    }
 }
 
 void moveEnemy4()
 {
+    if(counterforEnemy4<=1)
+    {
     removeEnemy4();
     if (checkFourthEnemy)
     {
@@ -1119,10 +1160,13 @@ void moveEnemy4()
         }
         printenemy4();
     }
+    }
 }
 
 void moveEnemy5()
 {
+    if(counterforEnemy5<=1)
+    {
     removeEnemy5();
     if (checkFifthEnemy)
     {
@@ -1145,10 +1189,13 @@ void moveEnemy5()
         }
         printenemy5();
     }
+    }
 }
 
 void moveEnemy6()
 {
+    if(counterforEnemy6<=1)
+    {
     removeEnemy6();
     if (checkSixthEnemy)
     {
@@ -1172,6 +1219,7 @@ void moveEnemy6()
             contact6 = 0;
         }
         printenemy6();
+    }
     }
 }
 
@@ -1249,7 +1297,7 @@ void movefire()
     }
     else if (bulletDir == 'l')
     {
-        if (getCharAtxy(bx - 3, by) != '#')
+        if (getCharAtxy(bx - 3, by) != '#' || getCharAtxy(bx,by) != '#')
         {
             bx -= 3; // Move left
         }
@@ -1260,70 +1308,82 @@ void movefire()
     }
     else if (bulletDir == 'd')
     {
-        if (getCharAtxy(bx, by + 3) != '#')
+        if (getCharAtxy(bx, by + 3) != '#' || getCharAtxy(bx, by+2)!='#' || getCharAtxy(bx,by+1)!='#')
         {
             by += 3; // Move down
         }
         else
         {
+            removefire();
             bulletActive = false;
+            
         }
     }
 
     if (getCharAtxy(bx, by) == '@')
-    {
+    { 
+        removefire();
         enemy1 -= 50;
         bulletActive = false; // Bullet should be inactive after hitting an enemy
-        removefire();
+       
     }
 
     if (getCharAtxy(bx, by) == '$')
-    {
-        enemy2 -= 50;
+    { 
+        gotoxy(bx,by);
+        cout << " ";
         bulletActive = false;
-        removefire();
+        enemy2 -= 50;
+        
+       
     }
 
     if (getCharAtxy(bx, by) == '&')
     {
+        removefire();
         enemy3 -= 50;
         bulletActive = false;
-        removefire();
+        
     }
 
     if (getCharAtxy(bx, by) == '*')
     {
+        removefire();
         enemy4 -= 50;
         bulletActive = false;
-        removefire();
+        
     }
 
     if (getCharAtxy(bx, by) == '8')
     {
+        removefire();
         enemy5 -= 50;
         bulletActive = false;
-        removefire();
+        
     }
 
     if (getCharAtxy(bx, by) == '%')
     {
+        removefire();
         enemy6 -= 50;
         bulletActive = false;
-        removefire();
+        
     }
 
     if (getCharAtxy(bx, by) == 'A')
     {
+        removefire();
         enemy8 -= 50;
         bulletActive = false;
-        removefire();
+        
     }
 
     if (getCharAtxy(bx, by) == 'X')
     {
+        removefire();
         enemy7 -= 50;
         bulletActive = false;
-        removefire();
+        
     }
 
     // Check if the bullet has hit an enemy or reached the right edge of the screen

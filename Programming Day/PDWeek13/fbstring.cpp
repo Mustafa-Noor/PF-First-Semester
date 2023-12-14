@@ -92,7 +92,7 @@ void saveRecordsofWomenitems(string arrW[], int priceW[], int availableW[], int 
 void saveRecordsofMenitems(string arrM[], int priceM[], int availableM[], int menq);
 void saveQuantitybought(int cardindex, int menq, int womenq, int quantforMen[][30], int quantforWomen[][30]);
 void saveAdresses(int areas, string deliveryAreas[]);
-void retrieveCredentialsRec(int range, string username[], string password[], string role[], int idx, int cusIndex, int cardindex);
+void retrieveCredentialsRec(int range, string username[], string password[], string role[], int &idx, int cusIndex, int cardindex);
 
 string getField(string record, int field);
 
@@ -779,19 +779,19 @@ void saveQuantitybought(int cardindex, int menq, int womenq, int quantforMen[][3
     file.close();
 }
 // it retrieves the credentials
-void retrieveCredentialsRec(int range, string username[], string password[], string role[], int idx, int cusIndex, int cardindex)
+void retrieveCredentialsRec(int range, string username[], string password[], string role[], int &idx, int cusIndex, int cardindex)
 {
-    int a=0;
+    
     string record="";
     fstream file;
     file.open("Credentials.txt", ios::in);
     while(!file.eof())
     {
         getline(file, record);
-        role[a]=getField(record,1);
-        username[a]=getField(record,2);
-        password[a]=getField(record,3);
-        a=a+1;
+        role[idx]=getField(record,1);
+        username[idx]=getField(record,2);
+        password[idx]=getField(record,3);
+        idx=idx+1;
     }
 
     file.close();

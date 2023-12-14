@@ -92,7 +92,10 @@ void saveRecordsofWomenitems(string arrW[], int priceW[], int availableW[], int 
 void saveRecordsofMenitems(string arrM[], int priceM[], int availableM[], int menq);
 void saveQuantitybought(int cardindex, int menq, int womenq, int quantforMen[][30], int quantforWomen[][30]);
 void saveAdresses(int areas, string deliveryAreas[]);
+
 void retrieveCredentialsRec(int range, string username[], string password[], string role[], int &idx, int cusIndex, int cardindex);
+void retrieveCustomerInfo(string customerArr[], int billPaidcount[], int totalM[], int totalW[], int finalTotal[], string userArea[], string delivery[], int cardno[], int &cusIndex);
+void retrieveRecOfMenitems(string arrM[], int priceM[], int availableM[], int &menq);
 
 string getField(string record, int field);
 
@@ -142,6 +145,8 @@ main()
     
     
     retrieveCredentialsRec(range, username, password, role,idx, cusIndex, cardindex);
+    retrieveRecOfMenitems(arrM, priceM, availableM, menq);
+    
 
 
     string op;
@@ -651,17 +656,7 @@ void saveCustomerInfo(string customerArr[], int billPaidcount[], int totalM[], i
         file << ",";
         file << billPaidcount[x];
         file << ",";
-        file << totalM[x];
-        file << ",";
-        file << totalW[x];
-        file << ",";
-        file << finalTotal[x];
-        if(delivery[x]=="Card")
-        {
-        file << ",";
         file << cardno[x];
-        }
-
         if (x != cusIndex-1)
        {
 			file<<'\n';
@@ -795,6 +790,41 @@ void retrieveCredentialsRec(int range, string username[], string password[], str
     }
 
     file.close();
+}
+// it retries the customer info
+void retrieveCustomerInfo(string customerArr[], int billPaidcount[], int totalM[], int totalW[], int finalTotal[], string userArea[], string delivery[], int cardno[], int &cusIndex)
+{
+    string record="";
+    fstream file;
+    file.open("CustomerDetails.txt", ios::in);
+    while(!file.eof())
+    {
+        getline(file,record);
+        customerArr[cusIndex]=getField(record,1);
+        userArea[cusIndex]=getField(record,2);
+        delivery[cusIndex]=getField(record,3);
+        billPaidcount[cusIndex]=stoi(getField(record,4));
+        cardno[cusIndex]=stoi(getField(record,8));
+        cusIndex=cusIndex+1;
+    }
+
+    file.close();
+}
+
+void retrieveRecOfMenitems(string arrM[], int priceM[], int availableM[], int &menq)
+{
+    string record="";
+    fstream file;
+    file.open("Menitems.txt", ios::in);
+    while(!file.eof())
+    {
+        getline(file,record);
+        arrM[menq]=getField(record,1);
+        priceM[menq]=stoi(getField(record,2));
+        availableM[menq]=stoi(getField(record,3));
+        menq++;
+
+    }
 }
 // it finds field which is present in csv 
 string getField(string record, int field)

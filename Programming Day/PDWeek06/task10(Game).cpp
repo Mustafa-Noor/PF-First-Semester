@@ -88,6 +88,7 @@ int enemy7 = 100, enemy8 = 100;
 // This turn true when the condition for the next level becomes applicable
 bool nextLevel = false;
 // This checks if the game is completed
+
 bool gamecompletion = false;
 
 char getCharAtxy(short int x, short int y)

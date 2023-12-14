@@ -1,5 +1,5 @@
-Black T-Shirt,500, 24
-Blue Dress Shirt,900, 20
-Grey Sweatshirt,600, 23
-Red Hoodie Printed,800, 24
-Mustafa,100, 12
+Black T-Shirt,500,24
+Blue Dress Shirt,900,20
+Grey Sweatshirt,600,23
+Red Hoodie Printed,800,24
+mustafa,1,32

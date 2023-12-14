@@ -96,6 +96,7 @@ void saveAdresses(int areas, string deliveryAreas[]);
 void retrieveCredentialsRec(int range, string username[], string password[], string role[], int &idx, int cusIndex, int cardindex);
 void retrieveCustomerInfo(string customerArr[], int billPaidcount[], int totalM[], int totalW[], int finalTotal[], string userArea[], string delivery[], int cardno[], int &cusIndex);
 void retrieveRecOfMenitems(string arrM[], int priceM[], int availableM[], int &menq);
+void retrieveRecOfWomenitems(string arrW[], int priceW[], int availableW[], int &womenq);
 
 string getField(string record, int field);
 
@@ -130,15 +131,15 @@ main()
     int cardno[range];
 
     //Store Related
-    int menq = 4, womenq = 4;
+    int menq = 0, womenq = 0;
     int areas = 4;
     bool deliveryop = false, delArea = false, billpaid = false;
     string name, password1;
     string phoneN = "0423-123456", email = "fashionisu@gmail,com";
-    string arrM[range] = {"Black T-Shirt", "Blue Dress Shirt", "Grey Sweatshirt", "Red Hoodie Printed"};
+    string arrM[range];
     int priceM[range] = {500, 900, 600, 800};
     int availableM[range] = {24, 20, 23, 24};
-    string arrW[range] = {"Black Printed Shirt", "Blue 3 Piece Suit", "Grey Frock Linen", "Red Dress Printed"};
+    string arrW[range];
     int priceW[range] = {1200, 1100, 1000, 1800};
     int availableW[range] = {36, 42, 65, 34};
     string deliveryAreas[range] = {"Gulberg", "Askari", "DHA", "Model Town"};
@@ -146,6 +147,7 @@ main()
     
     retrieveCredentialsRec(range, username, password, role,idx, cusIndex, cardindex);
     retrieveRecOfMenitems(arrM, priceM, availableM, menq);
+    retrieveRecOfWomenitems(arrW, priceW, availableW, womenq);
     
 
 
@@ -697,7 +699,7 @@ void saveRecordsofMenitems(string arrM[], int priceM[], int availableM[], int me
         file << arrM[x];
         file << ",";
         file << priceM[x];
-        file << ", ";
+        file << ",";
         file << availableM[x];
         if(x != menq-1)
         {
@@ -719,7 +721,7 @@ void saveRecordsofWomenitems(string arrW[], int priceW[], int availableW[], int 
         file << arrW[x];
         file << ",";
         file << priceW[x];
-        file << ", ";
+        file << ",";
         file << availableW[x];
         if(x != womenq-1)
         {
@@ -791,25 +793,7 @@ void retrieveCredentialsRec(int range, string username[], string password[], str
 
     file.close();
 }
-// it retries the customer info
-void retrieveCustomerInfo(string customerArr[], int billPaidcount[], int totalM[], int totalW[], int finalTotal[], string userArea[], string delivery[], int cardno[], int &cusIndex)
-{
-    string record="";
-    fstream file;
-    file.open("CustomerDetails.txt", ios::in);
-    while(!file.eof())
-    {
-        getline(file,record);
-        customerArr[cusIndex]=getField(record,1);
-        userArea[cusIndex]=getField(record,2);
-        delivery[cusIndex]=getField(record,3);
-        billPaidcount[cusIndex]=stoi(getField(record,4));
-        cardno[cusIndex]=stoi(getField(record,8));
-        cusIndex=cusIndex+1;
-    }
 
-    file.close();
-}
 
 void retrieveRecOfMenitems(string arrM[], int priceM[], int availableM[], int &menq)
 {
@@ -823,6 +807,22 @@ void retrieveRecOfMenitems(string arrM[], int priceM[], int availableM[], int &m
         priceM[menq]=stoi(getField(record,2));
         availableM[menq]=stoi(getField(record,3));
         menq++;
+
+    }
+}
+
+void retrieveRecOfWomenitems(string arrW[], int priceW[], int availableW[], int &womenq)
+{
+    string record="";
+    fstream file;
+    file.open("Womenitems.txt", ios::in);
+    while(!file.eof())
+    {
+        getline(file,record);
+        arrW[womenq]=getField(record,1);
+        priceW[womenq]=stoi(getField(record,2));
+        availableW[womenq]=stoi(getField(record,3));
+        womenq++;
 
     }
 }

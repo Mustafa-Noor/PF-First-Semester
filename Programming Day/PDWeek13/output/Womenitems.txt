@@ -1,4 +1,5 @@
-Black Printed Shirt,1200, 36
-Blue 3 Piece Suit,1100, 42
-Grey Frock Linen,1000, 65
-Red Dress Printed,1800, 34
+Black Printed Shirt,1200,36
+Blue 3 Piece Suit,1100,42
+Grey Frock Linen,1000,65
+Red Dress Printed,1800,34
+name,123,1

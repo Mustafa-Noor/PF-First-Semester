@@ -171,7 +171,7 @@ main()
             if (role1 == "Employee" || role1 == "employee")
             {
                 string employeechoice;
-                system("color 01");
+                system("color 05");
                 while (true)
                 {
                     clearScreen();

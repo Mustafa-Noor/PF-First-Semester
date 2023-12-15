@@ -3,6 +3,7 @@
 #include <conio.h>
 using namespace std;
 void gotoxy(int x, int y);
+string setcolor(unsigned short color);
 void printmaze();
 void printhero();
 void printenemy1();
@@ -435,6 +436,7 @@ int main()
 
 string printfrontpage()
 {
+    setcolor(3);
     cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
     cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
     cout << " %%%%%%%%%%%%%%%%%%% #######   ### ##   #######   #####   ##   ##      ##   ##  #######  ### ##    #####  %%%%%%%%%%%%%%%%%%% " << endl;
@@ -473,6 +475,7 @@ string printfrontpage()
 
 void loadingScreen()
 {
+    setcolor(4);
     cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
     cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
     cout << " %%%%%%%%%%%%%%%%%%% #######   ### ##   #######   #####   ##   ##      ##   ##  #######  ### ##    #####  %%%%%%%%%%%%%%%%%%% " << endl;
@@ -501,6 +504,7 @@ void loadingScreen()
 
 void header()
 {
+    setcolor(4);
     cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
     cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
     cout << " %%%%%%%%%%%%%%%%%%% #######   ### ##   #######   #####   ##   ##      ##   ##  #######  ### ##    #####  %%%%%%%%%%%%%%%%%%% " << endl;
@@ -516,6 +520,7 @@ void header()
 
 void gameover()
 {
+    setcolor(6);
     cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
     cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
     cout << " %%%%%%%%%%%%%%%%%%% #######   ### ##   #######   #####   ##   ##      ##   ##  #######  ### ##    #####  %%%%%%%%%%%%%%%%%%% " << endl;
@@ -541,6 +546,7 @@ void gameover()
 
 void gamecomplete()
 {
+    setcolor(5);
     cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
     cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
     cout << " %%%%%%%%%%%%%%%%%%% #######   ### ##   #######   #####   ##   ##      ##   ##  #######  ### ##    #####  %%%%%%%%%%%%%%%%%%% " << endl;
@@ -566,6 +572,7 @@ void gamecomplete()
 
 void level()
 {
+    setcolor(13);
     cout << R"(
                      __,    ____,  __  _, ____,  __,      ___, 
                     (-|    (-|_,  (-\  / (-|_,  (-|      (-/|  
@@ -577,6 +584,7 @@ void level()
 
 void finalLevel()
 {
+    setcolor(14);
     cout << R"(
                                 ___  _              _   _                    _ 
                                 | __|(_) _ _   __ _ | | | |    ___ __ __ ___ | |
@@ -589,6 +597,7 @@ void finalLevel()
 
 void finalmaze()
 {
+    setcolor(8);
     cout << "\t"
          << "\t"
          << "\t"
@@ -688,6 +697,7 @@ void finalmaze()
 
 void printmaze()
 {
+    setcolor(8);
     cout << "################################################################################################" << endl;
     cout << "#                                                                                              #" << endl;
     cout << "#                                                                                              #" << endl;
@@ -727,6 +737,7 @@ void printmaze()
 // sets the location of the powerup
 void powerup()
 {
+    setcolor(10);
     gotoxy(hx, hy);
     cout << " H  ";
     gotoxy(hx, hy + 1);
@@ -737,7 +748,7 @@ void powerup()
 // prints the hero health
 void hp()
 {
-    
+    setcolor(2);
     if(health==100)
     {
         gotoxy(38,31);
@@ -755,6 +766,7 @@ void hp()
 // prints the enemies health
 void enemydata()
 {
+    setcolor(4);
     if(enemy1==100)
     {
         gotoxy(1, 32);
@@ -767,31 +779,96 @@ void enemydata()
          gotoxy(1, 32);
         cout << "Enemy1: " << enemy1;
     }
-   
+   setcolor(5);
+   if(enemy2==100)
+   {
+    gotoxy(16, 32);
+    cout << "Enemy2: " << 100;
+   }
+   else
+   {
+    gotoxy(16, 32);
+    cout << "Enemy2: " << "    ";
     gotoxy(16, 32);
     cout << "Enemy2: " << enemy2;
+   }
+    setcolor(9);
+   if(enemy3==100)
+   {
+    gotoxy(32, 32);
+    cout << "Enemy3: " << 100;
+   }
+   else
+   {
+    gotoxy(32, 32);
+    cout << "Enemy3: " << "    ";
     gotoxy(32, 32);
     cout << "Enemy3: " << enemy3;
+   }
+    setcolor(9);
+   if(enemy4==100)
+   {
+    gotoxy(48, 32);
+    cout << "Enemy4: " << 100;
+   }
+   else
+   {
+    gotoxy(48, 32);
+    cout << "Enemy4: " << "    ";
     gotoxy(48, 32);
     cout << "Enemy4: " << enemy4;
+   }
+    setcolor(12);
+    if(enemy5==100)
+   {
+    gotoxy(64, 32);
+    cout << "Enemy5: " << 100;
+   }
+   else
+   {
+    gotoxy(64, 32);
+    cout << "Enemy5: " << "    ";
     gotoxy(64, 32);
     cout << "Enemy5: " << enemy5;
+   }
+    setcolor(13);
+   if(enemy6==100)
+   {
+    gotoxy(80, 32);
+    cout << "Enemy6: " << 100;
+   }
+   else
+   {
+    gotoxy(80, 32);
+    cout << "Enemy6: " << "    ";
     gotoxy(80, 32);
     cout << "Enemy6: " << enemy6;
+   }
+    
 }
 // print the health of hero and enemies for the final level
 void dataForfinallevel()
 {
-    gotoxy(37, 34);
+    setcolor(10);
+    gotoxy(37,34);
+    cout << "Health: " <<"    ";
+    gotoxy(37,34);
     cout << "Health: " << health;
+    setcolor(4);
+    gotoxy(55, 34);
+    cout << "Boss 1: " << "    ";
     gotoxy(55, 34);
     cout << "Boss 1: " << enemy7;
+    setcolor(1);
+    gotoxy(70, 34);
+    cout << "Boss 2: " << "     ";
     gotoxy(70, 34);
     cout << "Boss 2: " << enemy8;
 }
 // prints the hero
 void printhero()
 {
+    setcolor(10);
     gotoxy(px, py);
     cout << " o  ";
     gotoxy(px, py + 1);
@@ -803,7 +880,7 @@ void printhero()
 // functions for the printing of the enemies
 void printenemy1()
 {
-
+    setcolor(12);
     gotoxy(ex1, ey1);
     cout << " @ ";
     gotoxy(ex1, ey1 + 1);
@@ -814,6 +891,7 @@ void printenemy1()
 
 void printenemy2()
 {
+    setcolor(13);
     gotoxy(ex2, ey2);
     cout << " $ ";
     gotoxy(ex2, ey2 + 1);
@@ -824,6 +902,7 @@ void printenemy2()
 
 void printenemy3()
 {
+    setcolor(3);
     gotoxy(ex3, ey3);
     cout << " & ";
     gotoxy(ex3, ey3 + 1);
@@ -834,6 +913,7 @@ void printenemy3()
 
 void printenemy4()
 {
+    setcolor(9);
     gotoxy(ex4, ey4);
     cout << " * ";
     gotoxy(ex4, ey4 + 1);
@@ -844,6 +924,7 @@ void printenemy4()
 
 void printenemy5()
 {
+    setcolor(4);
     gotoxy(ex5, ey5);
     cout << "  8  ";
     gotoxy(ex5, ey5 + 1);
@@ -856,6 +937,7 @@ void printenemy5()
 
 void printenemy6()
 {
+    setcolor(5);
     gotoxy(ex6, ey6);
     cout << " % ";
     gotoxy(ex6, ey6 + 1);
@@ -866,6 +948,7 @@ void printenemy6()
 
 void printenemy7()
 {
+    setcolor(4);
     gotoxy(ex7, ey7);
     cout << "  X  ";
     gotoxy(ex7, ey7 + 1);
@@ -878,6 +961,7 @@ void printenemy7()
 
 void printenemy8()
 {
+    setcolor(1);
     gotoxy(ex8, ey8);
     cout << "  A  ";
     gotoxy(ex8, ey8 + 1);
@@ -1283,6 +1367,7 @@ void removefire()
 // move the fires of the hero
 void movefire()
 {
+    setcolor(10);
     removefire();
 
     if (bulletDir == 'r')
@@ -1405,31 +1490,37 @@ void printEnemyBullets()
     // prints the bullets of the enemies for the first level
     if (bulletactiveE1)
     {
+        setcolor(4);
         gotoxy(ebulletX1, ebulletY1);
         cout << "<";
     }
     if (bulletactiveE2)
     {
+        setcolor(5);
         gotoxy(ebulletX2, ebulletY2);
         cout << ">";
     }
     if (bulletactiveE3)
     {
+        setcolor(9);
         gotoxy(ebulletX3, ebulletY3);
         cout << "^";
     }
     if (bulletactiveE4)
     {
+        setcolor(1);
         gotoxy(ebulletX4, ebulletY4);
         cout << "x";
     }
     if (bulletactiveE5)
     {
+        setcolor(12);
         gotoxy(ebulletX5, ebulletY5);
         cout << "<<";
     }
     if (bulletactiveE6)
     {
+        setcolor(13);
         gotoxy(ebulletX6, ebulletY6);
         cout << "<";
     }
@@ -1440,11 +1531,13 @@ void enemybulletfinalLevel()
     // prints the bullets of the enemies for the final level
     if (bulletactiveE7)
     {
+        setcolor(4);
         gotoxy(ebulletX7, ebulletY7);
         cout << ">>";
     }
     if (bulletactiveE8)
     {
+        setcolor(1);
         gotoxy(ebulletX8, ebulletY8);
         cout << "<<";
     }
@@ -1649,4 +1742,11 @@ void gotoxy(int x, int y)
     coordinates.X = x;
     coordinates.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinates);
+}
+
+string setcolor(unsigned short color)
+{
+    HANDLE hcon = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hcon, color);
+    return "";
 }

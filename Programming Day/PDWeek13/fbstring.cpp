@@ -32,10 +32,10 @@ void returnforAll();
 void addMitem(int &menq, string arrM[], int priceM[], int availableM[]);
 void addWitem(int &womenq, string arrW[], int priceW[], int availableW[]);
 void changeStock(int menq, string arrM[], int availableM[], string arrW[], int womenq, int availableW[]);
-void checkReviews(string reviews[], int cusCount, string customer[], int reviewindex);
+void checkReviews(string reviews[], int cusCount, string customerArr[], int reviewindex, int cusIndex);
 void changeName(int menq, int womenq, string arrM[], string arrW[]);
 void removeItem(int &menq, int &womenq, string arrM[], string arrW[], int priceM[], int priceW[], int availableM[], int availableW[]);
-void seeCustomer(int cusCount, string userArea[], string delivery[], string customer[]);
+void seeCustomer(int cusIndex, string userArea[], string delivery[], string customerArr[]);
 void addDeliveryArea(int &areas, string deliveryAreas[]);
 void removeAddress(int &areas, string deliveryAreas[]);
 void clearScreen();
@@ -54,10 +54,10 @@ string takeStock();
 string newStockforWomen(int idx, string arrW[]);
 string newStockforMen(int idx, string arrM[]);
 int makeValueAccToCriteria(int value);
-void showreviews(string reviews[], int cusCount, string username[], int &counter);
+void showreviews(string reviews[], int cusCount, string customerArr[], int &counter, int cusIndex);
 void newNameforWomen(int idx, int var, string arrW[]);
 void newNameforMen(int idx, int var, string arrM[]);
-void showCustomersList(int cusCount, string userArea[], string delivery[], string customer[], int &counter);
+void showCustomersList(int cusIndex, string userArea[], string delivery[], string customerArr[], int &counter);
 string takeNumberofAddress();
 int restrictNumberofAddress(int number);
 string takeNumberofAddressToRemove();
@@ -86,17 +86,18 @@ int strToInt(string convert);
 string intToStr(int num);
 
 void saveRecordsofCred(int range, string username[], string password[], string role[], int idx, int cusIndex, int cardindex);
-void saveCustomerInfo(string customerArr[], int billPaidcount[], int totalM[], int totalW[], int finalTotal[], string userArea[], string delivery[], int cardno[], int cusIndex);
+void saveCustomerInfo(string customerArr[], int billPaidcount[], int totalM[], int totalW[], int finalTotal[], string userArea[], string delivery[], int cardno[], int cusIndex, string reviews[]);
 void saveCustomerReview(int cusCount, string reviews[], string customer[]);
 void saveRecordsofWomenitems(string arrW[], int priceW[], int availableW[], int womenq);
 void saveRecordsofMenitems(string arrM[], int priceM[], int availableM[], int menq);
-void saveQuantitybought(int cardindex, int menq, int womenq, int quantforMen[][30], int quantforWomen[][30]);
 void saveAdresses(int areas, string deliveryAreas[]);
 
 void retrieveCredentialsRec(int range, string username[], string password[], string role[], int &idx, int cusIndex, int cardindex);
 void retrieveRecOfMenitems(string arrM[], int priceM[], int availableM[], int &menq);
 void retrieveRecOfWomenitems(string arrW[], int priceW[], int availableW[], int &womenq);
 void retrieveAdress(int &areas, string deliveryAreas[]);
+void retriveinfoCustomer(string customerArr[], int billPaidcount[], int totalM[], int totalW[], int finalTotal[], string userArea[], string delivery[], int cardno[], int &cusIndex, string reviews[]);
+void retrieveCusReview(int &cusCount, string reviews[], string customer[]);
 
 string getField(string record, int field);
 
@@ -149,6 +150,7 @@ main()
     retrieveRecOfMenitems(arrM, priceM, availableM, menq);
     retrieveRecOfWomenitems(arrW, priceW, availableW, womenq);
     retrieveAdress(areas, deliveryAreas);
+    retriveinfoCustomer(customerArr, billPaidcount, totalM, totalW, finalTotal, userArea,delivery, cardno, cusIndex, reviews);
     
 
 
@@ -263,7 +265,7 @@ main()
                         clearScreen();
                         cout << endl;
                         cout << "-------------------Show Reviews-------------------" << endl;
-                        checkReviews(reviews, cusCount, customer, reviewindex);
+                        checkReviews(reviews, cusCount, customerArr, reviewindex, cusIndex);
                         
                     }
 
@@ -290,7 +292,7 @@ main()
                         clearScreen();
                         cout << endl;
                         cout << "-------------------Our Customers-------------------" << endl;
-                        seeCustomer(cusCount, userArea, delivery, customer);
+                        seeCustomer(cusIndex, userArea, delivery, customerArr);
                         
                     }
 
@@ -603,12 +605,10 @@ main()
         else if (op == "3")
         {
             // saving records 
-            saveCustomerInfo(customerArr,billPaidcount, totalM, totalW,finalTotal,userArea,delivery, cardno, cusIndex);
+            saveCustomerInfo(customerArr,billPaidcount, totalM, totalW,finalTotal,userArea,delivery, cardno, cusIndex, reviews);
             saveRecordsofCred(range, username, password, role, idx, cusIndex,cardindex);
-            saveCustomerReview(cusCount, reviews, customer);
             saveRecordsofMenitems(arrM,priceM, availableM,menq);
             saveRecordsofWomenitems(arrW, priceW, availableW, womenq);
-            saveQuantitybought(cardindex, menq, womenq, quantforMen, quantforWomen);
             saveAdresses(areas, deliveryAreas);
             break;
         }
@@ -644,7 +644,7 @@ void saveRecordsofCred(int range, string username[], string password[], string r
     file.close();
 }
 // saves data related to customer
-void saveCustomerInfo(string customerArr[], int billPaidcount[], int totalM[], int totalW[], int finalTotal[], string userArea[], string delivery[], int cardno[], int cusIndex)
+void saveCustomerInfo(string customerArr[], int billPaidcount[], int totalM[], int totalW[], int finalTotal[], string userArea[], string delivery[], int cardno[], int cusIndex, string reviews[])
 {
     fstream file;
     file.open("CustomerDetails.txt", ios::out);
@@ -659,7 +659,7 @@ void saveCustomerInfo(string customerArr[], int billPaidcount[], int totalM[], i
         file << ",";
         file << billPaidcount[x];
         file << ",";
-        file << cardno[x];
+        file << reviews[x];
         if (x != cusIndex-1)
        {
 			file<<'\n';
@@ -668,27 +668,27 @@ void saveCustomerInfo(string customerArr[], int billPaidcount[], int totalM[], i
 
     file.close();
 }
-//saves data related to customer reviews
-void saveCustomerReview(int cusCount, string reviews[], string customer[])
+// this will retrieve customer info
+void retriveinfoCustomer(string customerArr[], int billPaidcount[], int totalM[], int totalW[], int finalTotal[], string userArea[], string delivery[], int cardno[], int &cusIndex, string reviews[])
 {
+    string record="";
     fstream file;
-    file.open("reviewsdetail.txt", ios::out);
+    file.open("CustomerDetails.txt", ios::in);
+    while(!file.eof())
     {
-        for(int x=0; x<cusCount; x++)
-        {
-            file << customer[x];
-            file << ",";
-            file << reviews[x];
-
-            if(x != cusCount-1)
-            {
-            file << '\n';
-            }
-        }
+        getline(file,record);
+        customerArr[cusIndex] = getField(record,1);
+        userArea[cusIndex] = getField(record,2);
+        delivery[cusIndex] = getField(record,3);
+        billPaidcount[cusIndex] = stoi(getField(record,4));
+        reviews[cusIndex] = getField(record,5);
+        cusIndex=cusIndex+1;
     }
-
+    
     file.close();
 }
+
+
 // save store record of Men items
 void saveRecordsofMenitems(string arrM[], int priceM[], int availableM[], int menq)
 {
@@ -745,32 +745,6 @@ void saveAdresses(int areas, string deliveryAreas[])
         if(x!=areas-1)
         {
             file << endl;
-        }
-    }
-
-    file.close();
-}
-// saves the quantity bought by the customer
-void saveQuantitybought(int cardindex, int menq, int womenq, int quantforMen[][30], int quantforWomen[][30])
-{
-    fstream file;
-    file.open("SaveQuantity.txt", ios::out);
-
-    for(int x=0; x<cardindex; x++)
-    {
-        for(int i=0; i<menq; i++)
-        {
-            file << quantforMen[cardindex][i];
-            file <<",";
-        }
-
-        for(int j=0; j<womenq; j++)
-        {
-            file << quantforWomen[cardindex][j];
-            if(j!=womenq-1)
-            {
-                file << ",";
-            }
         }
     }
 
@@ -1913,14 +1887,14 @@ void changeStock(int menq, string arrM[], int availableM[], string arrW[], int w
     returnforAll();
 }
 // this function shows reviews to the employeer and is called in check reviews function
-void showreviews(string reviews[], int cusCount, string customer[], int &counter)
+void showreviews(string reviews[], int cusCount, string customerArr[], int &counter, int cusIndex)
 {
     cusCount = 10;
-    for (int idx = 0; idx < cusCount; idx++)
+    for (int idx = 0; idx <=cusIndex; idx++)
     {
         if (reviews[idx] != "")
         {
-            cout << counter << ". Review by " << customer[idx] << ": " << endl;
+            cout << counter << ". Review by " << customerArr[idx] << ": " << endl;
             cout << "\t" << reviews[idx] << endl
                  << endl;
             counter++;
@@ -1928,12 +1902,12 @@ void showreviews(string reviews[], int cusCount, string customer[], int &counter
     }
 }
 // these fucntion shows reviews or tells that none exist
-void checkReviews(string reviews[], int cusCount, string username[], int reviewindex)
+void checkReviews(string reviews[], int cusCount, string customerArr[], int reviewindex, int cusIndex)
 {
     int counter = 1;
     if (reviewindex != 0)
     {
-        showreviews(reviews, cusCount, username, counter);
+        showreviews(reviews, cusCount, customerArr, counter, cusIndex);
     }
 
     else
@@ -2053,33 +2027,33 @@ void removeItem(int &menq, int &womenq, string arrM[], string arrW[], int priceM
     returnforAll();
 }
 // it shows the list of customers with their details
-void showCustomersList(int cusCount, string userArea[], string delivery[], string customer[], int &counter)
+void showCustomersList(int cusIndex, string userArea[], string delivery[], string customerArr[], int &counter)
 {
-    for (int idx = 0; idx < cusCount; idx++)
+    for (int idx = 0; idx < cusIndex; idx++)
     {
         if (userArea[idx] != "" && delivery[idx] != "")
         {
-            cout << left << setw(12) << to_string(counter) + ". " << setw(20) << customer[idx] << setw(20) << userArea[idx] << setw(20) << delivery[idx] << endl;
+            cout << left << setw(12) << to_string(counter) + ". " << setw(20) << customerArr[idx] << setw(20) << userArea[idx] << setw(20) << delivery[idx] << endl;
         }
         else if (userArea[idx] != "" && delivery[idx] == "")
         {
-            cout << left << setw(12) << to_string(counter) + ". " << setw(20) << customer[idx] << setw(20) << userArea[idx] << setw(20) << "Not Selected" << endl;
+            cout << left << setw(12) << to_string(counter) + ". " << setw(20) << customerArr[idx] << setw(20) << userArea[idx] << setw(20) << "Not Selected" << endl;
         }
         else if (userArea[idx] == "" && delivery[idx] != "")
         {
-            cout << left << setw(12) << to_string(counter) + ". " << setw(20) << customer[idx] << setw(20) << "Not Selected" << setw(20) << delivery[idx] << endl;
+            cout << left << setw(12) << to_string(counter) + ". " << setw(20) << customerArr[idx] << setw(20) << "Not Selected" << setw(20) << delivery[idx] << endl;
         }
         else
         {
-            cout << left << setw(12) << to_string(counter) + ". " << setw(20) << customer[idx] << setw(20) << "Not Selected" << setw(20) << "Not Selected" << endl;
+            cout << left << setw(12) << to_string(counter) + ". " << setw(20) << customerArr[idx] << setw(20) << "Not Selected" << setw(20) << "Not Selected" << endl;
         }
         counter++;
     }
 }
 // it checks if there are customers or not and then calls showcustomers function to print their list
-void seeCustomer(int cusCount, string userArea[], string delivery[], string customer[])
+void seeCustomer(int cusIndex, string userArea[], string delivery[], string customerArr[])
 {
-    if (cusCount != 0)
+    if (cusIndex != 0)
     {
         int counter = 1;
         cout << endl
@@ -2089,7 +2063,7 @@ void seeCustomer(int cusCount, string userArea[], string delivery[], string cust
 
         cout << left << setw(12) << "Index" << setw(20) << " Username" << setw(20) << " Address" << setw(20) << " Method" << endl
              << endl;
-        showCustomersList(cusCount, userArea, delivery, customer, counter);
+        showCustomersList(cusIndex, userArea, delivery, customerArr, counter);
     }
 
     else

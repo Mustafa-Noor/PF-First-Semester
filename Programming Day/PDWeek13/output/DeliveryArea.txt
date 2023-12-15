@@ -1,1 +1,4 @@
-Gulberg,Askari,DHA,Model Town
+Gulberg
+Askari
+DHA
+Model Town

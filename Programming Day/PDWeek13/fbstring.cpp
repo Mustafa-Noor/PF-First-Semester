@@ -94,9 +94,9 @@ void saveQuantitybought(int cardindex, int menq, int womenq, int quantforMen[][3
 void saveAdresses(int areas, string deliveryAreas[]);
 
 void retrieveCredentialsRec(int range, string username[], string password[], string role[], int &idx, int cusIndex, int cardindex);
-void retrieveCustomerInfo(string customerArr[], int billPaidcount[], int totalM[], int totalW[], int finalTotal[], string userArea[], string delivery[], int cardno[], int &cusIndex);
 void retrieveRecOfMenitems(string arrM[], int priceM[], int availableM[], int &menq);
 void retrieveRecOfWomenitems(string arrW[], int priceW[], int availableW[], int &womenq);
+void retrieveAdress(int &areas, string deliveryAreas[]);
 
 string getField(string record, int field);
 
@@ -132,22 +132,23 @@ main()
 
     //Store Related
     int menq = 0, womenq = 0;
-    int areas = 4;
+    int areas = 0;
     bool deliveryop = false, delArea = false, billpaid = false;
     string name, password1;
     string phoneN = "0423-123456", email = "fashionisu@gmail,com";
     string arrM[range];
-    int priceM[range] = {500, 900, 600, 800};
-    int availableM[range] = {24, 20, 23, 24};
+    int priceM[range];
+    int availableM[range];
     string arrW[range];
-    int priceW[range] = {1200, 1100, 1000, 1800};
-    int availableW[range] = {36, 42, 65, 34};
-    string deliveryAreas[range] = {"Gulberg", "Askari", "DHA", "Model Town"};
+    int priceW[range];
+    int availableW[range];
+    string deliveryAreas[range];
     
     
     retrieveCredentialsRec(range, username, password, role,idx, cusIndex, cardindex);
     retrieveRecOfMenitems(arrM, priceM, availableM, menq);
     retrieveRecOfWomenitems(arrW, priceW, availableW, womenq);
+    retrieveAdress(areas, deliveryAreas);
     
 
 
@@ -743,7 +744,7 @@ void saveAdresses(int areas, string deliveryAreas[])
         file << deliveryAreas[x];
         if(x!=areas-1)
         {
-            file << ",";
+            file << endl;
         }
     }
 
@@ -809,6 +810,8 @@ void retrieveRecOfMenitems(string arrM[], int priceM[], int availableM[], int &m
         menq++;
 
     }
+
+    file.close();
 }
 
 void retrieveRecOfWomenitems(string arrW[], int priceW[], int availableW[], int &womenq)
@@ -823,8 +826,25 @@ void retrieveRecOfWomenitems(string arrW[], int priceW[], int availableW[], int 
         priceW[womenq]=stoi(getField(record,2));
         availableW[womenq]=stoi(getField(record,3));
         womenq++;
-
     }
+
+    file.close();
+}
+
+void retrieveAdress(int &areas, string deliveryAreas[])
+{
+    string record="";
+    fstream file;
+    file.open("DeliveryArea.txt", ios::in);
+    while(!file.eof())
+    {
+        getline(file,record);
+        deliveryAreas[areas]=record;
+        areas++;
+    }
+
+    file.close();
+
 }
 // it finds field which is present in csv 
 string getField(string record, int field)

@@ -2,3 +2,4 @@ Black Printed Shirt,1200,15
 Blue 3 Piece Suit,1100,42
 Grey Frock Linen,1000,65
 Red Dress Printed,1800,34
+ed,1000,49

@@ -62,9 +62,9 @@ string takeNumberofAddress();
 int restrictNumberofAddress(int number);
 string takeNumberofAddressToRemove();
 string takeitem();
-int restrictQforMen(int quantity, int availableM[], int idx);
+int restrictQforMen(int quantity, int availableM[], int idx, string convert);
 string takeQuantityforMen(int men, int availableM[], int idx);
-int restrictQforWomen(int quantity, int availableW[], int idx);
+int restrictQforWomen(int quantity, int availableW[], int idx, string convert);
 string takeQuantityforWomen(int women, int availableW[], int idx);
 void printBillForMen(int menq, int totalM[], int priceM[], int &sumM, string arrM[], int cardindex, int quantforMen[][30]);
 void printBillForWomen(int womenq, int totalW[], int priceW[], int &sumW, string arrW[], int cardindex, int quantforWomen[][30]);
@@ -75,7 +75,7 @@ string takeChoiceForBill();
 string reasonsForBill(bool deliveryop, bool delArea);
 string billPaid(int menq, int availableM[], int womenq, int availableW[], bool &billpaid, int cardindex, int quantforMen[][30], int quantforWomen[][30]);
 string takeDelArea();
-int restrictCard(int &a, bool &deliveryop, int cardindex, int cardno[]);
+int restrictCard(int &a, bool &deliveryop, int cardindex, int cardno[], string convert);
 string payOp();
 void contactForCustomer(string phoneN, string email);
 void setContactInfo(string &phoneN, string &email);
@@ -84,6 +84,9 @@ int findCustomerIndex(string name, int cusIndex, string customerArr[]);
 bool validateint(string convert);
 int strToInt(string convert);
 string intToStr(int num);
+bool checkingForcomma(string sen);
+bool checkingforInteger(string sen);
+bool checkforEmpty(string sen);
 
 void saveRecordsofCred(int range, string username[], string password[], string role[], int idx, int cusIndex, int cardindex);
 void saveCustomerInfo(string customerArr[], int billPaidcount[], int totalM[], int totalW[], int finalTotal[], string userArea[], string delivery[], int cardno[], int cusIndex, string reviews[]);
@@ -892,8 +895,26 @@ void signupWindow(string &name, string &password1)
          << endl;
     cout << "Enter Username: ";
     cin >> name;
+    if(checkingForcomma(name))
+    {
+        while(checkingForcomma(name))
+        {
+            cout << "It must contain a comma," << endl;
+            cout << "Enter again: ";
+            cin >> name;
+        }   
+    }
     cout << "Enter Password: ";
     cin >> password1;
+    if(checkingForcomma(password1))
+    {
+        while(checkingForcomma(password1))
+        {
+            cout << "It must contain a comma," << endl;
+            cout << "Enter again: ";
+            cin >> password1;
+        }   
+    }
 }
 
 string takeRole()
@@ -1051,12 +1072,12 @@ string takeQuantityforWomen(int women, int availableW[], int idx)
     return quantity;
 }
 
-int restrictQforMen(int quantity, int availableM[], int idx)
+int restrictQforMen(int quantity, int availableM[], int idx, string convert)
 {
-    if (quantity > availableM[idx] || quantity < 0)
+    if ((quantity > availableM[idx] || quantity < 0 ) || !checkingforInteger(convert))
     {
-        string convert=intToStr(quantity);
-        while (quantity > availableM[idx] || quantity < 0)
+        
+        while ((quantity > availableM[idx] || quantity < 0) || !checkingforInteger(convert))
         {
             cout << "Not Possible.." << endl;
             cout << "Enter again: ";
@@ -1067,12 +1088,12 @@ int restrictQforMen(int quantity, int availableM[], int idx)
     return quantity;
 }
 
-int restrictQforWomen(int quantity, int availableW[], int idx)
+int restrictQforWomen(int quantity, int availableW[], int idx, string convert)
 {
-    if (quantity > availableW[idx] || quantity < 0)
+    
+    if (quantity > availableW[idx] || quantity < 0 || !checkingforInteger(convert))
     {
-        string convert=intToStr(quantity);
-        while (quantity > availableW[idx] || quantity < 0)
+        while (quantity > availableW[idx] || quantity < 0 || !checkingforInteger(convert))
         {
             cout << "Not Possible.." << endl;
             cout << "Enter again: ";
@@ -1098,7 +1119,7 @@ void printMitems(int availableM[], int &menq, int cardindex, int quantforMen[][3
                     {
                         string convert = takeQuantityforMen(men, availableM, idx); // variables for validation
                         int quantity=strToInt(convert);
-                        quantity = restrictQforMen(quantity, availableM, idx);
+                        quantity = restrictQforMen(quantity, availableM, idx, convert);
                         quantforMen[cardindex][idx] = quantity;
                     }
                     else if (quantforMen[cardindex][idx] != 0)
@@ -1142,7 +1163,7 @@ void printWitems(int availableW[], int &womenq, int cardindex, int quantforWomen
                     {
                         string convert = takeQuantityforWomen(women, availableW, idx); // variable for validation
                         int quantity=strToInt(convert);
-                        quantity = restrictQforWomen(quantity, availableW, idx);
+                        quantity = restrictQforWomen(quantity, availableW, idx, convert);
                         quantforWomen[cardindex][idx] = quantity;
                     }
                     else if (quantforWomen[cardindex][idx] != 0)
@@ -1385,30 +1406,23 @@ string takeCardNum()
     return card;
 }
 
-int restrictCard(int &a, bool &deliveryop, int cardindex, int cardno[])
+int restrictCard(int &a, bool &deliveryop, int cardindex, int cardno[],string convert)
 {
-    if (a >= 1000 && a <= 9999)
-    {
-        cout << "Confirmed.";
-
-        deliveryop = true;
-    }
-
-    else
-    {
-        string convert; // this is for validation of correct card number added
-        while (!(a >= 1000 && a <= 9999) || (!isdigit(convert[0])) || (!isdigit(convert[1])) || (!isdigit(convert[2])) || (!isdigit(convert[3])))
+        
+         // this is for validation of correct card number added
+        if(!checkingforInteger(convert) || convert.length()!=4)
         {
-            convert=intToStr(a);
+            while(!checkingforInteger(convert) || convert.length()!=4)
+            {
             cout << "Card Number not correct.";
             cout << "Enter number again: ";
             cin >> convert;
-            a=strToInt(convert);
+            }
         }
-        a = cardno[cardindex];
-        cout << "Confirmed." << endl;
+        a=strToInt(convert);
+        cout << "Confirmed.";
         deliveryop = true;
-    }
+        a = cardno[cardindex];
 
     return a;
 }
@@ -1430,8 +1444,8 @@ void deliveryoptions(bool &deliveryop, string delivery[], int cardindex, int car
         string convert= takeCardNum();
         int card=strToInt(convert);
         int a = card;
-        card = restrictCard(a, deliveryop, cardindex, cardno);
-        card = cardno[cardindex];
+        card = restrictCard(a, deliveryop, cardindex, cardno,convert);
+        cardno[cardindex]=card;
     }
     else
     {
@@ -1501,7 +1515,7 @@ void updatequantity(string arrM[], string arrW[], int menq, int womenq, int avai
                              << endl;
                         string convert = takeQuantityforMen(change, availableM, idx);  // these functions are for validations
                         int quantity=strToInt(convert);
-                        quantity = restrictQforMen(quantity, availableM, idx);
+                        quantity = restrictQforMen(quantity, availableM, idx, convert);
                         quantforMen[cardindex][idx] = quantity;
                     }
                     else
@@ -1526,7 +1540,7 @@ void updatequantity(string arrM[], string arrW[], int menq, int womenq, int avai
                              << endl;
                         string convert = takeQuantityforWomen(change, availableW, idx);
                         int quantity=strToInt(convert);                                 // these functions are for validations
-                        quantity = restrictQforWomen(quantity, availableW, idx);
+                        quantity = restrictQforWomen(quantity, availableW, idx, convert);
                         quantforWomen[cardindex][idx] = quantity;
                     }
                     else
@@ -1607,8 +1621,31 @@ string reviews1()
     cout << endl
          << endl;
     cout << "Leave a review: ";
-    cin.ignore();
+    cin.clear();
+    cin.sync();
     getline(cin, review1);
+    if(checkforEmpty(review1))
+    {
+        while(checkforEmpty(review1))
+        {
+            cout << "It must not be empty" << endl; // validation regarding empty string
+            cout << "Enter again: ";
+            cin.clear();
+            cin.sync();
+            getline(cin, review1);
+        }
+    }
+    if(checkingForcomma(review1)) // checking for comma
+    {
+        while(checkingForcomma(review1))
+        {
+            cout << "It must not contain a comma." << endl; // validation regarding comma
+            cout << "Enter again: ";
+            cin.clear();
+            cin.sync();
+            getline(cin, review1);
+        }   
+    }
     return review1;
 }
 // this function accepts the review and adds into reviews array
@@ -1689,8 +1726,32 @@ string takeNametoAdd(int counter)
 {
     string name;
     cout << "Enter the name of the " << counter << " article: ";
-    cin.ignore();
+    cin.clear();
+    cin.sync();
     getline(cin, name);
+    if(checkforEmpty(name))
+    {
+        while (checkforEmpty(name))
+        {
+            cout << "It must not be empty." << endl;
+            cout << "Enter again: ";
+            cin.clear();
+            cin.sync();
+            getline(cin,name); 
+        }
+        
+    }
+    if(checkingForcomma(name))
+    {
+        while(checkingForcomma(name))
+        {
+            cout << "It must not contain a commma." << endl;
+            cout << "Enter it again: ";
+            cin.clear();
+            cin.sync();
+            getline(cin,name);
+        }
+    }
     return name;
 }
 // it takes price for the added item
@@ -1775,7 +1836,6 @@ void addMitem(int &menq, string arrM[], int priceM[], int availableM[])
 void addWitem(int &womenq, string arrW[], int priceW[], int availableW[])
 {
     int number = takeNumToAdd();
-    ;
     string name;
     int price;
     int available;
@@ -1941,16 +2001,64 @@ string takeName(int menq, int womenq, string arrM[], string arrW[])
 void newNameforMen(int idx, int var, string arrM[]) // it takes the new name for men
 {
     cout << "Enter new name for " << arrM[idx] << ": ";
-    cin.ignore();
+    cin.clear();
+    cin.sync();
     getline(cin, arrM[var]);
+    if(checkforEmpty(arrM[var]))
+    {
+        while (checkforEmpty(arrM[var]))
+        {
+            cout << "It must not be empty." << endl;
+            cout << "Enter again: ";
+            cin.clear();
+            cin.sync();
+            getline(cin,arrM[var]); 
+        }
+        
+    }
+    if(checkingForcomma(arrM[var]))
+    {
+        while(checkingForcomma(arrM[var]))
+        {
+            cout << "It must not contain a comma." << endl;
+            cout << "Enter again: ";
+            cin.clear();
+            cin.sync();
+            getline(cin, arrM[var]);
+        }   
+    }
     cout << "Name succesfully changed." << endl;
 }
 
 void newNameforWomen(int idx, int var, string arrW[]) //  it takes the new name for women
 {
     cout << "Enter new name for " << arrW[idx] << ": ";
-    cin.ignore();
+    cin.clear();
+    cin.sync();
     getline(cin, arrW[var]);
+     if(checkforEmpty(arrW[var]))
+    {
+        while (checkforEmpty(arrW[var]))
+        {
+            cout << "It must not be empty." << endl;
+            cout << "Enter again: ";
+            cin.clear();
+            cin.sync();
+            getline(cin,arrW[var]); 
+        }
+        
+    }
+    if(checkingForcomma(arrW[var]))
+    {
+        while(checkingForcomma(arrW[var]))
+        {
+            cout << "It must not contain a comma." << endl;
+            cout << "Enter again: ";
+            cin.clear();
+            cin.sync();
+            getline(cin, arrW[var]);
+        }   
+    }
     cout << "Name succesfully changed." << endl;
 }
 // this function calls other functions and makes the necessary changes regarding name changing
@@ -2114,8 +2222,31 @@ void addDeliveryArea(int &areas, string deliveryAreas[])
     {
         string address;
         cout << "Enter Address " << idx + 1 << ": ";
-        cin.ignore();
+        cin.clear();
+        cin.sync();
         getline(cin, address);
+         if(checkforEmpty(address))
+        {
+        while (checkforEmpty(address))
+        {
+            cout << "It must not be empty." << endl;
+            cout << "Enter again: ";
+            cin.clear();
+            cin.sync();
+            getline(cin,address); 
+        }
+        }
+        if(checkingForcomma(address))
+        {
+        while(checkingForcomma(address))
+        {
+            cout << "It must not contain a comma." << endl;
+            cout << "Enter again: ";
+             cin.clear();
+            cin.sync();
+            getline(cin, address);
+        }   
+        }
         cout << endl
              << endl;
         deliveryAreas[idx] = address;
@@ -2243,6 +2374,8 @@ bool validateint(string convert) // these fucntions are for validations
     return validation;
 }
 
+
+
 string intToStr(int num) // this for the proper execution of validation
 {
     if (num == 0) {
@@ -2257,4 +2390,40 @@ string intToStr(int num) // this for the proper execution of validation
     }
 
     return result;
+}
+
+
+bool checkingForcomma(string sen)
+{
+    for (int x=0; sen[x]!='\0'; x++)
+    {
+        if (sen[x] == ',')
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool checkingforInteger(string sen)
+{
+    for (int x=0; sen[x] != '\0'; x++)
+    {
+        if (sen[x]< '0' || sen[x] >'9')
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool checkforEmpty(string sen)
+{
+    if(sen=="")
+    {
+        return true;
+    }
+
+    return false;
 }

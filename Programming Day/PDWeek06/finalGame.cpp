@@ -3,60 +3,107 @@
 #include <conio.h>
 using namespace std;
 void gotoxy(int x, int y);
+
+// this functions is used for changing the colours
 string setcolor(unsigned short color);
+
+// this functions prints the maze of the first level
 void printmaze();
+
+// functions for the printing of the hero
 void printhero();
+
+// functions for the printing of enemies
 void printenemy1();
 void printenemy2();
 void printenemy3();
 void printenemy4();
 void printenemy5();
 void printenemy6();
+
+// function to remove the hero
 void removeHero();
+
+// These removes enemies when they have been printed
 void removeEnemy1();
 void removeEnemy2();
 void removeEnemy3();
 void removeEnemy4();
 void removeEnemy5();
 void removeEnemy6();
+
+// these are for the movements of the enemies
 void moveEnemy1();
 void moveEnemy2();
 void moveEnemy3();
 void moveEnemy4();
 void moveEnemy5();
 void moveEnemy6();
+
+// this functions are for the movement of the hero
 void moveHeroleft();
 void moveHeroright();
 void moveHeroup();
 void moveHerodown();
+
+// this functions are used to display the powerup and increments the health of the hero
 void hp();
 void powerup();
-void printfire();
+
+// this moves and removes fire of the hero
 void removefire();
 void movefire();
+
+// this displays enemies health
 void enemydata();
+
+// these functions are used for the printing and detection and movement of the enemy bullets of the first level
 void moveEnemyBullet();
 void printEnemyBullets();
 void enemyShoot();
+
+// this prints the first page
 string printfrontpage();
+
+// this is the loading screen 
 void loadingScreen();
+
+// this prints the first level layout
 void level();
 void header();
+
+// this prints the layout of the final level
 void finalLevel();
 void finalmaze();
+
+// these prints the enemies of the final level
 void printenemy7();
 void printenemy8();
+
+// these remove the enemies of the finale level
 void removeEnemy7();
 void removeEnemy8();
+
+// these moves the enemy of the finale level
 void moveEnemy7();
 void moveEnemy8();
+// this is printed when game is over
 void gameover();
+
+// this gives details of the health of hero and villains of the final level
 void dataForfinallevel();
 
+// this functions are regarding the printing, detection and movement of enemies of the final level
 void enemybulletfinalLevel();
 void moveBulletForfinal();
 void enemyShootFinal();
+
+// this is printed when the game is completed
 void gamecomplete();
+
+
+
+
 //px and py are coordinates of player(hero);        ex1,ex2, etc and ey1, ey2, etc are coordinates of enemy1, enemy2,etc 
 int px = 17, py = 15, ex1 = 90, ey1 = 4, ex2 = 4, ey2 = 4, ex3 = 33, ey3 = 27, ex4 = 91, ey4 = 12, ex5 = 85, ey5 = 25, ex6 = 37, ey6 = 18, hx = 46, hy = 4;
 int ex7, ex8, ey7, ey8;
@@ -70,6 +117,8 @@ int bx = px + 5;
 int by = py + 1;
 // bool to check if the bullet of the hero is active
 bool bulletActive = false;
+// checks if the powerup is taken or not
+bool takenpowerup= false;
 // This give the direction of what the bullet will go
 char bulletDir = 'r';
 // These bool variavles check if the enemy is alive or not
@@ -89,7 +138,6 @@ int enemy7 = 100, enemy8 = 100;
 // This turn true when the condition for the next level becomes applicable
 bool nextLevel = false;
 // This checks if the game is completed
-
 bool gamecompletion = false;
 
 char getCharAtxy(short int x, short int y)
@@ -228,23 +276,13 @@ int main()
             {
                 if (!bulletActive)
                 {
-                    bx = px - 2;
+                    bx = px - 1;
                     by = py + 1;
                     bulletActive = true;
                     bulletDir = 'l'; // shoot bullets towards left
                 }
             }
 
-            if (GetAsyncKeyState(VK_END))
-            {
-                if (!bulletActive)
-                {
-                    bx = px;
-                    by = py + 3;
-                    bulletActive = true;
-                    bulletDir = 'd'; // shoot bullets downwards
-                }
-            }
             if (GetAsyncKeyState(VK_ESCAPE))
             {
                 nextLevel = true;
@@ -254,6 +292,55 @@ int main()
             if (bulletActive)
             {
                 movefire();
+            }
+
+            // if first enemy is at the same position as hero the hero teleports
+            if(getCharAtxy(px,py)== '@')
+            {
+                removeHero();
+                px=hx;
+                py=hy;
+                printhero();
+            }
+            // this is the teleportation regarding second enemy
+            if(getCharAtxy(px,py)== '$')
+            {
+                removeHero();
+                px=hx;
+                py=hy;
+                printhero();
+            }
+            // teleportation regarding third enemy
+            if(getCharAtxy(px,py)== '&')
+            {
+                removeHero();
+                px=10;
+                py=15;
+                printhero();
+            }
+            // teleportation regarding the sixth the diagonal moving enemy
+            if(getCharAtxy(px,py)== '%' || getCharAtxy(px,py-1)=='%' || getCharAtxy(px,py+1)=='%')
+            {
+                removeHero();
+                px=20;
+                py=20;
+                printhero();
+            }
+            // teleportaion regarding the fourth enemy
+            if(getCharAtxy(px,py)== '*')
+            {
+                removeHero();
+                px=20;
+                py=20;
+                printhero();
+            }
+            // teleportation regarding the fifth enemy
+            if(getCharAtxy(px,py)== '8' || getCharAtxy(px+2,py)=='8')
+            {
+                removeHero();
+                px=10;
+                py=15;
+                printhero();
             }
 
             // calls of functions for the movement of enemies
@@ -273,8 +360,12 @@ int main()
             // checks the powerup coordinates of the health
             if (px == hx && py >= hy && py <= hy + 2)
             {
+                if(!takenpowerup)
+                {
                 health = 200;
                 hp();
+                takenpowerup=true;
+                }
             }
         }
         void powerup();
@@ -383,7 +474,7 @@ int main()
                 {
                     if (!bulletActive)
                     {
-                        bx = px - 2;
+                        bx = px - 1;
                         by = py + 1;
                         bulletActive = true;
                         bulletDir = 'l';  // for firing of hero bullet towards left
@@ -427,7 +518,7 @@ int main()
         }
     }
 }
-
+// it is the front page
 string printfrontpage()
 {
     setcolor(3);
@@ -466,7 +557,7 @@ string printfrontpage()
     cin >> choice;
     return choice;
 }
-
+// it is the loading screen
 void loadingScreen()
 {
     setcolor(4);
@@ -495,7 +586,7 @@ void loadingScreen()
     cout << "                                                                                                                              " << endl;
     cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
 }
-
+// header of the game
 void header()
 {
     setcolor(4);
@@ -511,7 +602,7 @@ void header()
     cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
     cout << " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% " << endl;
 }
-
+// prints when game is over
 void gameover()
 {
     setcolor(6);
@@ -537,7 +628,7 @@ void gameover()
     cout << "                                                                                                                              " << endl;
     cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
 }
-
+// prints when game is completed
 void gamecomplete()
 {
     setcolor(5);
@@ -563,7 +654,7 @@ void gamecomplete()
     cout << "                                                                                                                              " << endl;
     cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
 }
-
+// first level footer
 void level()
 {
     setcolor(13);
@@ -575,7 +666,7 @@ void level()
                                                             )";
     ;
 }
-
+// final level logo
 void finalLevel()
 {
     setcolor(14);
@@ -589,6 +680,7 @@ void finalLevel()
     ;
 }
 
+// maze for the final level
 void finalmaze()
 {
     setcolor(8);
@@ -688,7 +780,7 @@ void finalmaze()
          << "\t"
          << "########################################################" << endl;
 }
-
+// first level maze
 void printmaze()
 {
     setcolor(8);
@@ -698,7 +790,7 @@ void printmaze()
     cout << "#                                          #########                                           #" << endl;
     cout << "#                                          ##     ##                                           #" << endl;
     cout << "#                                          ##     ##                                           #" << endl;
-    cout << "#                                          ##     ##                                           #" << endl;
+    cout << "#                                         ###     ###                                          #" << endl;
     cout << "#                                                                                              #" << endl;
     cout << "#                                                                                              #" << endl;
     cout << "#                                                                                              #" << endl;
@@ -1068,7 +1160,6 @@ void moveEnemy7()
 
     if(counterforEnemy7<=1)
     {
-        
         removeEnemy7();
     if (checkSeventhEnemy)
     {
@@ -1094,6 +1185,7 @@ void moveEnemy7()
     }
     }
 }
+// checks if enemy8 is alive then moves it
 void moveEnemy8()
 {
     if(counterforEnemy8<=1)
@@ -1126,6 +1218,7 @@ void moveEnemy8()
     
 }
 
+// checks if enemy 1 is alive then moves it
 void moveEnemy1()
 {
 
@@ -1157,7 +1250,7 @@ void moveEnemy1()
 
     }
 }
-
+// checks if enemy 2 is alive then moves it
 void moveEnemy2()
 {
     if(counterforEnemy2<=1)
@@ -1186,7 +1279,7 @@ void moveEnemy2()
     }
     }
 }
-
+// checks if enemy 3 is alive then moves it
 void moveEnemy3()
 {
     if(counterforEnemy3<=1)
@@ -1215,7 +1308,7 @@ void moveEnemy3()
     }
     }
 }
-
+// checks if enemy 4 is alive then moves it
 void moveEnemy4()
 {
     if(counterforEnemy4<=1)
@@ -1245,6 +1338,7 @@ void moveEnemy4()
     }
 }
 
+// checks if enemy 5 is alive then moves it
 void moveEnemy5()
 {
     if(counterforEnemy5<=1)
@@ -1273,6 +1367,8 @@ void moveEnemy5()
     }
     }
 }
+
+// checks if enemy 6 is alive then moves it
 
 void moveEnemy6()
 {
@@ -1315,7 +1411,7 @@ void moveHeroleft()
         printhero();
     }
 }
-
+// to move hero right
 void moveHeroright()
 {
     if (getCharAtxy(px + 4, py) == ' ' && getCharAtxy(px + 4, py + 1) == ' ' && getCharAtxy(px + 4, py + 2) == ' ')
@@ -1332,18 +1428,21 @@ void moveHeroright()
         px = px + 1;
         printhero();
     }
-}
 
+}
+// to move hero up
 void moveHeroup()
 {
-    if (getCharAtxy(px, py - 1) == ' ' && getCharAtxy(px - 1, py - 1) == ' ' && getCharAtxy(px + 3, py - 1) == ' ' && getCharAtxy(px-2,py-1) != '#' && getCharAtxy(px-3,py-1) != '#' && getCharAtxy(px-4,py-1) != '#' && getCharAtxy(px+1,py-1) != '#' )
+    if (getCharAtxy(px, py - 1) == ' ' && getCharAtxy(px - 1, py - 1) == ' ' && getCharAtxy(px + 3, py - 1) == ' ')
     {
         removeHero();
         py = py - 1;
         printhero();
     }
+    
+    
 }
-
+// to move hero down
 void moveHerodown()
 {
     if (getCharAtxy(px, py + 3) == ' ' && getCharAtxy(px - 1, py + 3) == ' ' && getCharAtxy(px + 3, py + 3) == ' ' && getCharAtxy(px + 1, py + 3) == ' ')
@@ -1364,9 +1463,10 @@ void removefire()
 // move the fires of the hero
 void movefire()
 {
-    setcolor(10);
+    setcolor(10); //change colour
     removefire();
 
+    // r means right direction
     if (bulletDir == 'r')
     {
         if (getCharAtxy(bx + 3, by) != '#')
@@ -1378,6 +1478,7 @@ void movefire()
             bulletActive = false;
         }
     }
+    //l means left direction
     else if (bulletDir == 'l')
     {
         if (getCharAtxy(bx - 3, by) != '#' || getCharAtxy(bx,by) != '#' || getCharAtxy(bx-1,by) !='#' || getCharAtxy(bx-2,by) !='#')
@@ -1389,21 +1490,9 @@ void movefire()
             bulletActive = false;
         }
     }
-
-     else if (bulletDir == 'd')
-    {
-        if (getCharAtxy(bx, by + 3) == ' ' || getCharAtxy(bx, by+2) ==' ' || getCharAtxy(bx+1,by+1) ==' ')
-        {
-          by += 1; // Move down
-        }
-        else
-        {
-             removefire();
-             bulletActive = false;
-         }
-    }
    
 
+    // bullet detecting enemy1
     if (getCharAtxy(bx, by) == '@')
     { 
         removefire();
@@ -1411,6 +1500,8 @@ void movefire()
         bulletActive = false; // Bullet should be inactive after hitting an enemy
        
     }
+
+    // bullet detecting enemy2
 
     if (getCharAtxy(bx, by) == '$')
     { 
@@ -1421,7 +1512,7 @@ void movefire()
         
        
     }
-
+    // bullet detecting enemy3
     if (getCharAtxy(bx, by) == '&')
     {
         removefire();
@@ -1430,6 +1521,7 @@ void movefire()
         
     }
 
+    // bullet detecting enemy4
     if (getCharAtxy(bx, by) == '*')
     {
         removefire();
@@ -1437,7 +1529,7 @@ void movefire()
         bulletActive = false;
         
     }
-
+    // bullet detecting enemy5
     if (getCharAtxy(bx, by) == '8')
     {
         removefire();
@@ -1445,7 +1537,7 @@ void movefire()
         bulletActive = false;
         
     }
-
+    // bullet detecting enemy6
     if (getCharAtxy(bx, by) == '%')
     {
         removefire();
@@ -1453,7 +1545,7 @@ void movefire()
         bulletActive = false;
         
     }
-
+    // bullet detecting enemy8 (boss 2)
     if (getCharAtxy(bx, by) == 'A')
     {
         removefire();
@@ -1461,7 +1553,7 @@ void movefire()
         bulletActive = false;
         
     }
-
+    // bullet detecting enemy7 (boss 1)
     if (getCharAtxy(bx, by) == 'X')
     {
         removefire();
@@ -1749,7 +1841,7 @@ void gotoxy(int x, int y)
     coordinates.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinates);
 }
-
+// for changing of colours 
 string setcolor(unsigned short color)
 {
     HANDLE hcon = GetStdHandle(STD_OUTPUT_HANDLE);

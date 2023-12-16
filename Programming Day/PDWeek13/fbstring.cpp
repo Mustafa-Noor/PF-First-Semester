@@ -6,9 +6,13 @@
 #include<string>
 using namespace std;
 
+// prints the header
 void printHeader();
+// prints employee menu
 string employeemenu();
+// print customermenu
 string customermenu();
+// these are customers functions
 void printMitems(int availableM[], int &menq, int cardindex, int quantforMen[][30]);
 void printWitems(int availableW[], int &womenq, int cardindex, int quantforWomen[][30]);
 void bill(string arrM[], string arrW[], int totalM[], int totalW[], int priceM[], int priceW[], int menq, int womenq, int cardindex, int finalTotal[], string delivery[], string userArea[], bool deliveryop, bool delArea, int quantforMen[][30], int quantforWomen[][30]);
@@ -16,15 +20,17 @@ void PayBill(int totalM[], int totalW[], int priceM[], int priceW[], int availab
 void cart(string arrM[], string arrW[], int menq, int womenq, int cardindex, int quantforMen[][30], int quantForWomen[][30]);
 void status(bool billpaid, int billPaidcount[], int cardindex);
 void updatequantity(string arrM[], string arrW[], int menq, int womenq, int availableM[], int availableW[], int counter, int cardindex, int quantforMen[][30], int quantforWomen[][30]);
+// these are related to sign in and sign up and finding of indexes
 string signupMenu(string username[], string &name, string &password1, int range);
 string signinMenu(string username[], string password[], string role[], int &cardindex, int range, int idx, int &reviewindex, int cusIndex, string customerArr[]);
 bool checkUser(string name, string username[], int range);
 int usernameInd(string name, int idx, string username[]);
+// these are some more customers functions
 void deliveryoptions(bool &deliveryop, string delivery[], int cardindex, int cardno[]);
 void deliveryArea(int areas, string deliveryAreas[], string userArea[], bool &delArea, int cardindex);
 void resetCart(int menq, int womenq, int cardindex, int quantforMen[][30], int quantforWomen[][30]);
 void leaveReview(string reviews[], int &reviewindex, int cardindex);
-void restrictGo(int go);
+// these are admin functions
 string employeeGenderPage();
 void employeeMitems(string arrM[], int priceM[], int availableM[], int menq);
 void employeeWitems(string arrW[], int priceW[], int availableW[], int womenq);
@@ -38,12 +44,14 @@ void removeItem(int &menq, int &womenq, string arrM[], string arrW[], int priceM
 void seeCustomer(int cusIndex, string userArea[], string delivery[], string customerArr[]);
 void addDeliveryArea(int &areas, string deliveryAreas[]);
 void removeAddress(int &areas, string deliveryAreas[]);
+// these are for user inteface during sign in and sign up
 void clearScreen();
 void signinWindow(string &name, string &password1);
 void signupWindow(string &name, string &password1);
 string takeRole();
 void congratsforSignup();
 void congratsforSignin();
+// these functions mostly take input
 int takeNumToAdd();
 string takeNametoAdd(int counter);
 string takePricetoAdd();
@@ -54,18 +62,23 @@ string takeStock();
 string newStockforWomen(int idx, string arrW[]);
 string newStockforMen(int idx, string arrM[]);
 int makeValueAccToCriteria(int value);
+// this shows reviews
 void showreviews(string reviews[], int cusCount, string customerArr[], int &counter, int cusIndex);
 void newNameforWomen(int idx, int var, string arrW[]);
 void newNameforMen(int idx, int var, string arrM[]);
+// this shows the list of customers
 void showCustomersList(int cusIndex, string userArea[], string delivery[], string customerArr[], int &counter);
+// these are for validation of addition in number of addresses
 string takeNumberofAddress();
 int restrictNumberofAddress(int number);
 string takeNumberofAddressToRemove();
 string takeitem();
+// these are for validation of quantity bought
 int restrictQforMen(int quantity, int availableM[], int idx, string convert);
 string takeQuantityforMen(int men, int availableM[], int idx);
 int restrictQforWomen(int quantity, int availableW[], int idx, string convert);
 string takeQuantityforWomen(int women, int availableW[], int idx);
+// these are related to print bill funtion mentioned above
 void printBillForMen(int menq, int totalM[], int priceM[], int &sumM, string arrM[], int cardindex, int quantforMen[][30]);
 void printBillForWomen(int womenq, int totalW[], int priceW[], int &sumW, string arrW[], int cardindex, int quantforWomen[][30]);
 string billRem1(bool deliveryop, string delivery[], int cardindex);
@@ -77,10 +90,12 @@ string billPaid(int menq, int availableM[], int womenq, int availableW[], bool &
 string takeDelArea();
 int restrictCard(int &a, bool &deliveryop, int cardindex, int cardno[], string convert);
 string payOp();
+// these are related to customer info
 void contactForCustomer(string phoneN, string email);
 void setContactInfo(string &phoneN, string &email);
 void changeInfo(string &phoneN, string &email);
 int findCustomerIndex(string name, int cusIndex, string customerArr[]);
+// these are for validation
 bool validateint(string convert);
 int strToInt(string convert);
 string intToStr(int num);
@@ -92,18 +107,20 @@ bool checkingforspace(string sen);
 string retrictPassword(string sen);
 string restrictAddressName(string address);
 string restrictnewNameforCloth(string sen);
-
+// these are for saving records
 void saveRecordsofCred(int range, string username[], string password[], string role[], int idx, int cusIndex, int cardindex);
 void saveCustomerInfo(string customerArr[], int billPaidcount[], int totalM[], int totalW[], int finalTotal[], string userArea[], string delivery[], int cardno[], int cusIndex, string reviews[]);
 void saveRecordsofWomenitems(string arrW[], int priceW[], int availableW[], int womenq);
 void saveRecordsofMenitems(string arrM[], int priceM[], int availableM[], int menq);
 void saveAdresses(int areas, string deliveryAreas[]);
-
+void saveContactInfo(string phoneN, string email);
+// these are for loading those records
 void retrieveCredentialsRec(int range, string username[], string password[], string role[], int &idx, int cusIndex, int cardindex);
 void retrieveRecOfMenitems(string arrM[], int priceM[], int availableM[], int &menq);
 void retrieveRecOfWomenitems(string arrW[], int priceW[], int availableW[], int &womenq);
 void retrieveAdress(int &areas, string deliveryAreas[]);
 void retriveinfoCustomer(string customerArr[], int billPaidcount[], int totalM[], int totalW[], int finalTotal[], string userArea[], string delivery[], int cardno[], int &cusIndex, string reviews[]);
+void retrieveContactInfo(string &phoneN, string &email);
 
 string getField(string record, int field);
 
@@ -151,12 +168,13 @@ main()
     int availableW[range];
     string deliveryAreas[range];
     
-    
+   // retrieving from saved files 
     retrieveCredentialsRec(range, username, password, role,idx, cusIndex, cardindex);
     retrieveRecOfMenitems(arrM, priceM, availableM, menq);
     retrieveRecOfWomenitems(arrW, priceW, availableW, womenq);
     retrieveAdress(areas, deliveryAreas);
     retriveinfoCustomer(customerArr, billPaidcount, totalM, totalW, finalTotal, userArea,delivery, cardno, cusIndex, reviews);
+    retrieveContactInfo(phoneN, email);
     
 
 
@@ -616,6 +634,7 @@ main()
             saveRecordsofMenitems(arrM,priceM, availableM,menq);
             saveRecordsofWomenitems(arrW, priceW, availableW, womenq);
             saveAdresses(areas, deliveryAreas);
+            saveContactInfo(phoneN, email);
             break;
         }
 
@@ -649,6 +668,7 @@ void saveRecordsofCred(int range, string username[], string password[], string r
 
     file.close();
 }
+
 // saves data related to customer
 void saveCustomerInfo(string customerArr[], int billPaidcount[], int totalM[], int totalW[], int finalTotal[], string userArea[], string delivery[], int cardno[], int cusIndex, string reviews[])
 {
@@ -739,6 +759,29 @@ void saveRecordsofWomenitems(string arrW[], int priceW[], int availableW[], int 
 
     file.close();
 }
+// save change in contact information
+void saveContactInfo(string phoneN, string email)
+{
+    fstream file;
+    file.open("ContactInfo.txt", ios::out);
+    file << phoneN;
+    file << ",";
+    file << email;
+    file.close();
+}
+
+// retrieves contact us informations
+void retrieveContactInfo(string &phoneN, string &email)
+{
+    string record="";
+    fstream file;
+    file.open("ContactInfo.txt", ios::in);
+    getline(file,record);
+    phoneN=getField(record,1);
+    email=getField(record,2);
+    file.close();
+    
+}
 // saves the addresses offered by the store
 void saveAdresses(int areas, string deliveryAreas[])
 {
@@ -763,6 +806,10 @@ void retrieveCredentialsRec(int range, string username[], string password[], str
     string record="";
     fstream file;
     file.open("Credentials.txt", ios::in);
+    if(file.fail())
+    {
+        cout << "Error opening the file.";
+    }
     while(!file.eof())
     {
         getline(file, record);
@@ -781,6 +828,10 @@ void retrieveRecOfMenitems(string arrM[], int priceM[], int availableM[], int &m
     string record="";
     fstream file;
     file.open("Menitems.txt", ios::in);
+    if(file.fail())
+    {
+        cout << "Error opening the file.";
+    }
     while(!file.eof())
     {
         getline(file,record);
@@ -799,6 +850,10 @@ void retrieveRecOfWomenitems(string arrW[], int priceW[], int availableW[], int 
     string record="";
     fstream file;
     file.open("Womenitems.txt", ios::in);
+    if(file.fail())
+    {
+        cout << "Error opening the file.";
+    }
     while(!file.eof())
     {
         getline(file,record);
@@ -816,6 +871,10 @@ void retrieveAdress(int &areas, string deliveryAreas[])
     string record="";
     fstream file;
     file.open("DeliveryArea.txt", ios::in);
+    if(file.fail())
+    {
+        cout << "Error opening the file.";
+    }
     while(!file.eof())
     {
         getline(file,record);
@@ -2280,10 +2339,25 @@ void setContactInfo(string &phoneN, string &email)
     cin.clear();
     cin.sync();
     getline(cin,phoneN);
+    if(checkingForcomma(phoneN))
+    {
+        while(checkingForcomma(phoneN))
+        {
+        cout << "It should not contain comma." << endl;
+        cout << "Enter again: ";
+        cin.clear();
+        cin.sync();
+        getline(cin,phoneN);
+        }
+
+    }
     cout << "Enter new Email Address: ";
     cin.clear();
     cin.sync();
     getline(cin,email);
+
+    while(checkingforspace(email) || !checkingforAtthesymbol(email))
+    {
     if(checkingforspace(email)) // validatory restrictions
     {
         while(checkingforspace(email))
@@ -2305,6 +2379,7 @@ void setContactInfo(string &phoneN, string &email)
             cin.sync();
             getline(cin,email);
         }
+    }
     }
     cout << "Info updated." << endl;
 }

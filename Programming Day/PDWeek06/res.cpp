@@ -24,7 +24,29 @@ void saveQuantitybought(int cardindex, int menq, int womenq, int quantforMen[][3
     file.close();
 }
 
+// retrieves the item bought
+void retrievequantityBought(int &cardindex, int menq, int womenq, int quantforMen[][30], int quantforWomen[][30])
+{
+    string record="";
+    fstream file;
+    file.open("SaveQuantity.txt", ios::in);
+    while(!file.eof())
+    {
+        getline(file,record);
+        for(int x=1; x<=menq; x++)
+        {
+            quantforMen[cardindex][x]=stoi(getField(record,x));
+        }
+        for(int y=menq+1; y<=womenq+menq+1; y++)
+        {
+            quantforWomen[cardindex][y]=stoi(getField(record,y));
+        }
 
+        cardindex++;
+    }
+
+    file.close
+}
 //saves data related to customer reviews
 void saveCustomerReview(int cusCount, string reviews[], string customer[])
 {

@@ -47,9 +47,9 @@ void congratsforSignin();
 int takeNumToAdd();
 string takeNametoAdd(int counter);
 string takePricetoAdd();
-int makePriceAccordingToCriteria(int price);
+int makePriceAccordingToCriteria(int price, string convertprice);
 string takeQStockToAdd();
-int makeQStockAccordingtoCriteria(int available);
+int makeQStockAccordingtoCriteria(int available, string convertstock);
 string takeStock();
 string newStockforWomen(int idx, string arrW[]);
 string newStockforMen(int idx, string arrM[]);
@@ -87,10 +87,14 @@ string intToStr(int num);
 bool checkingForcomma(string sen);
 bool checkingforInteger(string sen);
 bool checkforEmpty(string sen);
+bool checkingforAtthesymbol(string sen);
+bool checkingforspace(string sen);
+string retrictPassword(string sen);
+string restrictAddressName(string address);
+string restrictnewNameforCloth(string sen);
 
 void saveRecordsofCred(int range, string username[], string password[], string role[], int idx, int cusIndex, int cardindex);
 void saveCustomerInfo(string customerArr[], int billPaidcount[], int totalM[], int totalW[], int finalTotal[], string userArea[], string delivery[], int cardno[], int cusIndex, string reviews[]);
-void saveCustomerReview(int cusCount, string reviews[], string customer[]);
 void saveRecordsofWomenitems(string arrW[], int priceW[], int availableW[], int womenq);
 void saveRecordsofMenitems(string arrM[], int priceM[], int availableM[], int menq);
 void saveAdresses(int areas, string deliveryAreas[]);
@@ -100,7 +104,6 @@ void retrieveRecOfMenitems(string arrM[], int priceM[], int availableM[], int &m
 void retrieveRecOfWomenitems(string arrW[], int priceW[], int availableW[], int &womenq);
 void retrieveAdress(int &areas, string deliveryAreas[]);
 void retriveinfoCustomer(string customerArr[], int billPaidcount[], int totalM[], int totalW[], int finalTotal[], string userArea[], string delivery[], int cardno[], int &cusIndex, string reviews[]);
-void retrieveCusReview(int &cusCount, string reviews[], string customer[]);
 
 string getField(string record, int field);
 
@@ -894,27 +897,15 @@ void signupWindow(string &name, string &password1)
     cout << endl
          << endl;
     cout << "Enter Username: ";
-    cin >> name;
-    if(checkingForcomma(name))
-    {
-        while(checkingForcomma(name))
-        {
-            cout << "It must contain a comma," << endl;
-            cout << "Enter again: ";
-            cin >> name;
-        }   
-    }
-    cout << "Enter Password: ";
-    cin >> password1;
-    if(checkingForcomma(password1))
-    {
-        while(checkingForcomma(password1))
-        {
-            cout << "It must contain a comma," << endl;
-            cout << "Enter again: ";
-            cin >> password1;
-        }   
-    }
+    cin.clear();
+    cin.sync();
+    getline(cin,name);
+    name=restrictnewNameforCloth(name);
+    cout << "Enter Password (Must be 6-digits): ";
+    cin.clear();
+    cin.sync();
+    getline(cin,password1);
+    password1=retrictPassword(password1);
 }
 
 string takeRole()
@@ -1431,14 +1422,14 @@ void deliveryoptions(bool &deliveryop, string delivery[], int cardindex, int car
 {
 
     string delivery1 = payOp();
-    if (delivery1 == "Cash")
+    if (delivery1 == "Cash" || delivery1=="cash")
     {
 
         cout << "It will be a cash on delivery." << endl;
         deliveryop = true;
         delivery[cardindex] = "Cash";
     }
-    else if (delivery1 == "Card")
+    else if (delivery1 == "Card" || delivery1=="card")
     {
         delivery[cardindex] = "Card";
         string convert= takeCardNum();
@@ -1624,28 +1615,7 @@ string reviews1()
     cin.clear();
     cin.sync();
     getline(cin, review1);
-    if(checkforEmpty(review1))
-    {
-        while(checkforEmpty(review1))
-        {
-            cout << "It must not be empty" << endl; // validation regarding empty string
-            cout << "Enter again: ";
-            cin.clear();
-            cin.sync();
-            getline(cin, review1);
-        }
-    }
-    if(checkingForcomma(review1)) // checking for comma
-    {
-        while(checkingForcomma(review1))
-        {
-            cout << "It must not contain a comma." << endl; // validation regarding comma
-            cout << "Enter again: ";
-            cin.clear();
-            cin.sync();
-            getline(cin, review1);
-        }   
-    }
+    review1=restrictnewNameforCloth(review1);
     return review1;
 }
 // this function accepts the review and adds into reviews array
@@ -1729,51 +1699,28 @@ string takeNametoAdd(int counter)
     cin.clear();
     cin.sync();
     getline(cin, name);
-    if(checkforEmpty(name))
-    {
-        while (checkforEmpty(name))
-        {
-            cout << "It must not be empty." << endl;
-            cout << "Enter again: ";
-            cin.clear();
-            cin.sync();
-            getline(cin,name); 
-        }
-        
-    }
-    if(checkingForcomma(name))
-    {
-        while(checkingForcomma(name))
-        {
-            cout << "It must not contain a commma." << endl;
-            cout << "Enter it again: ";
-            cin.clear();
-            cin.sync();
-            getline(cin,name);
-        }
-    }
+    name=restrictnewNameforCloth(name);
     return name;
 }
 // it takes price for the added item
 string takePricetoAdd()
 {
     string price;
-    cout << "Enter its price(Must not be greater than 1,000): ";
+    cout << "Enter its price : ";
     cin >> price;
     return price;
 }
 // it validated price according to criteria
-int makePriceAccordingToCriteria(int price)
+int makePriceAccordingToCriteria(int price,string convertprice)
 {
-    if (!(price > 0 && price <= 1000))
+    if (!(price > 0) || !checkingforInteger(convertprice))
     {
-        string convert= intToStr(price);
-        while (!(price > 0 && price <= 1000))
+        while (!(price >= 0 ) || !checkingforInteger(convertprice))
         {
-            cout << "Not according to given criteria." << endl;
+            cout << "Not according to criteria." << endl;
             cout << "Enter price again: ";
-            cin >> convert;
-            price=strToInt(convert);
+            cin >> convertprice;
+            price=strToInt(convertprice);
         }
     }
     return price;
@@ -1782,22 +1729,22 @@ int makePriceAccordingToCriteria(int price)
 string takeQStockToAdd()
 {
     string available;
-    cout << "Enter its quantity(Must not be greater than 100): ";
+    cout << "Enter its quantity : ";
     cin >> available;
     return available;
 }
 // it validates the quantity
-int makeQStockAccordingtoCriteria(int available)
+int makeQStockAccordingtoCriteria(int available, string convertstock)
 {
-    if (!(available >= 0 && available <= 100))
+    if (!(available >= 0) || !checkingforInteger(convertstock))
     {
-        string convert = intToStr(available);
-        while (!(available > 0 && available <= 100))
+        
+        while (!(available > 0) || !checkingforInteger(convertstock))
         {
-            cout << "Not according to given criteria." << endl;
+            cout << "Not according to criteria." << endl;
             cout << "Enter quantity again: ";
-            cin >> convert;
-            available=strToInt(convert);
+            cin >> convertstock;
+            available=strToInt(convertstock);
         }
     }
     return available;
@@ -1819,10 +1766,10 @@ void addMitem(int &menq, string arrM[], int priceM[], int availableM[])
         name = takeNametoAdd(counter);
         string convertprice = takePricetoAdd();
         price=strToInt(convertprice);
-        price = makePriceAccordingToCriteria(price);  //these are for validation
+        price = makePriceAccordingToCriteria(price,convertprice);  //these are for validation
         string convertstock = takeQStockToAdd();
         available = strToInt(convertstock);
-        available = makeQStockAccordingtoCriteria(available);
+        available = makeQStockAccordingtoCriteria(available,convertstock);
         cout << endl << endl;
         arrM[idx] = name;
         priceM[idx] = price;        // these are the addition in arrays
@@ -1847,10 +1794,10 @@ void addWitem(int &womenq, string arrW[], int priceW[], int availableW[])
         name = takeNametoAdd(counter);
         string convertprice = takePricetoAdd();
         price = strToInt(convertprice);
-        price = makePriceAccordingToCriteria(price);        //these are for validation
+        price = makePriceAccordingToCriteria(price,convertprice);        //these are for validation
         string convertstock = takeQStockToAdd();
         available = strToInt(convertstock);
-        available = makeQStockAccordingtoCriteria(available);
+        available = makeQStockAccordingtoCriteria(available, convertstock);
         cout << endl << endl;
 
         arrW[idx] = name;
@@ -2004,30 +1951,40 @@ void newNameforMen(int idx, int var, string arrM[]) // it takes the new name for
     cin.clear();
     cin.sync();
     getline(cin, arrM[var]);
-    if(checkforEmpty(arrM[var]))
+    arrM[var]=restrictnewNameforCloth(arrM[var]);
+    cout << "Name succesfully changed." << endl;
+}
+
+string restrictnewNameforCloth(string sen)
+{
+    while(checkforEmpty(sen) || checkingForcomma(sen))
     {
-        while (checkforEmpty(arrM[var]))
+    if(checkforEmpty(sen))
+    {
+        while (checkforEmpty(sen))
         {
             cout << "It must not be empty." << endl;
             cout << "Enter again: ";
             cin.clear();
             cin.sync();
-            getline(cin,arrM[var]); 
+            getline(cin,sen); 
         }
         
     }
-    if(checkingForcomma(arrM[var]))
+    if(checkingForcomma(sen))
     {
-        while(checkingForcomma(arrM[var]))
+        while(checkingForcomma(sen))
         {
             cout << "It must not contain a comma." << endl;
             cout << "Enter again: ";
             cin.clear();
             cin.sync();
-            getline(cin, arrM[var]);
+            getline(cin, sen);
         }   
     }
-    cout << "Name succesfully changed." << endl;
+    }
+
+    return sen;
 }
 
 void newNameforWomen(int idx, int var, string arrW[]) //  it takes the new name for women
@@ -2036,29 +1993,7 @@ void newNameforWomen(int idx, int var, string arrW[]) //  it takes the new name 
     cin.clear();
     cin.sync();
     getline(cin, arrW[var]);
-     if(checkforEmpty(arrW[var]))
-    {
-        while (checkforEmpty(arrW[var]))
-        {
-            cout << "It must not be empty." << endl;
-            cout << "Enter again: ";
-            cin.clear();
-            cin.sync();
-            getline(cin,arrW[var]); 
-        }
-        
-    }
-    if(checkingForcomma(arrW[var]))
-    {
-        while(checkingForcomma(arrW[var]))
-        {
-            cout << "It must not contain a comma." << endl;
-            cout << "Enter again: ";
-            cin.clear();
-            cin.sync();
-            getline(cin, arrW[var]);
-        }   
-    }
+    arrW[var]=restrictnewNameforCloth(arrW[var]);
     cout << "Name succesfully changed." << endl;
 }
 // this function calls other functions and makes the necessary changes regarding name changing
@@ -2225,8 +2160,21 @@ void addDeliveryArea(int &areas, string deliveryAreas[])
         cin.clear();
         cin.sync();
         getline(cin, address);
-         if(checkforEmpty(address))
-        {
+        address=restrictAddressName(address);
+        cout << endl
+             << endl;
+        deliveryAreas[idx] = address;
+    }
+
+    returnforAll();
+}
+
+string restrictAddressName(string address)
+{
+    while(checkforEmpty(address) || checkingForcomma(address))
+    {
+    if(checkforEmpty(address))
+    {
         while (checkforEmpty(address))
         {
             cout << "It must not be empty." << endl;
@@ -2235,7 +2183,8 @@ void addDeliveryArea(int &areas, string deliveryAreas[])
             cin.sync();
             getline(cin,address); 
         }
-        }
+    }
+
         if(checkingForcomma(address))
         {
         while(checkingForcomma(address))
@@ -2247,12 +2196,10 @@ void addDeliveryArea(int &areas, string deliveryAreas[])
             getline(cin, address);
         }   
         }
-        cout << endl
-             << endl;
-        deliveryAreas[idx] = address;
+
     }
 
-    returnforAll();
+        return address;
 }
 // it take the chocie of which delivery address is to be removed
 string takeNumberofAddressToRemove()
@@ -2297,9 +2244,23 @@ void signinWindow(string &name, string &password1)
     cout << endl
          << endl;
     cout << "Enter Username: ";
-    cin >> name;
-    cout << "Enter Password: ";
-    cin >> password1;
+    cin.clear();
+    cin.sync();
+    getline(cin,name);
+    if(checkingforspace(name)) // validation
+    {
+        cout << "It should not contain space.";
+        cout << "Enter again: ";
+        cin.clear();
+        cin.sync();
+        getline(cin,name);
+    }
+
+    cout << "Enter Password (6 digits): ";
+    cin.clear();
+    cin.sync();
+    getline(cin,password1);
+    password1=retrictPassword(password1);
     cout << endl
          << endl;
 }
@@ -2316,9 +2277,35 @@ void contactForCustomer(string phoneN, string email)
 void setContactInfo(string &phoneN, string &email)
 {
     cout << "Enter new Contact Number: ";
-    cin >> phoneN;
+    cin.clear();
+    cin.sync();
+    getline(cin,phoneN);
     cout << "Enter new Email Address: ";
-    cin >> email;
+    cin.clear();
+    cin.sync();
+    getline(cin,email);
+    if(checkingforspace(email)) // validatory restrictions
+    {
+        while(checkingforspace(email))
+        {
+            cout << "It should not contain spaces. " << endl;
+            cout << "Enter again: ";
+            cin.clear();
+            cin.sync();
+            getline(cin,email);
+        }    
+    }
+    if(!checkingforAtthesymbol(email)) // validatory restrictions
+    {
+        while(!checkingforAtthesymbol(email))
+        {
+            cout << "It must contain @ symbol. " << endl;
+            cout << "Enter again: ";
+            cin.clear();
+            cin.sync();
+            getline(cin,email);
+        }
+    }
     cout << "Info updated." << endl;
 }
 
@@ -2326,7 +2313,7 @@ string takeChoiceForContact()
 {
     string answer;
     cout << "Press 1 to change the Contact Information." << endl;
-    cout << "Press any other number to return." << endl;
+    cout << "Enter any other string to return." << endl;
     cout << "Enter your choice: ";
     cin >> answer;
     return answer;
@@ -2405,6 +2392,30 @@ bool checkingForcomma(string sen)
     return false;
 }
 
+bool checkingforspace(string sen)
+{
+    for(int x=0; sen[x]!='\0'; x++)
+    {
+        if(sen[x] == ' ')
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool checkingforAtthesymbol(string sen)
+{
+    for(int x=0; sen[x]!='\0'; x++)
+    {
+        if(sen[x]=='@')
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool checkingforInteger(string sen)
 {
     for (int x=0; sen[x] != '\0'; x++)
@@ -2416,6 +2427,47 @@ bool checkingforInteger(string sen)
     }
 
     return true;
+}
+
+bool checkingforlengthofP(string sen)
+{
+    if(sen.length()!=6)
+    {
+        return false;
+    }
+    return true;
+}
+
+string retrictPassword(string sen)
+{
+    while(checkingforspace(sen) || !checkingforlengthofP(sen) || !checkingforInteger(sen))
+    {
+    if(!checkingforlengthofP(sen) || !checkingforInteger(sen))
+    {
+        while(!checkingforlengthofP(sen) || !checkingforInteger(sen))
+        {
+            cout << "The password is not according to given criteria." << endl;
+            cout << "Enter password again: ";
+            cin.clear();
+            cin.sync();
+            getline(cin,sen);
+        }
+    }
+
+    if(checkingforspace(sen))
+    {
+        while(checkingforspace(sen))
+        {
+        cout << "It should not contain space.";
+        cout << "Enter again: ";
+        cin.clear();
+        cin.sync();
+        getline(cin,sen);
+        }
+    }
+    }
+
+    return sen;
 }
 
 bool checkforEmpty(string sen)

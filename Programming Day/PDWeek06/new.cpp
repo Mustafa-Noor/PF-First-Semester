@@ -179,13 +179,13 @@ int main()
                 break;
             }
 
-            if (health > 0 && !checkFifthEnemy && !checkSecondEnemy && !checkThirdEnemy && !checkFourthEnemy && !checkFifthEnemy && !checkSixthEnemy) // checks the condition for the next level
+            if (health >= 0 && !checkFifthEnemy && !checkSecondEnemy && !checkThirdEnemy && !checkFourthEnemy && !checkFifthEnemy && !checkSixthEnemy) // checks the condition for the next level
             {
                 nextLevel = true;
                 break;
             }
 
-            Sleep(70);
+            Sleep(75);
             hp();
             enemydata();   // this displays the health of the enemies
             enemyShoot();   // this checks if the bullet is active or not and give the bullet its coordinates
@@ -414,7 +414,7 @@ int main()
                 moveBulletForfinal();   // move the bullet for the enemies of the final level
                 enemybulletfinalLevel();    // prints the bullet of enemies of the finale level
                 dataForfinallevel();    // it displays the data of the final level(health , enemies health)
-                Sleep(70);
+                Sleep(75);
 
                 if (health < 0) // condition of hero dying
                 {
@@ -423,7 +423,7 @@ int main()
 
                 
 
-                if (health > 0 && !checkSeventhEnemy && !checkEightEnemy) // condition for game completion
+                if (health >= 0 && !checkSeventhEnemy && !checkEightEnemy) // condition for game completion
                 {
                     gamecompletion = true;
                     break;
@@ -477,8 +477,14 @@ int main()
                         
                         bx = px - 1;
                         by = py + 1;
+                        if(getCharAtxy(bx,by) != '#')
+                        {
                         bulletActive = true;
                         bulletDir = 'l';  // for firing of hero bullet towards left
+                        }
+                        else{
+                            bulletActive=false;
+                        }
                     }
                 }
 
@@ -1465,7 +1471,7 @@ void removefire()
 void movefire()
 {
     setcolor(10); //change colour
-    removefire();
+    
 
     // r means right direction
     if (bulletDir == 'r')
@@ -1484,7 +1490,10 @@ void movefire()
     {
         if (getCharAtxy(bx - 3, by) != '#')
         {
+            if(bx-3 != 1 || bx-3 !=2)
+            {
             bx -= 3; // Move left
+            }
         }
         else
         {

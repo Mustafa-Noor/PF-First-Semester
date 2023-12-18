@@ -474,6 +474,7 @@ int main()
                 {
                     if (!bulletActive)
                     {
+                        
                         bx = px - 1;
                         by = py + 1;
                         bulletActive = true;
@@ -1481,7 +1482,7 @@ void movefire()
     //l means left direction
     else if (bulletDir == 'l')
     {
-        if (getCharAtxy(bx - 3, by) != '#' || getCharAtxy(bx,by) != '#' || getCharAtxy(bx-1,by) !='#' || getCharAtxy(bx-2,by) !='#')
+        if (getCharAtxy(bx - 3, by) != '#' || getCharAtxy(bx,by) != '#'|| getCharAtxy(bx-2,by) != '#')
         {
             bx -= 3; // Move left
         }
@@ -1562,8 +1563,8 @@ void movefire()
         
     }
 
-    // Check if the bullet has hit an enemy or reached the right edge of the screen
-    if (getCharAtxy(bx, by) == '#' || bx >= 97 || by > 37 || by < 1 || getCharAtxy(bx + 1, by) == '#' || getCharAtxy(bx - 1, by) == '#' || bx <= 0 || getCharAtxy(bx + 2, by) == '#' || getCharAtxy(bx + 3, by) == '#' || getCharAtxy(bx - 2, by) == '#' || getCharAtxy(bx - 3, by) == '#')
+    // Check if the bullet has reached the right edge of the screen
+    if (getCharAtxy(bx, by) == '#' || bx >= 97  || bx<2 || by > 37 || by < 1 || getCharAtxy(bx + 1, by) == '#' || getCharAtxy(bx - 1, by) == '#' || bx <= 0 || getCharAtxy(bx + 2, by) == '#' || getCharAtxy(bx + 3, by) == '#' || getCharAtxy(bx - 2, by) == '#' || getCharAtxy(bx - 3, by) == '#' )
     {
         bulletActive = false;
         removefire();

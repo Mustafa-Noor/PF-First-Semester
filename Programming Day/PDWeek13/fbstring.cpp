@@ -61,7 +61,7 @@ int makeQStockAccordingtoCriteria(int available, string convertstock);
 string takeStock();
 string newStockforWomen(int idx, string arrW[]);
 string newStockforMen(int idx, string arrM[]);
-int makeValueAccToCriteria(int value);
+int makeValueAccToCriteria(int value, string convert);
 // this shows reviews
 void showreviews(string reviews[], int cusCount, string customerArr[], int &counter, int cusIndex);
 void newNameforWomen(int idx, int var, string arrW[]);
@@ -107,6 +107,7 @@ bool checkingforspace(string sen);
 string retrictPassword(string sen);
 string restrictAddressName(string address);
 string restrictnewNameforCloth(string sen);
+string signupName(string name);
 // these are for saving records
 void saveRecordsofCred(int range, string username[], string password[], string role[], int idx, int cusIndex, int cardindex);
 void saveCustomerInfo(string customerArr[], int billPaidcount[], int totalM[], int totalW[], int finalTotal[], string userArea[], string delivery[], int cardno[], int cusIndex, string reviews[]);
@@ -135,7 +136,6 @@ main()
     string role[range];
     int idx = 0;
     int cusIndex = 0;
-    
     int cardindex;
 
     //Customer Related
@@ -159,7 +159,7 @@ main()
     int areas = 0;
     bool deliveryop = false, delArea = false, billpaid = false;
     string name, password1;
-    string phoneN = "0423-123456", email = "fashionisu@gmail,com";
+    string phoneN = "0423-123456", email = "fashionisu@gmail.com";
     string arrM[range];
     int priceM[range];
     int availableM[range];
@@ -945,6 +945,11 @@ string signinMenu(string username[], string password[], string role[], int &card
             Sleep(300);
         }
     }
+    else
+    {
+        cout << "User does not exist.";
+        Sleep(300);
+    }
 
     return role1;
 }
@@ -959,7 +964,7 @@ void signupWindow(string &name, string &password1)
     cin.clear();
     cin.sync();
     getline(cin,name);
-    name=restrictnewNameforCloth(name);
+    name=signupName(name);
     cout << "Enter Password (Must be 6-digits): ";
     cin.clear();
     cin.sync();
@@ -1880,7 +1885,7 @@ string takeStock()
 string newStockforMen(int idx, string arrM[])
 {
     string value;
-    cout << "Enter new Stock for " << arrM[idx] << " (Must not be greater than 100): ";
+    cout << "Enter new Stock for " << arrM[idx] << " : ";
     cin >> value;
     return value;
 }
@@ -1888,22 +1893,21 @@ string newStockforMen(int idx, string arrM[])
 string newStockforWomen(int idx, string arrW[])
 {
     string value;
-    cout << "Enter new Stock for " << arrW[idx] << " (Must not be greater than 100): ";
+    cout << "Enter new Stock for " << arrW[idx] << " : ";
     cin >> value;
     return value;
 }
 // it validates the value
-int makeValueAccToCriteria(int value)
+int makeValueAccToCriteria(int value,string convert)
 {
-    if (!(value >= 0 && value <= 100))
+    if (!(value >= 0) || !checkingforInteger(convert))
     {
-        string convert = intToStr(value);
-        while (!(value >= 0 && value <= 100))
+        
+        while (!(value > 0) || !checkingforInteger(convert))
         {
-            cout << "Not Possible..." << endl;
-            cout << "Enter Stock Again: ";
+            cout << "Not according to criteria." << endl;
+            cout << "Enter quantity again: ";
             cin >> convert;
-            
             value=strToInt(convert);
         }
     }
@@ -1926,7 +1930,7 @@ void changeStock(int menq, string arrM[], int availableM[], string arrW[], int w
             {
                 string convertM = newStockforMen(idx, arrM);
                 value = strToInt(convertM);
-                value = makeValueAccToCriteria(value);
+                value = makeValueAccToCriteria(value,convertM);
                 availableM[idx] = value;
             }
         }
@@ -1940,7 +1944,7 @@ void changeStock(int menq, string arrM[], int availableM[], string arrW[], int w
             {
                 string convertW = newStockforWomen(idx, arrW);
                 value =strToInt(convertW);                      // these are for validations
-                value = makeValueAccToCriteria(value);
+                value = makeValueAccToCriteria(value,convertW);
                 availableW[idx] = value;
             }
         }
@@ -2260,6 +2264,53 @@ string restrictAddressName(string address)
 
         return address;
 }
+
+string signupName(string name)
+{
+    while(checkforEmpty(name) || checkingForcomma(name) || checkingforspace(name))
+    {
+        if(checkforEmpty(name))
+        {
+        while (checkforEmpty(name))
+        {
+            cout << "It must not be empty." << endl;
+            cout << "Enter again: ";
+            cin.clear();
+            cin.sync();
+            getline(cin,name); 
+        }
+        }
+
+        if(checkingForcomma(name))
+        {
+        while(checkingForcomma(name))
+        {
+            cout << "It must not contain a comma." << endl;
+            cout << "Enter again: ";
+             cin.clear();
+            cin.sync();
+            getline(cin, name);
+        }   
+        }
+
+        if(checkingforspace(name))
+        {
+            while(checkingforspace(name))
+            {
+                cout << "It must not contain a space." << endl;
+                cout << "Enter again: ";
+                cin.clear();
+                cin.sync();
+                getline(cin,name);
+            }
+        }
+
+    }
+
+
+        return name;
+}
+
 // it take the chocie of which delivery address is to be removed
 string takeNumberofAddressToRemove()
 {
@@ -2544,7 +2595,7 @@ string retrictPassword(string sen)
 
     return sen;
 }
-
+// checks for empty spaces
 bool checkforEmpty(string sen)
 {
     if(sen=="")

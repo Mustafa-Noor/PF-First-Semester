@@ -1,0 +1,3 @@
+Blue Dress Shirt,900,20
+Grey Sweatshirt,600,23
+Red Hoodie Printed,800,24
